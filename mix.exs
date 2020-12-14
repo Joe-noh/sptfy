@@ -20,7 +20,8 @@ defmodule Sptfy.MixProject do
 
   defp deps do
     [
-      {:finch, "~> 0.5"}
+      {:finch, "~> 0.5"},
+      {:jason, "~> 1.2"}
     ]
   end
 end
