@@ -5,7 +5,7 @@ defmodule Sptfy.OAuthTest do
     setup do
       params = [
         client_id: "CLIENT_ID",
-        redirect_uri: "http://localhost:4000/spotify/callback",
+        redirect_uri: "https://redirect.uri/callback",
         scope: ~w[SCOPE1 SCOPE2],
         state: "STATE",
         show_dialog: true
@@ -15,7 +15,7 @@ defmodule Sptfy.OAuthTest do
     end
 
     test "returns authorize URL", %{params: params} do
-      uri = Sptfy.OAuth.url(params) |> IO.inspect() |> URI.parse()
+      uri = Sptfy.OAuth.url(params) |> URI.parse()
 
       assert uri.scheme == "https"
       assert uri.host == "accounts.spotify.com"
