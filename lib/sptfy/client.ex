@@ -1,5 +1,5 @@
 defmodule Sptfy.Client do
-  defmacro get(path, as: function, query: query) do
+  defmacro get(path, as: function, query: query, mapping: mapping) do
     placeholders = Sptfy.Client.Placeholder.extract(path)
 
     quote do
@@ -15,7 +15,9 @@ defmodule Sptfy.Client do
         path_params = params |> Map.take(unquote(placeholders))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
-        Sptfy.Client.HTTP.get(token, filled_path, query_params)
+        with {:ok, body} <- Sptfy.Client.HTTP.get(token, filled_path, query_params) do
+          Sptfy.Client.ResponseMapper.map(body, unquote(mapping))
+        end
       end
     end
   end
