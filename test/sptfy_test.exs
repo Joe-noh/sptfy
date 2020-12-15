@@ -3,6 +3,6 @@ defmodule SptfyTest do
   doctest Sptfy
 
   test "greets the world" do
-    assert {:ok, %{status: 401}} = Sptfy.Track.get_audio_features(ids: [1,2,3])
+    assert {:ok, %{status: 401}} = Sptfy.Track.get_audio_features("token", ids: [1,2,3])
   end
 end

@@ -1,32 +1,22 @@
 defmodule Sptfy.Client do
-  @base_url "https://api.spotify.com"
-
   defmacro get(path, as: function, query: query) do
-    _placeholders = parse_placeholders(path)
+    placeholders = Sptfy.Client.Placeholder.extract(path)
 
     quote do
       @doc """
-      #{unquote(path)}
+      GET #{unquote(path)}
       """
-      def unquote(function)(params) when is_list(params) do
-        unquote(function)(params |> Enum.into(%{}))
+      def unquote(function)(token, params) when is_list(params) do
+        unquote(function)(token, Enum.into(params, %{}))
       end
 
-      def unquote(function)(params) when is_map(params) do
-        qs = params |> Map.take(unquote(query)) |> Enum.map(fn
-          {k, v} when is_list(v) -> {k, Enum.join(v, ",")}
-          {k, v} -> {k, v}
-        end)
-        |> URI.encode_query
+      def unquote(function)(token, params) when is_map(params) do
+        query_params = params |> Map.take(unquote(query))
+        path_params = params |> Map.take(unquote(placeholders))
+        filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
-        url = unquote(@base_url) <> unquote(path) <> "?" <> qs
-
-        Finch.build(:get, url) |> Finch.request(Sptfy.Finch)
+        Sptfy.Client.HTTP.get(token, filled_path, query_params)
       end
     end
-  end
-
-  defp parse_placeholders(path) do
-    Regex.scan(~r/:(\w+)/, path) |> Enum.map(fn [_whole, name] -> name end)
   end
 end
