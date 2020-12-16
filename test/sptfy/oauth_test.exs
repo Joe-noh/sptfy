@@ -1,5 +1,7 @@
 defmodule Sptfy.OAuthTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false
+
+  import Mock
 
   describe "url/1" do
     setup do
@@ -41,14 +43,33 @@ defmodule Sptfy.OAuthTest do
   end
 
   describe "get_token/1" do
-    @tag :skip
     test "exchange code with tokens" do
-      Sptfy.OAuth.get_token(%{
+      response_body = token_json() |> Jason.encode!()
+      params = %{
         client_id: "CLIENT_ID",
         client_secret: "CLIENT_SECRET",
         redirect_uri: "https://redirect.uri/callback",
         code: "CODE"
-      })
+      }
+
+      with_mock Finch, [:passthrough], [request: fn (_, _) -> {:ok, %{body: response_body}} end] do
+        assert {:ok, response} = Sptfy.OAuth.get_token(params)
+        assert response.access_token == "ACCESS_TOKEN"
+        assert response.token_type == "Bearer"
+        assert response.scope == ~w[user-read-private user-read-email]
+        assert response.expires_in == 3600
+        assert response.refresh_token == "REFRESH_TOKEN"
+      end
     end
+  end
+
+  defp token_json do
+    %{
+      "access_token" => "ACCESS_TOKEN",
+      "token_type" => "Bearer",
+      "scope" => "user-read-private user-read-email",
+      "expires_in" => 3600,
+      "refresh_token" => "REFRESH_TOKEN"
+     }
   end
 end

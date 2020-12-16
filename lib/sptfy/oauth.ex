@@ -25,8 +25,12 @@ defmodule Sptfy.OAuth do
     Finch.build(:post, endpoint, headers(client_id, client_secret), body)
     |> Finch.request(Sptfy.Finch)
     |> case do
-      {:ok, %{body: body}} -> Jason.decode(body)
-      error -> error
+      {:ok, %{body: body}} ->
+        {:ok, body} = Jason.decode(body)
+        {:ok, Sptfy.OAuth.Response.new(body)}
+
+      error ->
+        error
     end
   end
 
