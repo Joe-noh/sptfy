@@ -1,4 +1,6 @@
 defmodule Sptfy.Object.AudioFeature do
+  @type t :: %__MODULE__{}
+
   defstruct ~w[
     acousticness
     analysis_url
