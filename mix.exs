@@ -21,7 +21,9 @@ defmodule Sptfy.MixProject do
   defp deps do
     [
       {:finch, "~> 0.5"},
-      {:jason, "~> 1.2"}
+      {:jason, "~> 1.2"},
+      {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
+      {:mock, "~> 0.3", only: :test}
     ]
   end
 end

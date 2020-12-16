@@ -16,7 +16,7 @@ defmodule Sptfy.Client do
       GET #{unquote(path)}
       """
 
-      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
+      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: {:ok, unquote(return_type)}
       def unquote(fun)(token, params) when is_list(params) do
         unquote(fun)(token, Enum.into(params, %{}))
       end
@@ -26,8 +26,9 @@ defmodule Sptfy.Client do
         path_params = params |> Map.take(unquote(placeholders))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
-        with {:ok, body} <- Sptfy.Client.HTTP.get(token, filled_path, query_params) do
-          Sptfy.Client.ResponseMapper.map(body, unquote(mapping))
+        with {:ok, body} <- Sptfy.Client.HTTP.get(token, filled_path, query_params),
+             response = Sptfy.Client.ResponseMapper.map(body, unquote(mapping)) do
+          {:ok, response}
         end
       end
     end
