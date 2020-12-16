@@ -1,6 +1,5 @@
 defmodule Sptfy.Track do
-  import Sptfy.Client
-  import Sptfy.Client.ResponseMapper
+  use Sptfy.Client
 
   alias Sptfy.Object.AudioFeature
 

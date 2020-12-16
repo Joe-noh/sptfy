@@ -1,10 +1,17 @@
 defmodule Sptfy.Client do
   @type params :: Map.t() | Keyword.t()
 
+  defmacro __using__(_) do
+    quote location: :keep do
+      import Sptfy.Client
+      import Sptfy.Client.ResponseMapper
+    end
+  end
+
   defmacro get(path, as: fun, query: query, mapping: mapping, return_type: return_type) do
     placeholders = Sptfy.Client.Placeholder.extract(path)
 
-    quote do
+    quote location: :keep do
       @doc """
       GET #{unquote(path)}
       """
