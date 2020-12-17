@@ -3,12 +3,13 @@ defmodule Sptfy.TrackTest do
 
   import Mock
 
-  alias Sptfy.Object.{AudioFeature, Track}
+  alias Sptfy.Track
+  alias Sptfy.Object.{AudioFeature, FullTrack}
 
   describe "get_tracks/2" do
     test "returns list of Track structs" do
       with_mock Sptfy.Client.HTTP, get: fn _, _, _ -> {:ok, tracks_json()} end do
-        assert {:ok, [%Track{}]} = Sptfy.Track.get_tracks("token", ids: [1, 2, 3])
+        assert {:ok, [%FullTrack{}]} = Track.get_tracks("token", ids: [1, 2, 3])
       end
     end
   end
@@ -16,7 +17,7 @@ defmodule Sptfy.TrackTest do
   describe "get_audio_features/2" do
     test "returns list of AudioFeature structs" do
       with_mock Sptfy.Client.HTTP, get: fn _, _, _ -> {:ok, audio_features_json()} end do
-        assert {:ok, [feature = %AudioFeature{}]} = Sptfy.Track.get_audio_features("token", ids: [1, 2, 3])
+        assert {:ok, [feature = %AudioFeature{}]} = Track.get_audio_features("token", ids: [1, 2, 3])
         assert audio_feature_json() == TestHelpers.stringify_keys(feature)
       end
     end

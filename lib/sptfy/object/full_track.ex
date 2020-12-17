@@ -1,4 +1,4 @@
-defmodule Sptfy.Object.Track do
+defmodule Sptfy.Object.FullTrack do
   @type t :: %__MODULE__{}
 
   defstruct ~w[
