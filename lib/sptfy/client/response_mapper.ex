@@ -4,7 +4,7 @@ defmodule Sptfy.Client.ResponseMapper do
   end
 
   def list_of(module) do
-    fn (list) ->
+    fn list ->
       Enum.map(list, fn elem -> struct(module, atomize_keys(elem)) end)
     end
   end

@@ -1,7 +1,13 @@
 defmodule Sptfy.Track do
   use Sptfy.Client
 
-  alias Sptfy.Object.AudioFeature
+  alias Sptfy.Object.{AudioFeature, Track}
+
+  get "/v1/tracks",
+    as: :get_tracks,
+    query: [:ids, :market],
+    mapping: {"tracks", list_of(Track)},
+    return_type: [Track.t()]
 
   get "/v1/audio-features",
     as: :get_audio_features,

@@ -45,6 +45,7 @@ defmodule Sptfy.OAuthTest do
   describe "get_token/1" do
     test "exchange code with tokens" do
       response_body = token_json() |> Jason.encode!()
+
       params = %{
         client_id: "CLIENT_ID",
         client_secret: "CLIENT_SECRET",
@@ -52,7 +53,7 @@ defmodule Sptfy.OAuthTest do
         code: "CODE"
       }
 
-      with_mock Finch, [:passthrough], [request: fn (_, _) -> {:ok, %{body: response_body}} end] do
+      with_mock Finch, [:passthrough], request: fn _, _ -> {:ok, %{body: response_body}} end do
         assert {:ok, response} = Sptfy.OAuth.get_token(params)
         assert response.access_token == "ACCESS_TOKEN"
         assert response.token_type == "Bearer"
@@ -70,6 +71,6 @@ defmodule Sptfy.OAuthTest do
       "scope" => "user-read-private user-read-email",
       "expires_in" => 3600,
       "refresh_token" => "REFRESH_TOKEN"
-     }
+    }
   end
 end
