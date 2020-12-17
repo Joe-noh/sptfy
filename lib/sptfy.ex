@@ -1,18 +1,5 @@
 defmodule Sptfy do
   @moduledoc """
-  Documentation for `Sptfy`.
+  Sptfy is a Spotify API client library.
   """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Sptfy.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
 end
