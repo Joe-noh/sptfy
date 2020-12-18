@@ -1,0 +1,20 @@
+name: Testing
+on: [pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-elixir@v1
+      with:
+        otp-version: '23.1.1'
+        elixir-version: '1.11.2'
+    - uses: actions/cache@v1
+      with:
+        path: deps
+        key: ${{ runner.os }}-sptfy-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+        restore-keys: |
+          ${{ runner.os }}-sptfy-
+    - run: mix deps.get
+    - run: mix format --check-formatted
+    - run: mix test
