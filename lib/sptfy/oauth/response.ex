@@ -1,9 +1,11 @@
 defmodule Sptfy.OAuth.Response do
+  @type t :: %__MODULE__{}
+
   defstruct ~w[
     access_token
+    expires_in
     refresh_token
     scope
-    expires_in
     token_type
   ]a
 

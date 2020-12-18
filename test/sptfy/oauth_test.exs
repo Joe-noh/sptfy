@@ -3,6 +3,8 @@ defmodule Sptfy.OAuthTest do
 
   import Mock
 
+  doctest Sptfy.OAuth
+
   describe "url/1" do
     test "returns authorize URL" do
       url = Sptfy.OAuth.url("CLIENT_ID", "https://redirect.uri/callback", %{scope: ~w[SCOPE1 SCOPE2], state: "STATE", show_dialog: true})
