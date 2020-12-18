@@ -34,6 +34,28 @@ defmodule Sptfy.OAuth do
     end
   end
 
+  def refresh_token(params) when is_list(params) do
+    params |> Enum.into(%{}) |> refresh_token()
+  end
+
+  def refresh_token(params) do
+    endpoint = "https://accounts.spotify.com/api/token"
+    {client_id, params} = Map.pop(params, :client_id)
+    {client_secret, params} = Map.pop(params, :client_secret)
+    body = Map.merge(params, %{grant_type: "refresh_token"})
+
+    Finch.build(:post, endpoint, headers(client_id, client_secret), body)
+    |> Finch.request(Sptfy.Finch)
+    |> case do
+      {:ok, %{body: body}} ->
+        {:ok, body} = Jason.decode(body) |> IO.inspect
+        {:ok, Sptfy.OAuth.Response.new(body)}
+
+      error ->
+        error
+    end
+  end
+
   defp headers(client_id, client_secret) do
     [
       {"Authorization", "Basic " <> Base.encode64(client_id <> ":" <> client_secret)},

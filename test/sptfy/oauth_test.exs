@@ -64,6 +64,27 @@ defmodule Sptfy.OAuthTest do
     end
   end
 
+  describe "refresh_token/1" do
+    test "get new access token" do
+      response_body = token_json() |> Map.delete("refresh_token") |> Jason.encode!()
+
+      params = %{
+        client_id: "CLIENT_ID",
+        client_secret: "CLIENT_SECRET",
+        refresh_token: "REFRESH_TOKEN"
+      }
+
+      with_mock Finch, [:passthrough], request: fn _, _ -> {:ok, %{body: response_body}} end do
+        assert {:ok, response} = Sptfy.OAuth.refresh_token(params)
+        assert response.access_token == "ACCESS_TOKEN"
+        assert response.token_type == "Bearer"
+        assert response.scope == ~w[user-read-private user-read-email]
+        assert response.expires_in == 3600
+        assert response.refresh_token == nil
+      end
+    end
+  end
+
   defp token_json do
     %{
       "access_token" => "ACCESS_TOKEN",
