@@ -17,19 +17,7 @@ defmodule Sptfy.OAuth do
   end
 
   def get_token(%{client_id: client_id, client_secret: client_secret, code: code, redirect_uri: redirect_uri}) do
-    endpoint = "https://accounts.spotify.com/api/token"
-    body = URI.encode_query(grant_type: "authorization_code", code: code, redirect_uri: redirect_uri)
-
-    Finch.build(:post, endpoint, headers(client_id, client_secret), body)
-    |> Finch.request(Sptfy.Finch)
-    |> case do
-      {:ok, %{body: body}} ->
-        {:ok, body} = Jason.decode(body)
-        {:ok, Sptfy.OAuth.Response.new(body)}
-
-      error ->
-        error
-    end
+    post(client_id, client_secret, grant_type: "authorization_code", code: code, redirect_uri: redirect_uri)
   end
 
   def refresh_token(params) when is_list(params) do
@@ -37,10 +25,15 @@ defmodule Sptfy.OAuth do
   end
 
   def refresh_token(%{client_id: client_id, client_secret: client_secret, refresh_token: refresh_token}) do
-    endpoint = "https://accounts.spotify.com/api/token"
-    body = URI.encode_query(grant_type: "refresh_token", refresh_token: refresh_token)
+    post(client_id, client_secret, grant_type: "refresh_token", refresh_token: refresh_token)
+  end
 
-    Finch.build(:post, endpoint, headers(client_id, client_secret), body)
+  defp post(client_id, client_secret, body) do
+    endpoint = "https://accounts.spotify.com/api/token"
+    headers = headers(client_id, client_secret)
+    body = URI.encode_query(body)
+
+    Finch.build(:post, endpoint, headers, body)
     |> Finch.request(Sptfy.Finch)
     |> case do
       {:ok, %{body: body}} ->
