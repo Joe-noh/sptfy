@@ -8,17 +8,40 @@ defmodule Sptfy.TrackTest do
 
   describe "get_tracks/2" do
     test "returns list of Track structs" do
-      with_mock Sptfy.Client.HTTP, get: fn _, _, _ -> {:ok, tracks_json()} end do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/tracks", _ -> {:ok, tracks_json()} end do
         assert {:ok, [%FullTrack{}]} = Track.get_tracks("token", ids: [1, 2, 3])
       end
     end
   end
 
-  describe "get_audio_features/2" do
+  describe "get_track/2" do
+    test "returns a Track struct" do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/track/abc", _ -> {:ok, track_json()} end do
+        assert {:ok, %FullTrack{}} = Track.get_track("token", id: "abc")
+      end
+    end
+  end
+
+  describe "get_tracks_audio_features/2" do
     test "returns list of AudioFeature structs" do
-      with_mock Sptfy.Client.HTTP, get: fn _, _, _ -> {:ok, audio_features_json()} end do
-        assert {:ok, [feature = %AudioFeature{}]} = Track.get_audio_features("token", ids: [1, 2, 3])
-        assert audio_feature_json() == TestHelpers.stringify_keys(feature)
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/audio-features", _ -> {:ok, audio_features_json()} end do
+        assert {:ok, [%AudioFeature{}]} = Track.get_tracks_audio_features("token", ids: [1, 2, 3])
+      end
+    end
+  end
+
+  describe "get_track_audio_features/2" do
+    test "returns list of AudioFeature structs" do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/audio-features/abc", _ -> {:ok, audio_feature_json()} end do
+        assert {:ok, %AudioFeature{}} = Track.get_track_audio_features("token", id: "abc")
+      end
+    end
+  end
+
+  describe "get_audio_analysis/2" do
+    test "returns audio structs" do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/audio-analysis/abc", _ -> {:ok, %{"bars" => []}} end do
+        assert {:ok, %{"bars" => []}} = Track.get_audio_analysis("token", id: "abc")
       end
     end
   end
