@@ -1,4 +1,6 @@
 defmodule Sptfy.Object.Helpers do
+  @moduledoc false
+
   def atomize_keys(map) do
     map
     |> Enum.map(fn

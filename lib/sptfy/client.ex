@@ -26,9 +26,9 @@ defmodule Sptfy.Client do
         path_params = params |> Map.take(unquote(placeholders))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
-        with {:ok, body} <- Sptfy.Client.HTTP.get(token, filled_path, query_params),
-             response = Sptfy.Client.ResponseMapper.map(body, unquote(mapping)) do
-          {:ok, response}
+        case Sptfy.Client.HTTP.get(token, filled_path, query_params) do
+          {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
+          error -> error
         end
       end
     end

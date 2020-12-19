@@ -1,4 +1,6 @@
 defmodule Sptfy.Client.BodyMapper do
+  @moduledoc false
+
   def map(json, fun) when is_function(fun) do
     fun.(json)
   end

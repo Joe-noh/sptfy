@@ -12,6 +12,14 @@ defmodule Sptfy.TrackTest do
         assert {:ok, [%FullTrack{}]} = Track.get_tracks("token", ids: [1, 2, 3])
       end
     end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/tracks", _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Track.get_tracks("token", ids: [1, 2, 3])
+      end
+    end
   end
 
   describe "get_track/2" do
