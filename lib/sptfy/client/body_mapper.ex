@@ -1,23 +1,35 @@
 defmodule Sptfy.Client.BodyMapper do
   @moduledoc false
 
-  def map(json, fun) when is_function(fun) do
+  @type t :: %__MODULE__{}
+
+  defstruct ~w[
+    fun
+    key
+  ]a
+
+  @spec map(json :: map(), mapping :: t()) :: map() | [map()]
+  def map(json, %__MODULE__{fun: fun, key: nil}) do
     fun.(json)
   end
 
-  def map(json, {key, fun}) when is_function(fun) do
+  def map(json, %__MODULE__{fun: fun, key: key}) do
     Map.get(json, key) |> fun.()
   end
 
+  @spec single(module :: module()) :: t()
   def single(module) do
-    &module.new/1
+    %__MODULE__{fun: &module.new/1}
   end
 
-  def list_of(module) do
-    &Enum.map(&1, single(module))
+  @spec list_of(module :: module(), key :: String.t()) :: t()
+  def list_of(module, key) do
+    single_fun = single(module).fun
+    %__MODULE__{fun: &Enum.map(&1, single_fun), key: key}
   end
 
-  def as_is() do
-    & &1
+  @spec as_is :: t()
+  def as_is do
+    %__MODULE__{fun: & &1}
   end
 end

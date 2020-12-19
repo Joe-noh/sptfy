@@ -1,6 +1,10 @@
 defmodule Sptfy.Client.ResponseHandler do
   @moduledoc false
 
+  alias Sptfy.Client.BodyMapper
+  alias Sptfy.Object.Error
+
+  @spec handle(response :: %Finch.Response{}, mapping :: BodyMapper.t()) :: {:ok, map() | [map()]} | {:error, Error.t()}
   def handle(%Finch.Response{body: body}, mapping) do
     json = Jason.decode!(body)
 

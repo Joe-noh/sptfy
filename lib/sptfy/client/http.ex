@@ -1,6 +1,7 @@
 defmodule Sptfy.Client.HTTP do
   @moduledoc false
 
+  @spec get(token :: String.t(), path :: String.t(), query :: map()) :: {:ok, Finch.Response.t()} | {:error, Mint.Types.error()}
   def get(token, path, query) do
     url = url(path, query)
     Finch.build(:get, url, headers(token)) |> Finch.request(Sptfy.Finch)
