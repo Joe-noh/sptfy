@@ -4,7 +4,7 @@ defmodule Sptfy.Client do
   defmacro __using__(_) do
     quote location: :keep do
       import Sptfy.Client
-      import Sptfy.Client.ResponseMapper
+      import Sptfy.Client.BodyMapper
     end
   end
 

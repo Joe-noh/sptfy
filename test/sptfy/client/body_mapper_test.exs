@@ -1,11 +1,11 @@
-defmodule Sptfy.Client.ResponseMapperTest do
+defmodule Sptfy.Client.BodyMapperTest do
   use ExUnit.Case, async: true
 
-  alias Sptfy.Client.ResponseMapper
+  alias Sptfy.Client.BodyMapper
 
   describe "list_of/1" do
     test "returns a function which builds list of structs" do
-      fun = ResponseMapper.list_of(Sptfy.Object.AudioFeature)
+      fun = BodyMapper.list_of(Sptfy.Object.AudioFeature)
 
       assert fun.([%{}]) == [%Sptfy.Object.AudioFeature{}]
       assert fun.([%{id: 10}]) == [%Sptfy.Object.AudioFeature{id: 10}]
