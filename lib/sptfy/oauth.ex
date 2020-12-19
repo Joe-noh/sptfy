@@ -1,5 +1,8 @@
 defmodule Sptfy.OAuth do
+  @type response :: {:ok, Finch.Response.t()} | {:error, AuthError.t()} | {:error, Mint.Types.error()}
+
   alias Sptfy.OAuth.Response
+  alias Sptfy.Object.AuthError
 
   @doc """
   Returns a URL to request an authorization code.
@@ -23,7 +26,7 @@ defmodule Sptfy.OAuth do
   @doc """
   Requests access token and refresh token to the Spotify Accounts service.
   """
-  @spec get_token(client_id :: String.t(), client_secret :: String.t(), code :: String.t(), redirect_uri :: String.t()) :: {:ok, Response.t()}
+  @spec get_token(client_id :: String.t(), client_secret :: String.t(), code :: String.t(), redirect_uri :: String.t()) :: response()
   def get_token(client_id, client_secret, code, redirect_uri) do
     post(client_id, client_secret, grant_type: "authorization_code", code: code, redirect_uri: redirect_uri)
   end
@@ -31,11 +34,12 @@ defmodule Sptfy.OAuth do
   @doc """
   Exchanges a refresh token for new access token.
   """
-  @spec refresh_token(client_id :: String.t(), client_secret :: String.t(), refresh_token :: String.t()) :: {:ok, Response.t()}
+  @spec refresh_token(client_id :: String.t(), client_secret :: String.t(), refresh_token :: String.t()) :: response()
   def refresh_token(client_id, client_secret, refresh_token) do
     post(client_id, client_secret, grant_type: "refresh_token", refresh_token: refresh_token)
   end
 
+  @spec post(client_id :: String.t(), client_secret :: String.t(), body :: Keyword.t()) :: response()
   defp post(client_id, client_secret, body) do
     endpoint = "https://accounts.spotify.com/api/token"
     headers = headers(client_id, client_secret)
@@ -44,12 +48,8 @@ defmodule Sptfy.OAuth do
     Finch.build(:post, endpoint, headers, body)
     |> Finch.request(Sptfy.Finch)
     |> case do
-      {:ok, %{body: body}} ->
-        {:ok, body} = Jason.decode(body)
-        {:ok, Response.new(body)}
-
-      error ->
-        error
+      {:ok, response} -> handle_response(response)
+      error -> error
     end
   end
 
@@ -58,5 +58,15 @@ defmodule Sptfy.OAuth do
       {"Authorization", "Basic " <> Base.encode64(client_id <> ":" <> client_secret)},
       {"Content-Type", "application/x-www-form-urlencoded"}
     ]
+  end
+
+  defp handle_response(%Finch.Response{status: status, body: body}) when status in 200..299 do
+    {:ok, body} = Jason.decode(body)
+    {:ok, Response.new(body)}
+  end
+
+  defp handle_response(%Finch.Response{status: status, body: body}) when status in 400..499 do
+    {:ok, body} = Jason.decode(body)
+    {:error, AuthError.new(body)}
   end
 end
