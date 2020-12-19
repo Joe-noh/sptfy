@@ -6,7 +6,7 @@ defmodule Sptfy.Track do
   get "/v1/tracks",
     as: :get_tracks,
     query: [:ids, :market],
-    mapping: {"tracks", list_of(FullTrack)},
+    mapping: list_of(FullTrack, "tracks"),
     return_type: [FullTrack.t()]
 
   get "/v1/track/:id",
@@ -18,7 +18,7 @@ defmodule Sptfy.Track do
   get "/v1/audio-features",
     as: :get_tracks_audio_features,
     query: [:ids],
-    mapping: {"audio_features", list_of(AudioFeature)},
+    mapping: list_of(AudioFeature, "audio_features"),
     return_type: [AudioFeature.t()]
 
   get "/v1/audio-features/:id",

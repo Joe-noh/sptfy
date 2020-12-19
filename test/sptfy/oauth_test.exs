@@ -29,9 +29,9 @@ defmodule Sptfy.OAuthTest do
 
   describe "get_token/1" do
     test "exchange code with tokens" do
-      response_body = token_json() |> Jason.encode!()
+      body = token_json() |> Jason.encode!()
 
-      with_mock Finch, [:passthrough], request: fn _, _ -> {:ok, %{body: response_body}} end do
+      with_mock Finch, [:passthrough], request: fn _, _ -> {:ok, %Finch.Response{status: 200, body: body}} end do
         assert {:ok, response} = Sptfy.OAuth.get_token("CLIENT_ID", "CLIENT_SECRET", "https://redirect.uri/callback", "CODE")
         assert response.access_token == "ACCESS_TOKEN"
         assert response.token_type == "Bearer"
@@ -40,19 +40,39 @@ defmodule Sptfy.OAuthTest do
         assert response.refresh_token == "REFRESH_TOKEN"
       end
     end
+
+    test "returns AuthError struct on error" do
+      body = error_json() |> Jason.encode!()
+
+      with_mock Finch, [:passthrough], request: fn _, _ -> {:ok, %Finch.Response{status: 400, body: body}} end do
+        assert {:error, error} = Sptfy.OAuth.get_token("CLIENT_ID", "CLIENT_SECRET", "https://redirect.uri/callback", "CODE")
+        assert error.error == "ERROR"
+        assert error.error_description == "DESCRIPTION"
+      end
+    end
   end
 
   describe "refresh_token/1" do
     test "get new access token" do
-      response_body = token_json() |> Map.delete("refresh_token") |> Jason.encode!()
+      body = token_json() |> Map.delete("refresh_token") |> Jason.encode!()
 
-      with_mock Finch, [:passthrough], request: fn _, _ -> {:ok, %{body: response_body}} end do
+      with_mock Finch, [:passthrough], request: fn _, _ -> {:ok, %Finch.Response{status: 200, body: body}} end do
         assert {:ok, response} = Sptfy.OAuth.refresh_token("CLIENT_ID", "CLIENT_SECRET", "REFRESH_TOKEN")
         assert response.access_token == "ACCESS_TOKEN"
         assert response.token_type == "Bearer"
         assert response.scope == ~w[user-read-private user-read-email]
         assert response.expires_in == 3600
         assert response.refresh_token == nil
+      end
+    end
+
+    test "returns AuthError struct on error" do
+      body = error_json() |> Jason.encode!()
+
+      with_mock Finch, [:passthrough], request: fn _, _ -> {:ok, %Finch.Response{status: 400, body: body}} end do
+        assert {:error, error} = Sptfy.OAuth.refresh_token("CLIENT_ID", "CLIENT_SECRET", "REFRESH_TOKEN")
+        assert error.error == "ERROR"
+        assert error.error_description == "DESCRIPTION"
       end
     end
   end
@@ -64,6 +84,13 @@ defmodule Sptfy.OAuthTest do
       "scope" => "user-read-private user-read-email",
       "expires_in" => 3600,
       "refresh_token" => "REFRESH_TOKEN"
+    }
+  end
+
+  defp error_json do
+    %{
+      "error" => "ERROR",
+      "error_description" => "DESCRIPTION"
     }
   end
 end
