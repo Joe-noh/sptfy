@@ -1,5 +1,5 @@
 defmodule Sptfy.Object.Album do
-  @type t :: %__MODULE__{}
+  use Sptfy.Object
 
   alias Sptfy.Object.{Artist, Image, AlbumRestriction}
 

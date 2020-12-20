@@ -1,5 +1,5 @@
 defmodule Sptfy.Object.Artist do
-  @type t :: %__MODULE__{}
+  use Sptfy.Object
 
   defstruct ~w[
     external_urls

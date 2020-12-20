@@ -1,5 +1,5 @@
 defmodule Sptfy.Object.TrackRestriction do
-  @type t :: %__MODULE__{}
+  use Sptfy.Object
 
   defstruct ~w[
     reason

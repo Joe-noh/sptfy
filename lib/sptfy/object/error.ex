@@ -1,5 +1,5 @@
 defmodule Sptfy.Object.Error do
-  @type t :: %__MODULE__{}
+  use Sptfy.Object
 
   defstruct ~w[
     message

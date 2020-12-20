@@ -1,5 +1,5 @@
 defmodule Sptfy.Object.AuthError do
-  @type t :: %__MODULE__{}
+  use Sptfy.Object
 
   defstruct ~w[
     error

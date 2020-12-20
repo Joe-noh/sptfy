@@ -1,5 +1,5 @@
 defmodule Sptfy.Object.AlbumRestriction do
-  @type t :: %__MODULE__{}
+  use Sptfy.Object
 
   defstruct ~w[
     reason

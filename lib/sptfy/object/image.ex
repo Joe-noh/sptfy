@@ -1,5 +1,5 @@
 defmodule Sptfy.Object.Image do
-  @type t :: %__MODULE__{}
+  use Sptfy.Object
 
   defstruct ~w[
     height

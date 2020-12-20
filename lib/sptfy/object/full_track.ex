@@ -1,5 +1,5 @@
 defmodule Sptfy.Object.FullTrack do
-  @type t :: %__MODULE__{}
+  use Sptfy.Object
 
   alias Sptfy.Object.{Album, Artist, TrackLink, TrackRestriction}
 
