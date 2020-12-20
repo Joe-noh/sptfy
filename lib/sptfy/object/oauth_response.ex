@@ -1,5 +1,5 @@
-defmodule Sptfy.OAuth.Response do
-  @type t :: %__MODULE__{}
+defmodule Sptfy.Object.OAuthResponse do
+  use Sptfy.Object
 
   defstruct ~w[
     access_token
@@ -9,7 +9,6 @@ defmodule Sptfy.OAuth.Response do
     token_type
   ]a
 
-  @doc false
   def new(map) do
     attrs =
       map

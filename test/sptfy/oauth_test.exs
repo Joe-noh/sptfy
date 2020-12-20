@@ -41,7 +41,7 @@ defmodule Sptfy.OAuthTest do
       end
     end
 
-    test "returns AuthError struct on error" do
+    test "returns OAuthError struct on error" do
       body = error_json() |> Jason.encode!()
 
       with_mock Finch, [:passthrough], request: fn _, _ -> {:ok, %Finch.Response{status: 400, body: body}} end do
@@ -66,7 +66,7 @@ defmodule Sptfy.OAuthTest do
       end
     end
 
-    test "returns AuthError struct on error" do
+    test "returns OAuthError struct on error" do
       body = error_json() |> Jason.encode!()
 
       with_mock Finch, [:passthrough], request: fn _, _ -> {:ok, %Finch.Response{status: 400, body: body}} end do

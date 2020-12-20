@@ -1,5 +1,5 @@
 defmodule Sptfy.Object.AudioFeature do
-  @type t :: %__MODULE__{}
+  use Sptfy.Object
 
   defstruct ~w[
     acousticness
@@ -21,8 +21,4 @@ defmodule Sptfy.Object.AudioFeature do
     uri
     valence
   ]a
-
-  def new(fields) do
-    struct(__MODULE__, Sptfy.Object.Helpers.atomize_keys(fields))
-  end
 end

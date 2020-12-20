@@ -1,8 +1,8 @@
 defmodule Sptfy.OAuth do
-  @type response :: {:ok, Finch.Response.t()} | {:error, AuthError.t()} | {:error, Mint.Types.error()}
+  @type response :: {:ok, Finch.Response.t()} | {:error, OAuthError.t()} | {:error, Mint.Types.error()}
 
-  alias Sptfy.OAuth.Response
-  alias Sptfy.Object.AuthError
+  alias Sptfy.Object.OAuthResponse
+  alias Sptfy.Object.OAuthError
 
   @doc """
   Returns a URL to request an authorization code.
@@ -62,11 +62,11 @@ defmodule Sptfy.OAuth do
 
   defp handle_response(%Finch.Response{status: status, body: body}) when status in 200..299 do
     {:ok, body} = Jason.decode(body)
-    {:ok, Response.new(body)}
+    {:ok, OAuthResponse.new(body)}
   end
 
   defp handle_response(%Finch.Response{status: status, body: body}) when status in 400..499 do
     {:ok, body} = Jason.decode(body)
-    {:error, AuthError.new(body)}
+    {:error, OAuthError.new(body)}
   end
 end
