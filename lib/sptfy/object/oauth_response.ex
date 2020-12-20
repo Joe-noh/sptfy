@@ -1,5 +1,5 @@
-defmodule Sptfy.OAuth.Response do
-  @type t :: %__MODULE__{}
+defmodule Sptfy.Object.OAuthResponse do
+  use Sptfy.Object
 
   defstruct ~w[
     access_token

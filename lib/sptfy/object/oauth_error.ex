@@ -1,4 +1,4 @@
-defmodule Sptfy.Object.AuthError do
+defmodule Sptfy.Object.OAuthError do
   use Sptfy.Object
 
   defstruct ~w[
