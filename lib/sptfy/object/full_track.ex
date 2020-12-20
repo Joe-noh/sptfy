@@ -29,7 +29,7 @@ defmodule Sptfy.Object.FullTrack do
   def new(fields) do
     fields =
       fields
-      |> Sptfy.Object.Helpers.atomize_keys()
+      |> Helpers.atomize_keys()
       |> Map.update(:album, nil, &Album.new/1)
       |> Map.update(:artists, [], fn artists -> Enum.map(artists, &Artist.new/1) end)
       |> Map.update(:linked_from, nil, &TrackLink.new/1)

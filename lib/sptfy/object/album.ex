@@ -23,7 +23,7 @@ defmodule Sptfy.Object.Album do
   def new(fields) do
     fields =
       fields
-      |> Sptfy.Object.Helpers.atomize_keys()
+      |> Helpers.atomize_keys()
       |> Map.update(:artists, [], fn artists -> Enum.map(artists, &Artist.new/1) end)
       |> Map.update(:images, [], fn images -> Enum.map(images, &Image.new/1) end)
       |> Map.update(:restrictions, nil, &AlbumRestriction.new/1)

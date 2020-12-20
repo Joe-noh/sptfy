@@ -9,7 +9,6 @@ defmodule Sptfy.Object.OAuthResponse do
     token_type
   ]a
 
-  @doc false
   def new(map) do
     attrs =
       map

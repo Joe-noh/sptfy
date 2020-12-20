@@ -6,9 +6,11 @@ defmodule Sptfy.Object do
       @behaviour Sptfy.Object
       @type t :: %__MODULE__{}
 
+      alias Sptfy.Object.Helpers
+
       @doc false
       def new(fields) do
-        struct(__MODULE__, Sptfy.Object.Helpers.atomize_keys(fields))
+        struct(__MODULE__, Helpers.atomize_keys(fields))
       end
 
       defoverridable new: 1
