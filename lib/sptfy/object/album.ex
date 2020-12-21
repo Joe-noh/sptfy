@@ -16,6 +16,7 @@ defmodule Sptfy.Object.Album do
     release_date
     release_date_precision
     restrictions
+    total_tracks
     type
     uri
   ]a
