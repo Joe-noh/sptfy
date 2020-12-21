@@ -9,7 +9,7 @@ defmodule Sptfy.Track do
     mapping: list_of(FullTrack, "tracks"),
     return_type: [FullTrack.t()]
 
-  get "/v1/track/:id",
+  get "/v1/tracks/:id",
     as: :get_track,
     query: [:market],
     mapping: single(FullTrack),
