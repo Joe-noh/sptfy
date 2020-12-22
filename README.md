@@ -21,7 +21,7 @@ be found at [https://hexdocs.pm/sptfy](https://hexdocs.pm/sptfy).
 
 ## Development
 
-```console
+```shell
 # Unit tests
 $ mix test
 
