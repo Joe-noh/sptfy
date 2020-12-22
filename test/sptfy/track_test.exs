@@ -24,7 +24,7 @@ defmodule Sptfy.TrackTest do
 
   describe "get_track/2" do
     test "returns a Track struct" do
-      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/track/abc", _ -> TestHelpers.response(track_json()) end do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/tracks/abc", _ -> TestHelpers.response(track_json()) end do
         assert {:ok, %FullTrack{}} = Track.get_track("token", id: "abc")
       end
     end
