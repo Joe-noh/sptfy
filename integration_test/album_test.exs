@@ -1,4 +1,4 @@
-defmodule IntegrationTest.TrackTest do
+defmodule IntegrationTest.AlbumTest do
   use ExUnit.Case
 
   alias Sptfy.Album
