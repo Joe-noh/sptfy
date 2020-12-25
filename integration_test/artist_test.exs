@@ -11,4 +11,8 @@ defmodule IntegrationTest.ArtistTest do
   test "get_artists/2", %{token: token, artist_id: artist_id} do
     assert {:ok, [%FullArtist{}]} = Artist.get_artists(token, ids: [artist_id])
   end
+
+  test "get_artist/2", %{token: token, artist_id: artist_id} do
+    assert {:ok, %FullArtist{}} = Artist.get_artist(token, id: artist_id)
+  end
 end

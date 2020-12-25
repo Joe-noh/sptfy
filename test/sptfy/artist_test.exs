@@ -22,6 +22,22 @@ defmodule Sptfy.ArtistTest do
     end
   end
 
+  describe "get_artist/2" do
+    test "returns a FullArtist structs" do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/artists/abc", _ -> TestHelpers.response(artist_json()) end do
+        assert {:ok, %FullArtist{}} = Artist.get_artist("token", id: "abc")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/artists/abc", _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Artist.get_artist("token", id: "abc")
+      end
+    end
+  end
+
   defp artists_json do
     %{"artists" => [artist_json()]}
   end
