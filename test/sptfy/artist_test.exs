@@ -4,7 +4,7 @@ defmodule Sptfy.ArtistTest do
   import Mock
 
   alias Sptfy.Artist
-  alias Sptfy.Object.{FullArtist, FullTrack}
+  alias Sptfy.Object.{FullArtist, FullTrack, Paging, SimplifiedAlbum}
 
   describe "get_artists/2" do
     test "returns list of FullArtist structs" do
@@ -66,6 +66,22 @@ defmodule Sptfy.ArtistTest do
 
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/artists/abc/related-artists", _ -> TestHelpers.response(json) end do
         assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Artist.get_related_artists("token", id: "abc")
+      end
+    end
+  end
+
+  describe "get_albums/2" do
+    test "returns a Paging structs" do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/artists/abc/albums", _ -> TestHelpers.response(paging_albums_json()) end do
+        assert {:ok, %Paging{items: [%SimplifiedAlbum{}]}} = Artist.get_albums("token", id: "abc")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/artists/abc/albums", _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Artist.get_albums("token", id: "abc")
       end
     end
   end
@@ -190,6 +206,66 @@ defmodule Sptfy.ArtistTest do
       "track_number" => 1,
       "type" => "track",
       "uri" => "spotify:track:TRACK_ID"
+    }
+  end
+
+  defp paging_albums_json do
+    %{
+      "href" => "https://api.spotify.com/v1/artists/ARTIST_ID/albums?offset=0&limit=50",
+      "items" => [album_json()],
+      "limit" => 50,
+      "next" => nil,
+      "offset" => 0,
+      "previous" => nil,
+      "total" => 3
+    }
+  end
+
+  defp album_json do
+    %{
+      "album_group" => "album",
+      "album_type" => "album",
+      "artists" => [
+        %{
+          "external_urls" => %{
+            "spotify" => "https://open.spotify.com/artist/ARTIST_ID"
+          },
+          "href" => "https://api.spotify.com/v1/artists/ARTIST_ID",
+          "id" => "ARTIST_ID",
+          "name" => "ARTIST NAME",
+          "type" => "artist",
+          "uri" => "spotify:artist:ARTIST_ID"
+        }
+      ],
+      "available_markets" => ["US"],
+      "external_urls" => %{
+        "spotify" => "https://open.spotify.com/album/ALBUM_ID"
+      },
+      "href" => "https://api.spotify.com/v1/albums/ALBUM_ID",
+      "id" => "ALBUM_ID",
+      "images" => [
+        %{
+          "height" => 640,
+          "url" => "https://i.scdn.co/image/...",
+          "width" => 640
+        },
+        %{
+          "height" => 300,
+          "url" => "https://i.scdn.co/image/...",
+          "width" => 300
+        },
+        %{
+          "height" => 64,
+          "url" => "https://i.scdn.co/image/...",
+          "width" => 64
+        }
+      ],
+      "name" => "ALBUM NAME",
+      "release_date" => "2007-10-23",
+      "release_date_precision" => "day",
+      "total_tracks" => 25,
+      "type" => "album",
+      "uri" => "spotify:album:ALBUM_ID"
     }
   end
 end
