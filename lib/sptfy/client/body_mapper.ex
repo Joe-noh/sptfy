@@ -28,6 +28,11 @@ defmodule Sptfy.Client.BodyMapper do
     %__MODULE__{fun: &Enum.map(&1, single_fun), key: key}
   end
 
+  @spec paged(module :: module()) :: t()
+  def paged(module) do
+    %__MODULE__{fun: &Sptfy.Object.Paging.new(&1, module)}
+  end
+
   @spec as_is :: t()
   def as_is do
     %__MODULE__{fun: & &1}

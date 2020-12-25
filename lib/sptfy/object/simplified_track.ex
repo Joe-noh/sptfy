@@ -1,36 +1,32 @@
-defmodule Sptfy.Object.FullTrack do
+defmodule Sptfy.Object.SimplifiedTrack do
   use Sptfy.Object
 
-  alias Sptfy.Object.{SimplifiedArtist, SimplifiedAlbum, TrackLink, TrackRestriction}
+  alias Sptfy.Object.{SimplifiedArtist, TrackLink, TrackRestriction}
 
   defstruct ~w[
-    album
     artists
     available_markets
     disc_number
     duration_ms
     explicit
-    external_ids
     external_urls
     href
     id
+    is_local
     is_playable
     linked_from
-    restrictions
     name
-    popularity
     preview_url
+    restrictions
     track_number
     type
     uri
-    is_local
   ]a
 
   def new(fields) do
     fields =
       fields
       |> Helpers.atomize_keys()
-      |> Map.update(:album, nil, &SimplifiedAlbum.new/1)
       |> Map.update(:artists, [], fn artists -> Enum.map(artists, &SimplifiedArtist.new/1) end)
       |> Map.update(:linked_from, nil, &TrackLink.new/1)
       |> Map.update(:restrictions, nil, &TrackRestriction.new/1)

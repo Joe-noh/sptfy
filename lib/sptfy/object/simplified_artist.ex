@@ -1,4 +1,4 @@
-defmodule Sptfy.Object.Artist do
+defmodule Sptfy.Object.SimplifiedArtist do
   use Sptfy.Object
 
   defstruct ~w[

@@ -1,7 +1,7 @@
-defmodule Sptfy.Object.Album do
+defmodule Sptfy.Object.SimplifiedAlbum do
   use Sptfy.Object
 
-  alias Sptfy.Object.{Artist, Image, AlbumRestriction}
+  alias Sptfy.Object.{AlbumRestriction, Image, SimplifiedArtist}
 
   defstruct ~w[
     album_group
@@ -25,7 +25,7 @@ defmodule Sptfy.Object.Album do
     fields =
       fields
       |> Helpers.atomize_keys()
-      |> Map.update(:artists, [], fn artists -> Enum.map(artists, &Artist.new/1) end)
+      |> Map.update(:artists, [], fn artists -> Enum.map(artists, &SimplifiedArtist.new/1) end)
       |> Map.update(:images, [], fn images -> Enum.map(images, &Image.new/1) end)
       |> Map.update(:restrictions, nil, &AlbumRestriction.new/1)
 
