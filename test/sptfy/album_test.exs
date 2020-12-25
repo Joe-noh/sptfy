@@ -39,7 +39,7 @@ defmodule Sptfy.AlbumTest do
   end
 
   describe "get_album_tracks/2" do
-    test "returns a FullAlbum struct" do
+    test "returns a Paging struct" do
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/albums/abc/tracks", _ -> TestHelpers.response(paging_tracks_json()) end do
         assert {:ok, %Paging{items: [%SimplifiedTrack{}]}} = Album.get_album_tracks("token", id: "abc")
       end
