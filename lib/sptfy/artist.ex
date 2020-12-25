@@ -20,4 +20,10 @@ defmodule Sptfy.Artist do
     query: [:market],
     mapping: list_of(FullTrack, "tracks"),
     return_type: [FullTrack.t()]
+
+  get "/v1/artists/:id/related-artists",
+    as: :get_related_artists,
+    query: [],
+    mapping: list_of(FullArtist, "artists"),
+    return_type: [FullArtist.t()]
 end

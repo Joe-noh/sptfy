@@ -20,4 +20,9 @@ defmodule IntegrationTest.ArtistTest do
     assert {:ok, tracks} = Artist.get_top_tracks(token, id: artist_id, market: "US")
     assert Enum.all?(tracks, fn track -> %FullTrack{} = track end)
   end
+
+  test "get_related_artists/2", %{token: token, artist_id: artist_id} do
+    assert {:ok, artists} = Artist.get_related_artists(token, id: artist_id)
+    assert Enum.all?(artists, fn artist -> %FullArtist{} = artist end)
+  end
 end
