@@ -5,7 +5,7 @@ defmodule Sptfy.Artist do
 
   get "/v1/artists",
     as: :get_artists,
-    query: [:ids, :market],
+    query: [:ids],
     mapping: list_of(FullArtist, "artists"),
     return_type: [FullArtist.t()]
 
