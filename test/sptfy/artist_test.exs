@@ -38,10 +38,10 @@ defmodule Sptfy.ArtistTest do
     end
   end
 
-  describe "get_artist_top_tracks/2" do
+  describe "get_top_tracks/2" do
     test "returns a list of FullTrack structs" do
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/artists/abc/top-tracks", _ -> TestHelpers.response(tracks_json()) end do
-        assert {:ok, [%FullTrack{}]} = Artist.get_artist_top_tracks("token", id: "abc", market: "US")
+        assert {:ok, [%FullTrack{}]} = Artist.get_top_tracks("token", id: "abc", market: "US")
       end
     end
 
@@ -49,7 +49,7 @@ defmodule Sptfy.ArtistTest do
       json = %{"error" => %{"message" => "Oops", "status" => 401}}
 
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/artists/abc/top-tracks", _ -> TestHelpers.response(json) end do
-        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Artist.get_artist_top_tracks("token", id: "abc", market: "US")
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Artist.get_top_tracks("token", id: "abc", market: "US")
       end
     end
   end

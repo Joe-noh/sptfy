@@ -16,7 +16,7 @@ defmodule Sptfy.Artist do
     return_type: FullArtist.t()
 
   get "/v1/artists/:id/top-tracks",
-    as: :get_artist_top_tracks,
+    as: :get_top_tracks,
     query: [:market],
     mapping: list_of(FullTrack, "tracks"),
     return_type: [FullTrack.t()]
