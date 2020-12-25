@@ -11,4 +11,8 @@ defmodule IntegrationTest.TrackTest do
   test "get_albums/2", %{token: token, album_id: album_id} do
     assert {:ok, [%FullAlbum{}]} = Album.get_albums(token, ids: [album_id])
   end
+
+  test "get_album/2", %{token: token, album_id: album_id} do
+    assert {:ok, %FullAlbum{}} = Album.get_album(token, id: album_id)
+  end
 end
