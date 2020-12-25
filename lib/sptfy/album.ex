@@ -1,7 +1,7 @@
 defmodule Sptfy.Album do
   use Sptfy.Client
 
-  alias Sptfy.Object.FullAlbum
+  alias Sptfy.Object.{FullAlbum, Paging, SimplifiedTrack}
 
   get "/v1/albums",
     as: :get_albums,
@@ -14,4 +14,10 @@ defmodule Sptfy.Album do
     query: [:market],
     mapping: single(FullAlbum),
     return_type: FullAlbum.t()
+
+  get "/v1/albums/:id/tracks",
+    as: :get_album_tracks,
+    query: [:market, :limit, :offset],
+    mapping: paged(SimplifiedTrack),
+    return_type: Paging.t()
 end
