@@ -22,6 +22,12 @@ defmodule Sptfy.Client.BodyMapperTest do
       assert BodyMapper.map(%{"key" => [%{id: 10}]}, mapping) == [%SimplifiedArtist{id: 10}]
       assert BodyMapper.map(%{"key" => [%{"id" => 10}]}, mapping) == [%SimplifiedArtist{id: 10}]
     end
+
+    test "maps nil into nil" do
+      mapping = BodyMapper.list_of(SimplifiedArtist, "key")
+
+      assert BodyMapper.map(%{"key" => [nil, %{id: 10}, nil]}, mapping) == [nil, %SimplifiedArtist{id: 10}, nil]
+    end
   end
 
   describe "paged/2" do
