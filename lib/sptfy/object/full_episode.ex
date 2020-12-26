@@ -1,4 +1,3 @@
-
 defmodule Sptfy.Object.FullEpisode do
   use Sptfy.Object
 
