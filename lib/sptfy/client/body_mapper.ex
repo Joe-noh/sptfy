@@ -19,12 +19,19 @@ defmodule Sptfy.Client.BodyMapper do
 
   @spec single(module :: module()) :: t()
   def single(module) do
-    %__MODULE__{fun: &module.new/1}
+    %__MODULE__{fun: do_single(module)}
+  end
+
+  defp do_single(module) do
+    fn
+      nil -> nil
+      fields -> module.new(fields)
+    end
   end
 
   @spec list_of(module :: module(), key :: String.t()) :: t()
   def list_of(module, key) do
-    single_fun = single(module).fun
+    single_fun = do_single(module)
     %__MODULE__{fun: &Enum.map(&1, single_fun), key: key}
   end
 
