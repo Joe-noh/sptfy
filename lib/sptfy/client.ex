@@ -17,6 +17,8 @@ defmodule Sptfy.Client do
       """
 
       @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: {:ok, unquote(return_type)}
+      def unquote(fun)(token, params \\ %{})
+
       def unquote(fun)(token, params) when is_list(params) do
         unquote(fun)(token, Enum.into(params, %{}))
       end
