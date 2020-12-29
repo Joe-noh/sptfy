@@ -8,4 +8,10 @@ defmodule Sptfy.Playlist do
     query: [:limit, :offset],
     mapping: paged(SimplifiedPlaylist),
     return_type: Paging.t()
+
+  get "/v1/users/:id/playlists",
+    as: :get_user_playlists,
+    query: [:limit, :offset],
+    mapping: paged(SimplifiedPlaylist),
+    return_type: Paging.t()
 end
