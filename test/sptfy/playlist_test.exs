@@ -4,7 +4,7 @@ defmodule Sptfy.PlaylistTest do
   import Mock
 
   alias Sptfy.Playlist
-  alias Sptfy.Object.{FullPlaylist, Paging, PlaylistTrack, SimplifiedPlaylist}
+  alias Sptfy.Object.{FullPlaylist, Image, Paging, PlaylistTrack, SimplifiedPlaylist}
 
   describe "get_my_playlists/2" do
     test "returns a Paging struct" do
@@ -66,6 +66,22 @@ defmodule Sptfy.PlaylistTest do
 
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/playlists/abc/tracks", _ -> TestHelpers.response(json) end do
         assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.get_playlist_tracks("token", id: "abc")
+      end
+    end
+  end
+
+  describe "get_cover_images/2" do
+    test "returns a list of Image structs" do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/playlists/abc/images", _ -> TestHelpers.response([image_json()]) end do
+        assert {:ok, [%Image{}]} = Playlist.get_cover_images("token", id: "abc")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/playlists/abc/images", _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.get_cover_images("token", id: "abc")
       end
     end
   end
@@ -222,6 +238,14 @@ defmodule Sptfy.PlaylistTest do
         "type" => "track",
         "uri" => "spotify:track:TRACK_ID"
       }
+    }
+  end
+
+  defp image_json do
+    %{
+      "height" => 300,
+      "url" => "https://i.scdn.co/image/...",
+      "width" => 300
     }
   end
 end

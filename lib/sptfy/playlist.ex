@@ -1,7 +1,7 @@
 defmodule Sptfy.Playlist do
   use Sptfy.Client
 
-  alias Sptfy.Object.{FullPlaylist, Paging, PlaylistTrack, SimplifiedPlaylist}
+  alias Sptfy.Object.{FullPlaylist, Image, Paging, PlaylistTrack, SimplifiedPlaylist}
 
   get "/v1/me/playlists",
     as: :get_my_playlists,
@@ -26,4 +26,10 @@ defmodule Sptfy.Playlist do
     query: [:market, :fields, :limit, :offset, :additional_types],
     mapping: paged(PlaylistTrack),
     return_type: Paging.t()
+
+  get "/v1/playlists/:id/images",
+    as: :get_cover_images,
+    query: [],
+    mapping: list_of(Image),
+    return_type: [Image.t()]
 end

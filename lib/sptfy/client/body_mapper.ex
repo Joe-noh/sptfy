@@ -8,7 +8,7 @@ defmodule Sptfy.Client.BodyMapper do
     key
   ]a
 
-  @spec map(json :: map(), mapping :: t()) :: map() | [map()]
+  @spec map(json :: map() | list(map()), mapping :: t()) :: map() | [map()]
   def map(json, %__MODULE__{fun: fun, key: nil}) do
     fun.(json)
   end
@@ -29,8 +29,8 @@ defmodule Sptfy.Client.BodyMapper do
     end
   end
 
-  @spec list_of(module :: module(), key :: String.t()) :: t()
-  def list_of(module, key) do
+  @spec list_of(module :: module(), key :: String.t() | nil) :: t()
+  def list_of(module, key \\ nil) do
     single_fun = do_single(module)
     %__MODULE__{fun: &Enum.map(&1, single_fun), key: key}
   end
