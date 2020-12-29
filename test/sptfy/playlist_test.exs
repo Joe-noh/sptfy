@@ -4,7 +4,7 @@ defmodule Sptfy.PlaylistTest do
   import Mock
 
   alias Sptfy.Playlist
-  alias Sptfy.Object.{Paging, SimplifiedPlaylist}
+  alias Sptfy.Object.{FullPlaylist, Paging, SimplifiedPlaylist}
 
   describe "get_my_playlists/2" do
     test "returns a Paging struct" do
@@ -34,6 +34,22 @@ defmodule Sptfy.PlaylistTest do
 
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/users/abc/playlists", _ -> TestHelpers.response(json) end do
         assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.get_user_playlists("token", id: "abc")
+      end
+    end
+  end
+
+  describe "get_playlist/2" do
+    test "returns a PublicUser struct" do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/playlists/abc", _ -> TestHelpers.response(playlist_json()) end do
+        assert {:ok, %FullPlaylist{}} = Playlist.get_playlist("token", id: "abc")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/playlists/abc", _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.get_playlist("token", id: "abc")
       end
     end
   end
