@@ -220,7 +220,7 @@ defmodule Sptfy.PlaylistTest do
         ],
         "available_markets" => ["US"],
         "disc_number" => 1,
-        "duration_ms" => 244586,
+        "duration_ms" => 244_586,
         "episode" => false,
         "explicit" => false,
         "external_ids" => %{"isrc" => "ISRC"},
