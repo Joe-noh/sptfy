@@ -16,7 +16,7 @@ defmodule Sptfy.Client do
       GET #{unquote(path)}
       """
 
-      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: {:ok, unquote(return_type)}
+      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
       def unquote(fun)(token, params \\ %{})
 
       def unquote(fun)(token, params) when is_list(params) do
@@ -44,7 +44,7 @@ defmodule Sptfy.Client do
       POST #{unquote(path)}
       """
 
-      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: {:ok, unquote(return_type)}
+      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
       def unquote(fun)(token, params \\ %{})
 
       def unquote(fun)(token, params) when is_list(params) do

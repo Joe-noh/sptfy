@@ -7,11 +7,11 @@ defmodule Sptfy.Personalization do
     as: :get_top_artists,
     query: [:time_range, :limit, :offset],
     mapping: paged(FullArtist),
-    return_type: Paging.t()
+    return_type: {:ok, Paging.t()}
 
   get "/v1/me/top/tracks",
     as: :get_top_tracks,
     query: [:time_range, :limit, :offset],
     mapping: paged(FullTrack),
-    return_type: Paging.t()
+    return_type: {:ok, Paging.t()}
 end
