@@ -15,6 +15,13 @@ defmodule Sptfy.Playlist do
     mapping: paged(SimplifiedPlaylist),
     return_type: {:ok, Paging.t()}
 
+  post "/v1/users/:id/playlists",
+    as: :create_user_playlist,
+    query: [],
+    body: [:name, :public, :collaborative, :description],
+    mapping: single(FullPlaylist),
+    return_type: {:ok, FullPlaylist.t()}
+
   get "/v1/playlists/:id",
     as: :get_playlist,
     query: [:market, :fields, :additional_types],
@@ -26,6 +33,13 @@ defmodule Sptfy.Playlist do
     query: [:market, :fields, :limit, :offset, :additional_types],
     mapping: paged(PlaylistTrack),
     return_type: {:ok, Paging.t()}
+
+  post "/v1/playlists/:id/tracks",
+    as: :add_tracks,
+    query: [],
+    body: [:uris, :position],
+    mapping: ok(),
+    return_type: :ok
 
   get "/v1/playlists/:id/images",
     as: :get_cover_images,

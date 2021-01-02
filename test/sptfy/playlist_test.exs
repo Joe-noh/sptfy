@@ -38,6 +38,22 @@ defmodule Sptfy.PlaylistTest do
     end
   end
 
+  describe "create_user_playlist/2" do
+    test "returns a Playlist struct" do
+      with_mock Sptfy.Client.HTTP, post: fn _, "/v1/users/abc/playlists", _, _ -> TestHelpers.response(playlist_json()) end do
+        assert {:ok, %FullPlaylist{}} = Playlist.create_user_playlist("token", id: "abc", name: "Playlist")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, post: fn _, "/v1/users/abc/playlists", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.create_user_playlist("token", id: "abc", name: "Playlist")
+      end
+    end
+  end
+
   describe "get_playlist/2" do
     test "returns a FullPlaylist struct" do
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/playlists/abc", _ -> TestHelpers.response(playlist_json()) end do
@@ -66,6 +82,24 @@ defmodule Sptfy.PlaylistTest do
 
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/playlists/abc/tracks", _ -> TestHelpers.response(json) end do
         assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.get_playlist_tracks("token", id: "abc")
+      end
+    end
+  end
+
+  describe "add_tracks/2" do
+    test "returns :ok" do
+      json = %{"snapshot_id" => "SNAPSHOT_ID"}
+
+      with_mock Sptfy.Client.HTTP, post: fn _, "/v1/playlists/abc/tracks", _, _ -> TestHelpers.response(json) end do
+        assert :ok == Playlist.add_tracks("token", id: "abc", uris: ["uri"], position: 1)
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, post: fn _, "/v1/playlists/abc/tracks", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.add_tracks("token", id: "abc", uris: ["uri"], position: 1)
       end
     end
   end
