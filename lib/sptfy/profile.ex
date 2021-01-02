@@ -7,11 +7,11 @@ defmodule Sptfy.Profile do
     as: :get_my_profile,
     query: [],
     mapping: single(PrivateUser),
-    return_type: PrivateUser.t()
+    return_type: {:ok, PrivateUser.t()}
 
   get "/v1/users/:id",
     as: :get_profile,
     query: [],
     mapping: single(PublicUser),
-    return_type: PublicUser.t()
+    return_type: {:ok, PublicUser.t()}
 end

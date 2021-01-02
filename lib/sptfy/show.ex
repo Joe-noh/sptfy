@@ -7,17 +7,17 @@ defmodule Sptfy.Show do
     as: :get_shows,
     query: [:ids, :market],
     mapping: list_of(SimplifiedShow, "shows"),
-    return_type: [SimplifiedShow.t()]
+    return_type: {:ok, [SimplifiedShow.t()]}
 
   get "/v1/shows/:id",
     as: :get_show,
     query: [:market],
     mapping: single(FullShow),
-    return_type: FullShow.t()
+    return_type: {:ok, FullShow.t()}
 
   get "/v1/shows/:id/episodes",
     as: :get_episodes,
     query: [:market, :limit, :offset],
     mapping: paged(SimplifiedEpisode),
-    return_type: Paging.t()
+    return_type: {:ok, Paging.t()}
 end

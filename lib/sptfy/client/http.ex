@@ -4,7 +4,18 @@ defmodule Sptfy.Client.HTTP do
   @spec get(token :: String.t(), path :: String.t(), query :: map()) :: {:ok, Finch.Response.t()} | {:error, Mint.Types.error()}
   def get(token, path, query) do
     url = url(path, query)
-    Finch.build(:get, url, headers(token)) |> Finch.request(Sptfy.Finch)
+    headers = headers(token)
+
+    Finch.build(:get, url, headers) |> Finch.request(Sptfy.Finch)
+  end
+
+  @spec post(token :: String.t(), path :: String.t(), query :: map(), body :: map()) :: {:ok, Finch.Response.t()} | {:error, Mint.Types.error()}
+  def post(token, path, query, body) do
+    url = url(path, query)
+    headers = headers(token)
+    body = Jason.encode!(body)
+
+    Finch.build(:post, url, headers, body) |> Finch.request(Sptfy.Finch)
   end
 
   defp url(path, query) do
@@ -12,7 +23,7 @@ defmodule Sptfy.Client.HTTP do
   end
 
   defp headers(token) do
-    [{"Authorization", "Bearer " <> token}]
+    [{"Authorization", "Bearer " <> token}, {"Content-Type", "application/json"}]
   end
 
   defp query_string(query) do
