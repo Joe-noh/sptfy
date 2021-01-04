@@ -70,6 +70,22 @@ defmodule Sptfy.PlaylistTest do
     end
   end
 
+  describe "update_playlist_details/2" do
+    test "returns :ok" do
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/playlists/abc", _, _ -> TestHelpers.response(%{}) end do
+        assert :ok == Playlist.update_playlist_details("token", id: "abc", name: "Playlist")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/playlists/abc", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.update_playlist_details("token", id: "abc", name: "Playlist")
+      end
+    end
+  end
+
   describe "get_playlist_tracks/2" do
     test "returns a Paging struct" do
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/playlists/abc/tracks", _ -> TestHelpers.response(paging_playlist_tracks_json()) end do

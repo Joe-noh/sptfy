@@ -28,6 +28,13 @@ defmodule Sptfy.Playlist do
     mapping: single(FullPlaylist),
     return_type: {:ok, FullPlaylist.t()}
 
+  put "/v1/playlists/:id",
+    as: :update_playlist_details,
+    query: [],
+    body: [:name ,:public ,:collaborative ,:description],
+    mapping: ok(),
+    return_type: :ok
+
   get "/v1/playlists/:id/tracks",
     as: :get_playlist_tracks,
     query: [:market, :fields, :limit, :offset, :additional_types],

@@ -34,6 +34,11 @@ defmodule IntegrationTest.PlaylistTest do
     assert {:ok, %FullPlaylist{}} = Playlist.get_playlist(token, id: playlist_id)
   end
 
+  @tag skip: "has side effect"
+  test "update_playlist_details/2", %{token: token, my_playlist_id: my_playlist_id} do
+    assert :ok = Playlist.update_playlist_details(token, id: my_playlist_id, name: "Awesome Playlist")
+  end
+
   test "get_playlist_tracks/2", %{token: token, playlist_id: playlist_id} do
     assert {:ok, %Paging{items: tracks}} = Playlist.get_playlist_tracks(token, id: playlist_id)
     assert Enum.all?(tracks, fn track -> %PlaylistTrack{} = track end)
