@@ -188,6 +188,24 @@ defmodule Sptfy.PlaylistTest do
     end
   end
 
+  describe "remove_tracks/2" do
+    test "returns :ok" do
+      json = %{"snapshot_id" => "SNAPSHOT_ID"}
+
+      with_mock Sptfy.Client.HTTP, delete: fn _, "/v1/playlists/abc/tracks", _, _ -> TestHelpers.response(json) end do
+        assert :ok == Playlist.remove_tracks("token", id: "abc", tracks: [%{uri: "uri"}])
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, delete: fn _, "/v1/playlists/abc/tracks", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.remove_tracks("token", id: "abc", tracks: [%{uri: "uri"}])
+      end
+    end
+  end
+
   defp paging_playlists_json do
     %{
       "href" => "https://api.spotify.com/v1/users/USER_ID/playlists?offset=0&limit=20",

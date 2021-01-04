@@ -76,4 +76,11 @@ defmodule IntegrationTest.PlaylistTest do
 
     assert :ok == Playlist.upload_cover_image(token, body, id: my_playlist_id)
   end
+
+  @tag skip: "has side effect"
+  test "remove_tracks/2", %{token: token, my_playlist_id: my_playlist_id, uris: uris} do
+    tracks = Enum.map(uris, fn uri -> %{uri: uri} end)
+
+    assert :ok = Playlist.remove_tracks(token, id: my_playlist_id, tracks: tracks)
+  end
 end
