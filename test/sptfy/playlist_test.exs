@@ -70,6 +70,22 @@ defmodule Sptfy.PlaylistTest do
     end
   end
 
+  describe "update_playlist_details/2" do
+    test "returns :ok" do
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/playlists/abc", _, _ -> TestHelpers.response(%{}) end do
+        assert :ok == Playlist.update_playlist_details("token", id: "abc", name: "Playlist")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/playlists/abc", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.update_playlist_details("token", id: "abc", name: "Playlist")
+      end
+    end
+  end
+
   describe "get_playlist_tracks/2" do
     test "returns a Paging struct" do
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/playlists/abc/tracks", _ -> TestHelpers.response(paging_playlist_tracks_json()) end do
@@ -82,6 +98,42 @@ defmodule Sptfy.PlaylistTest do
 
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/playlists/abc/tracks", _ -> TestHelpers.response(json) end do
         assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.get_playlist_tracks("token", id: "abc")
+      end
+    end
+  end
+
+  describe "replace_tracks/3" do
+    test "returns :ok" do
+      json = %{"snapshot_id" => "SNAPSHOT_ID"}
+
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/playlists/abc/tracks", _, _ -> TestHelpers.response(json) end do
+        assert :ok == Playlist.replace_tracks("token", id: "abc", uris: ["uri"])
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/playlists/abc/tracks", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.replace_tracks("token", id: "abc", uris: ["uri"])
+      end
+    end
+  end
+
+  describe "reorder_tracks/3" do
+    test "returns :ok" do
+      json = %{"snapshot_id" => "SNAPSHOT_ID"}
+
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/playlists/abc/tracks", _, _ -> TestHelpers.response(json) end do
+        assert :ok == Playlist.reorder_tracks("token", id: "abc", range_start: 0, insert_before: 5)
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/playlists/abc/tracks", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.reorder_tracks("token", id: "abc", range_start: 0, insert_before: 5)
       end
     end
   end
@@ -116,6 +168,22 @@ defmodule Sptfy.PlaylistTest do
 
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/playlists/abc/images", _ -> TestHelpers.response(json) end do
         assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.get_cover_images("token", id: "abc")
+      end
+    end
+  end
+
+  describe "upload_cover_image/3" do
+    test "returns :ok" do
+      with_mock Sptfy.Client.HTTP, put_jpeg: fn _, "/v1/playlists/abc/images", _, _ -> TestHelpers.response(%{}) end do
+        assert :ok == Playlist.upload_cover_image("token", "base64", id: "abc")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, put_jpeg: fn _, "/v1/playlists/abc/images", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.upload_cover_image("token", "base64", id: "abc")
       end
     end
   end

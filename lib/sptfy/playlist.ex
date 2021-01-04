@@ -28,6 +28,13 @@ defmodule Sptfy.Playlist do
     mapping: single(FullPlaylist),
     return_type: {:ok, FullPlaylist.t()}
 
+  put "/v1/playlists/:id",
+    as: :update_playlist_details,
+    query: [],
+    body: [:name, :public, :collaborative, :description],
+    mapping: ok(),
+    return_type: :ok
+
   get "/v1/playlists/:id/tracks",
     as: :get_playlist_tracks,
     query: [:market, :fields, :limit, :offset, :additional_types],
@@ -41,9 +48,29 @@ defmodule Sptfy.Playlist do
     mapping: ok(),
     return_type: :ok
 
+  put "/v1/playlists/:id/tracks",
+    as: :replace_tracks,
+    query: [],
+    body: [:uris],
+    mapping: ok(),
+    return_type: :ok
+
+  put "/v1/playlists/:id/tracks",
+    as: :reorder_tracks,
+    query: [],
+    body: [:range_start, :insert_before, :range_length, :snapshot_id],
+    mapping: ok(),
+    return_type: :ok
+
   get "/v1/playlists/:id/images",
     as: :get_cover_images,
     query: [],
     mapping: list_of(Image),
     return_type: {:ok, [Image.t()]}
+
+  put_jpeg "/v1/playlists/:id/images",
+    as: :upload_cover_image,
+    query: [],
+    mapping: ok(),
+    return_type: :ok
 end
