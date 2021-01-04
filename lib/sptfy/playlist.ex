@@ -53,4 +53,10 @@ defmodule Sptfy.Playlist do
     query: [],
     mapping: list_of(Image),
     return_type: {:ok, [Image.t()]}
+
+  put_jpeg "/v1/playlists/:id/images",
+    as: :upload_cover_image,
+    query: [],
+    mapping: ok(),
+    return_type: :ok
 end

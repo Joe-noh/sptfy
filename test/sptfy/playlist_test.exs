@@ -136,6 +136,22 @@ defmodule Sptfy.PlaylistTest do
     end
   end
 
+  describe "upload_cover_image/3" do
+    test "returns :ok" do
+      with_mock Sptfy.Client.HTTP, put_jpeg: fn _, "/v1/playlists/abc/images", _, _ -> TestHelpers.response(%{}) end do
+        assert :ok == Playlist.upload_cover_image("token", "base64", id: "abc")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, put_jpeg: fn _, "/v1/playlists/abc/images", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Playlist.upload_cover_image("token", "base64", id: "abc")
+      end
+    end
+  end
+
   defp paging_playlists_json do
     %{
       "href" => "https://api.spotify.com/v1/users/USER_ID/playlists?offset=0&limit=20",

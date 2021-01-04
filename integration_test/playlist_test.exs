@@ -53,4 +53,17 @@ defmodule IntegrationTest.PlaylistTest do
     assert {:ok, images} = Playlist.get_cover_images(token, id: playlist_id)
     assert Enum.all?(images, fn image -> %Image{} = image end)
   end
+
+  @tag skip: "has side effect"
+  test "upload_cover_image/3", %{token: token, my_playlist_id: my_playlist_id} do
+    base64 = """
+    /9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAMCAgICAgMCAgIDAwMDBAYEBAQEBAgGBgUGCQgKCgkICQkKDA8MCgsOCwkJDRE
+    NDg8QEBEQCgwSExIQEw8QEBD/2wBDAQMDAwQDBAgEBAgQCwkLEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEB
+    AQEBAQEBAQEBAQEBAQEBD/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAn/xAAUEAEAAAAAAAAAA
+    AAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AKpgA//Z
+    """
+    body = String.replace(base64, "\n", "")
+
+    assert :ok == Playlist.upload_cover_image(token, body, id: my_playlist_id)
+  end
 end
