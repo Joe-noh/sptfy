@@ -31,7 +31,7 @@ defmodule Sptfy.Playlist do
   put "/v1/playlists/:id",
     as: :update_playlist_details,
     query: [],
-    body: [:name ,:public ,:collaborative ,:description],
+    body: [:name, :public, :collaborative, :description],
     mapping: ok(),
     return_type: :ok
 
