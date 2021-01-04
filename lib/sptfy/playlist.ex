@@ -48,6 +48,20 @@ defmodule Sptfy.Playlist do
     mapping: ok(),
     return_type: :ok
 
+  put "/v1/playlists/:id/tracks",
+    as: :replace_tracks,
+    query: [],
+    body: [:uris],
+    mapping: ok(),
+    return_type: :ok
+
+  put "/v1/playlists/:id/tracks",
+    as: :reorder_tracks,
+    query: [],
+    body: [:range_start, :insert_before, :range_length, :snapshot_id],
+    mapping: ok(),
+    return_type: :ok
+
   get "/v1/playlists/:id/images",
     as: :get_cover_images,
     query: [],

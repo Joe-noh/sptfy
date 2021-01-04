@@ -45,6 +45,16 @@ defmodule IntegrationTest.PlaylistTest do
   end
 
   @tag skip: "has side effect"
+  test "replace_tracks/2", %{token: token, my_playlist_id: my_playlist_id, uris: uris} do
+    assert :ok = Playlist.replace_tracks(token, id: my_playlist_id, uris: uris)
+  end
+
+  @tag skip: "has side effect"
+  test "reorder_tracks/2", %{token: token, my_playlist_id: my_playlist_id} do
+    assert :ok = Playlist.reorder_tracks(token, id: my_playlist_id, range_start: 0, insert_before: 3)
+  end
+
+  @tag skip: "has side effect"
   test "add_tracks/2", %{token: token, my_playlist_id: my_playlist_id, uris: uris} do
     assert :ok = Playlist.add_tracks(token, id: my_playlist_id, uris: uris, position: 1)
   end
