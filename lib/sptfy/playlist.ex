@@ -73,4 +73,11 @@ defmodule Sptfy.Playlist do
     query: [],
     mapping: ok(),
     return_type: :ok
+
+  delete "/v1/playlists/:id/tracks",
+    as: :remove_tracks,
+    query: [],
+    body: [:tracks],
+    mapping: ok(),
+    return_type: :ok
 end
