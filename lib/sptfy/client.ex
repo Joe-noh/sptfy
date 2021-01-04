@@ -64,4 +64,33 @@ defmodule Sptfy.Client do
       end
     end
   end
+
+  defmacro put(path, as: fun, query: query, body: body, mapping: mapping, return_type: return_type) do
+    placeholders = Sptfy.Client.Placeholder.extract(path)
+
+    quote location: :keep do
+      @doc """
+      PUT #{unquote(path)}
+      """
+
+      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
+      def unquote(fun)(token, params \\ %{})
+
+      def unquote(fun)(token, params) when is_list(params) do
+        unquote(fun)(token, Enum.into(params, %{}))
+      end
+
+      def unquote(fun)(token, params) when is_map(params) do
+        query_params = params |> Map.take(unquote(query))
+        body_params = params |> Map.take(unquote(body))
+        path_params = params |> Map.take(unquote(placeholders))
+        filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
+
+        case Sptfy.Client.HTTP.put(token, filled_path, query_params, body_params) do
+          {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
+          error -> error
+        end
+      end
+    end
+  end
 end

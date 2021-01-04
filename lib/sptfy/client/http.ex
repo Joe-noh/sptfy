@@ -18,6 +18,15 @@ defmodule Sptfy.Client.HTTP do
     Finch.build(:post, url, headers, body) |> Finch.request(Sptfy.Finch)
   end
 
+  @spec put(token :: String.t(), path :: String.t(), query :: map(), body :: map()) :: {:ok, Finch.Response.t()} | {:error, Mint.Types.error()}
+  def put(token, path, query, body) do
+    url = url(path, query)
+    headers = headers(token)
+    body = Jason.encode!(body)
+
+    Finch.build(:put, url, headers, body) |> Finch.request(Sptfy.Finch)
+  end
+
   defp url(path, query) do
     "https://api.spotify.com" <> path <> "?" <> query_string(query)
   end
