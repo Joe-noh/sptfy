@@ -26,7 +26,7 @@ defmodule Sptfy.Follow do
   get "/v1/me/following",
     as: :get_my_following_artists,
     query: [:after, :limit, {:type, "artist"}],
-    mapping: paged(FullArtist),
+    mapping: paged(FullArtist, "artists"),
     return_type: {:ok, Paging.t()}
 
   put "/v1/me/following",
