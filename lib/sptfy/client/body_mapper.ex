@@ -35,7 +35,7 @@ defmodule Sptfy.Client.BodyMapper do
     %__MODULE__{fun: fn list -> {:ok, Enum.map(list, single_fun)} end, key: key}
   end
 
-  @spec paged(module :: module(), key :: String.t()) :: t()
+  @spec paged(module :: module(), key :: String.t() | nil) :: t()
   def paged(module, key \\ nil) do
     %__MODULE__{fun: fn fields -> {:ok, Sptfy.Object.Paging.new(fields, module)} end, key: key}
   end
