@@ -24,8 +24,8 @@ defmodule Sptfy.Client do
       end
 
       def unquote(fun)(token, params) when is_map(params) do
-        query_params = params |> Map.take(unquote(query))
-        path_params = params |> Map.take(unquote(placeholders))
+        query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
+        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
         case Sptfy.Client.HTTP.get(token, filled_path, query_params) do
@@ -52,9 +52,9 @@ defmodule Sptfy.Client do
       end
 
       def unquote(fun)(token, params) when is_map(params) do
-        query_params = params |> Map.take(unquote(query))
-        body_params = params |> Map.take(unquote(body))
-        path_params = params |> Map.take(unquote(placeholders))
+        query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
+        body_params = Sptfy.Client.Parameter.prepare(params, unquote(body))
+        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
         case Sptfy.Client.HTTP.post(token, filled_path, query_params, body_params) do
@@ -81,9 +81,9 @@ defmodule Sptfy.Client do
       end
 
       def unquote(fun)(token, params) when is_map(params) do
-        query_params = params |> Map.take(unquote(query))
-        body_params = params |> Map.take(unquote(body))
-        path_params = params |> Map.take(unquote(placeholders))
+        query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
+        body_params = Sptfy.Client.Parameter.prepare(params, unquote(body))
+        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
         case Sptfy.Client.HTTP.put(token, filled_path, query_params, body_params) do
@@ -110,8 +110,8 @@ defmodule Sptfy.Client do
       end
 
       def unquote(fun)(token, body, params) when is_map(params) do
-        query_params = params |> Map.take(unquote(query))
-        path_params = params |> Map.take(unquote(placeholders))
+        query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
+        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
         case Sptfy.Client.HTTP.put_jpeg(token, filled_path, query_params, body) do
@@ -138,9 +138,9 @@ defmodule Sptfy.Client do
       end
 
       def unquote(fun)(token, params) when is_map(params) do
-        query_params = params |> Map.take(unquote(query))
-        body_params = params |> Map.take(unquote(body))
-        path_params = params |> Map.take(unquote(placeholders))
+        query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
+        body_params = Sptfy.Client.Parameter.prepare(params, unquote(body))
+        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
         case Sptfy.Client.HTTP.delete(token, filled_path, query_params, body_params) do
