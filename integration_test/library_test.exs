@@ -23,6 +23,10 @@ defmodule IntegrationTest.LibraryTest do
     assert :ok == Library.save_albums(token, ids: [album_id])
   end
 
+  test "check_albums_saved_state/2", %{token: token, album_id: album_id} do
+    assert {:ok, [false]} == Library.check_albums_saved_state(token, ids: [album_id])
+  end
+
   test "get_saved_tracks/2", %{token: token} do
     assert {:ok, %Paging{items: tracks}} = Library.get_saved_tracks(token)
     assert Enum.all?(tracks, fn track -> %SavedTrack{} = track end)
@@ -33,6 +37,10 @@ defmodule IntegrationTest.LibraryTest do
     assert :ok == Library.save_tracks(token, ids: [track_id])
   end
 
+  test "check_tracks_saved_state/2", %{token: token, track_id: track_id} do
+    assert {:ok, [true]} == Library.check_tracks_saved_state(token, ids: [track_id])
+  end
+
   test "get_saved_shows/2", %{token: token} do
     assert {:ok, %Paging{items: shows}} = Library.get_saved_shows(token)
     assert Enum.all?(shows, fn show -> %SavedShow{} = show end)
@@ -41,5 +49,9 @@ defmodule IntegrationTest.LibraryTest do
   @tag skip: "has side effect"
   test "save_shows/2", %{token: token, show_id: show_id} do
     assert :ok == Library.save_shows(token, ids: [show_id])
+  end
+
+  test "check_shows_saved_state/2", %{token: token, show_id: show_id} do
+    assert {:ok, [true]} == Library.check_shows_saved_state(token, ids: [show_id])
   end
 end

@@ -16,6 +16,12 @@ defmodule Sptfy.Library do
     mapping: ok(),
     return_type: :ok
 
+  get "/v1/me/albums/contains",
+    as: :check_albums_saved_state,
+    query: [:ids],
+    mapping: as_is(),
+    return_type: {:ok, [boolean()]}
+
   get "/v1/me/tracks",
     as: :get_saved_tracks,
     query: [:limit, :offset, :market],
@@ -29,6 +35,12 @@ defmodule Sptfy.Library do
     mapping: ok(),
     return_type: :ok
 
+  get "/v1/me/tracks/contains",
+    as: :check_tracks_saved_state,
+    query: [:ids],
+    mapping: as_is(),
+    return_type: {:ok, [boolean()]}
+
   get "/v1/me/shows",
     as: :get_saved_shows,
     query: [:limit, :offset],
@@ -41,4 +53,10 @@ defmodule Sptfy.Library do
     body: [:ids],
     mapping: ok(),
     return_type: :ok
+
+  get "/v1/me/shows/contains",
+    as: :check_shows_saved_state,
+    query: [:ids],
+    mapping: as_is(),
+    return_type: {:ok, [boolean()]}
 end
