@@ -9,15 +9,36 @@ defmodule Sptfy.Library do
     mapping: paged(SavedAlbum),
     return_type: {:ok, Paging.t()}
 
+  put "/v1/me/albums",
+    as: :save_albums,
+    query: [],
+    body: [:ids],
+    mapping: ok(),
+    return_type: :ok
+
   get "/v1/me/tracks",
     as: :get_saved_tracks,
     query: [:limit, :offset, :market],
     mapping: paged(SavedTrack),
     return_type: {:ok, Paging.t()}
 
+  put "/v1/me/tracks",
+    as: :save_tracks,
+    query: [],
+    body: [:ids],
+    mapping: ok(),
+    return_type: :ok
+
   get "/v1/me/shows",
     as: :get_saved_shows,
     query: [:limit, :offset],
     mapping: paged(SavedShow),
     return_type: {:ok, Paging.t()}
+
+  put "/v1/me/shows",
+    as: :save_shows,
+    query: [],
+    body: [:ids],
+    mapping: ok(),
+    return_type: :ok
 end

@@ -23,6 +23,22 @@ defmodule Sptfy.LibraryTest do
     end
   end
 
+  describe "save_albums/2" do
+    test "returns :ok" do
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/me/albums", _, _ -> TestHelpers.response(%{}) end do
+        assert :ok == Library.save_albums("token", ids: ["abc"])
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/me/albums", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Library.save_albums("token", ids: ["abc"])
+      end
+    end
+  end
+
   describe "get_saved_tracks/2" do
     test "returns a Paging struct" do
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/me/tracks", _ -> TestHelpers.response(paging_saved_tracks_json()) end do
@@ -40,6 +56,22 @@ defmodule Sptfy.LibraryTest do
     end
   end
 
+  describe "save_tracks/2" do
+    test "returns :ok" do
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/me/tracks", _, _ -> TestHelpers.response(%{}) end do
+        assert :ok == Library.save_tracks("token", ids: ["abc"])
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/me/tracks", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Library.save_tracks("token", ids: ["abc"])
+      end
+    end
+  end
+
   describe "get_saved_shows/2" do
     test "returns a Paging struct" do
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/me/shows", _ -> TestHelpers.response(paging_saved_shows_json()) end do
@@ -53,6 +85,22 @@ defmodule Sptfy.LibraryTest do
 
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/me/shows", _ -> TestHelpers.response(json) end do
         assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Library.get_saved_shows("token")
+      end
+    end
+  end
+
+  describe "save_shows/2" do
+    test "returns :ok" do
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/me/shows", _, _ -> TestHelpers.response(%{}) end do
+        assert :ok == Library.save_shows("token", ids: ["abc"])
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, put: fn _, "/v1/me/shows", _, _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Library.save_shows("token", ids: ["abc"])
       end
     end
   end
