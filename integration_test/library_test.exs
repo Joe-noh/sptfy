@@ -23,6 +23,11 @@ defmodule IntegrationTest.LibraryTest do
     assert :ok == Library.save_albums(token, ids: [album_id])
   end
 
+  @tag skip: "has side effect"
+  test "remove_from_saved_albums/2", %{token: token, album_id: album_id} do
+    assert :ok == Library.remove_from_saved_albums(token, ids: [album_id])
+  end
+
   test "check_albums_saved_state/2", %{token: token, album_id: album_id} do
     assert {:ok, [false]} == Library.check_albums_saved_state(token, ids: [album_id])
   end
@@ -37,6 +42,11 @@ defmodule IntegrationTest.LibraryTest do
     assert :ok == Library.save_tracks(token, ids: [track_id])
   end
 
+  @tag skip: "has side effect"
+  test "remove_from_saved_tracks/2", %{token: token, track_id: track_id} do
+    assert :ok == Library.remove_from_saved_tracks(token, ids: [track_id])
+  end
+
   test "check_tracks_saved_state/2", %{token: token, track_id: track_id} do
     assert {:ok, [true]} == Library.check_tracks_saved_state(token, ids: [track_id])
   end
@@ -49,6 +59,11 @@ defmodule IntegrationTest.LibraryTest do
   @tag skip: "has side effect"
   test "save_shows/2", %{token: token, show_id: show_id} do
     assert :ok == Library.save_shows(token, ids: [show_id])
+  end
+
+  @tag skip: "has side effect"
+  test "remove_from_saved_shows/2", %{token: token, show_id: show_id} do
+    assert :ok == Library.remove_from_saved_shows(token, ids: [show_id])
   end
 
   test "check_shows_saved_state/2", %{token: token, show_id: show_id} do

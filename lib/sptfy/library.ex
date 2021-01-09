@@ -16,6 +16,13 @@ defmodule Sptfy.Library do
     mapping: ok(),
     return_type: :ok
 
+  delete "/v1/me/albums",
+    as: :remove_from_saved_albums,
+    query: [],
+    body: [:ids],
+    mapping: ok(),
+    return_type: :ok
+
   get "/v1/me/albums/contains",
     as: :check_albums_saved_state,
     query: [:ids],
@@ -35,6 +42,13 @@ defmodule Sptfy.Library do
     mapping: ok(),
     return_type: :ok
 
+  delete "/v1/me/tracks",
+    as: :remove_from_saved_tracks,
+    query: [],
+    body: [:ids],
+    mapping: ok(),
+    return_type: :ok
+
   get "/v1/me/tracks/contains",
     as: :check_tracks_saved_state,
     query: [:ids],
@@ -49,6 +63,13 @@ defmodule Sptfy.Library do
 
   put "/v1/me/shows",
     as: :save_shows,
+    query: [],
+    body: [:ids],
+    mapping: ok(),
+    return_type: :ok
+
+  delete "/v1/me/shows",
+    as: :remove_from_saved_shows,
     query: [],
     body: [:ids],
     mapping: ok(),
