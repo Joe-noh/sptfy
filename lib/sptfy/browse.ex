@@ -1,7 +1,7 @@
 defmodule Sptfy.Browse do
   use Sptfy.Client
 
-  alias Sptfy.Object.{Paging, SimplifiedAlbum, SimplifiedPlaylist}
+  alias Sptfy.Object.{Category, Paging, SimplifiedAlbum, SimplifiedPlaylist}
 
   get "/v1/browse/new-releases",
     as: :get_new_releases,
@@ -14,4 +14,10 @@ defmodule Sptfy.Browse do
     query: [:country, :locale, :timestamp, :limit, :offset],
     mapping: paged_with_message(SimplifiedPlaylist, "playlists"),
     return_type: {:ok, Paging.t(), String.t()}
+
+  get "/v1/browse/categories",
+    as: :get_categories,
+    query: [:country, :locale, :timestamp, :limit, :offset],
+    mapping: paged(Category, "categories"),
+    return_type: {:ok, Paging.t()}
 end

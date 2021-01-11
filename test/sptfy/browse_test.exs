@@ -4,7 +4,7 @@ defmodule Sptfy.BrowseTest do
   import Mock
 
   alias Sptfy.Browse
-  alias Sptfy.Object.{Paging, SimplifiedAlbum, SimplifiedPlaylist}
+  alias Sptfy.Object.{Category, Paging, SimplifiedAlbum, SimplifiedPlaylist}
 
   describe "get_new_releases/2" do
     test "returns a Paging struct" do
@@ -38,6 +38,23 @@ defmodule Sptfy.BrowseTest do
 
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/browse/featured-playlists", _ -> TestHelpers.response(json) end do
         assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Browse.get_featured_playlists("token")
+      end
+    end
+  end
+
+  describe "get_categories/2" do
+    test "returns a Paging struct" do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/browse/categories", _ -> TestHelpers.response(%{"categories" => paging_categories_json()}) end do
+        assert {:ok, %Paging{items: categories}} = Browse.get_categories("token")
+        assert Enum.all?(categories, fn category -> %Category{} = category end)
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/browse/categories", _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Browse.get_categories("token")
       end
     end
   end
@@ -199,6 +216,33 @@ defmodule Sptfy.BrowseTest do
       },
       "type" => "playlist",
       "uri" => "spotify:playlist:PLAYLIST_ID"
+    }
+  end
+
+  defp category_json do
+    %{
+      "href" => "https://api.spotify.com/v1/browse/categories/CATEGORY_ID",
+      "icons" => [
+        %{
+          "height" => 274,
+          "url" => "https://t.scdn.co/...",
+          "width" => 274
+        }
+      ],
+      "id" => "CATEGORY_ID",
+      "name" => "CATEGORY NAME"
+    }
+  end
+
+  defp paging_categories_json do
+    %{
+      "href" => "https://api.spotify.com/v1/browse/categories?offset=0&limit=20",
+      "items" => [category_json()],
+      "limit" => 20,
+      "next" => "https://api.spotify.com/v1/browse/categories?offset=20&limit=20",
+      "offset" => 0,
+      "previous" => nil,
+      "total" => 49
     }
   end
 end
