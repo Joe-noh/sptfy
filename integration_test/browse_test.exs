@@ -2,7 +2,7 @@ defmodule IntegrationTest.BrowseTest do
   use ExUnit.Case
 
   alias Sptfy.Browse
-  alias Sptfy.Object.{Paging, SimplifiedAlbum}
+  alias Sptfy.Object.{Paging, SimplifiedAlbum, SimplifiedPlaylist}
 
   setup_all do
     %{token: System.fetch_env!("SPOTIFY_TOKEN")}
@@ -11,5 +11,11 @@ defmodule IntegrationTest.BrowseTest do
   test "get_new_releases/2", %{token: token} do
     assert {:ok, %Paging{items: albums}} = Browse.get_new_releases(token)
     assert Enum.all?(albums, fn album -> %SimplifiedAlbum{} = album end)
+  end
+
+  test "get_featured_playlists/2", %{token: token} do
+    assert {:ok, %Paging{items: playlists}, message} = Browse.get_featured_playlists(token)
+    assert Enum.all?(playlists, fn playlist -> %SimplifiedPlaylist{} = playlist end)
+    assert message |> is_binary()
   end
 end

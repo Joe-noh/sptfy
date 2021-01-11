@@ -4,7 +4,7 @@ defmodule Sptfy.BrowseTest do
   import Mock
 
   alias Sptfy.Browse
-  alias Sptfy.Object.{Paging, SimplifiedAlbum}
+  alias Sptfy.Object.{Paging, SimplifiedAlbum, SimplifiedPlaylist}
 
   describe "get_new_releases/2" do
     test "returns a Paging struct" do
@@ -19,6 +19,25 @@ defmodule Sptfy.BrowseTest do
 
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/browse/new-releases", _ -> TestHelpers.response(json) end do
         assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Browse.get_new_releases("token")
+      end
+    end
+  end
+
+  describe "get_featured_playlists/2" do
+    test "returns a Paging struct with message" do
+      json = %{"message" => "MESSAGE", "playlists" => paging_playlists_json()}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/browse/featured-playlists", _ -> TestHelpers.response(json) end do
+        assert {:ok, %Paging{items: albums}, "MESSAGE"} = Browse.get_featured_playlists("token")
+        assert Enum.all?(albums, fn album -> %SimplifiedPlaylist{} = album end)
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/browse/featured-playlists", _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Browse.get_featured_playlists("token")
       end
     end
   end
@@ -129,6 +148,57 @@ defmodule Sptfy.BrowseTest do
       "offset" => 0,
       "previous" => nil,
       "total" => 3
+    }
+  end
+
+  defp paging_playlists_json do
+    %{
+      "href" => "https://api.spotify.com/v1/browse/featured-playlists?offset=0&limit=50",
+      "items" => [playlist_json()],
+      "limit" => 50,
+      "next" => nil,
+      "offset" => 0,
+      "previous" => nil,
+      "total" => 10
+    }
+  end
+
+  defp playlist_json do
+    %{
+      "collaborative" => false,
+      "description" => "PLAYLIST DESCRIPTION",
+      "external_urls" => %{
+        "spotify" => "https://open.spotify.com/playlist/PLAYLIST_ID"
+      },
+      "href" => "https://api.spotify.com/v1/playlists/PLAYLIST_ID",
+      "id" => "PLAYLIST_ID",
+      "images" => [
+        %{
+          "height" => nil,
+          "url" => "https://i.scdn.co/image/...",
+          "width" => nil
+        }
+      ],
+      "name" => "PLAYLIST NAME",
+      "owner" => %{
+        "display_name" => "Spotify",
+        "external_urls" => %{
+          "spotify" => "https://open.spotify.com/user/USER_ID"
+        },
+        "href" => "https://api.spotify.com/v1/users/USER_ID",
+        "id" => "USER_ID",
+        "type" => "user",
+        "uri" => "spotify:user:USER_ID"
+      },
+      "primary_color" => nil,
+      "public" => true,
+      "snapshot_id" => "SNAPSHOT_ID",
+      "tracks" => %{
+        "href" => "https://api.spotify.com/v1/playlists/PLAYLIST_ID/tracks",
+        "total" => 50
+      },
+      "type" => "playlist",
+      "uri" => "spotify:playlist:PLAYLIST_ID"
     }
   end
 end

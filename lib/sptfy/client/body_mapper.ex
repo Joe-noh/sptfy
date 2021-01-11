@@ -8,7 +8,7 @@ defmodule Sptfy.Client.BodyMapper do
     key
   ]a
 
-  @spec map(json :: map() | list(map()), mapping :: t()) :: :ok | {:ok, map()} | {:ok, [map()]}
+  @spec map(json :: map() | list(map()), mapping :: t()) :: :ok | {:ok, map()} | {:ok, [map()]} | {:ok, map(), String.t()}
   def map(json, %__MODULE__{fun: fun, key: nil}) do
     fun.(json)
   end
@@ -38,6 +38,18 @@ defmodule Sptfy.Client.BodyMapper do
   @spec paged(module :: module(), key :: String.t() | nil) :: t()
   def paged(module, key \\ nil) do
     %__MODULE__{fun: fn fields -> {:ok, Sptfy.Object.Paging.new(fields, module)} end, key: key}
+  end
+
+  @spec paged_with_message(module :: module(), key :: String.t() | nil) :: t()
+  def paged_with_message(module, key \\ nil) do
+    fun = fn fields ->
+      %{"message" => message, ^key => pagign_fields} = fields
+      paging = Sptfy.Object.Paging.new(pagign_fields, module)
+
+      {:ok, paging, message}
+    end
+
+    %__MODULE__{fun: fun, key: nil}
   end
 
   @spec as_is :: t()

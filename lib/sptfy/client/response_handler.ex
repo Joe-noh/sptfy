@@ -4,7 +4,9 @@ defmodule Sptfy.Client.ResponseHandler do
   alias Sptfy.Client.BodyMapper
   alias Sptfy.Object.Error
 
-  @spec handle(response :: %Finch.Response{}, mapping :: BodyMapper.t()) :: :ok | {:ok, map()} | {:ok, [map()]} | {:error, Error.t()}
+  @type handled_response :: :ok | {:ok, map()} | {:ok, [map()]} | {:ok, map(), String.t()} | {:error, Error.t()}
+
+  @spec handle(response :: %Finch.Response{}, mapping :: BodyMapper.t()) :: handled_response()
   def handle(%Finch.Response{body: body}, mapping) do
     case Jason.decode(body) do
       {:ok, json} -> handle_json(json, mapping)
