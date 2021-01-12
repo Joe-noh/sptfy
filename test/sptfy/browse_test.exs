@@ -59,6 +59,22 @@ defmodule Sptfy.BrowseTest do
     end
   end
 
+  describe "get_category/2" do
+    test "returns a Category struct" do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/browse/categories/abc", _ -> TestHelpers.response(category_json()) end do
+        assert {:ok, %Category{}} = Browse.get_category("token", id: "abc")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/browse/categories/abc", _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Browse.get_category("token", id: "abc")
+      end
+    end
+  end
+
   defp paging_albums_json do
     %{
       "href" => "https://api.spotify.com/v1/browse/new-releases?offset=0&limit=50",

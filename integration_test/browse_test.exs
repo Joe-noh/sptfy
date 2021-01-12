@@ -5,7 +5,7 @@ defmodule IntegrationTest.BrowseTest do
   alias Sptfy.Object.{Category, Paging, SimplifiedAlbum, SimplifiedPlaylist}
 
   setup_all do
-    %{token: System.fetch_env!("SPOTIFY_TOKEN")}
+    %{token: System.fetch_env!("SPOTIFY_TOKEN"), category_id: "party"}
   end
 
   test "get_new_releases/2", %{token: token} do
@@ -22,5 +22,9 @@ defmodule IntegrationTest.BrowseTest do
   test "get_categories/2", %{token: token} do
     assert {:ok, %Paging{items: categories}} = Browse.get_categories(token)
     assert Enum.all?(categories, fn category -> %Category{} = category end)
+  end
+
+  test "get_category/2", %{token: token, category_id: category_id} do
+    assert {:ok, %Category{}} = Browse.get_category(token, id: category_id)
   end
 end

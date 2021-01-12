@@ -20,4 +20,10 @@ defmodule Sptfy.Browse do
     query: [:country, :locale, :timestamp, :limit, :offset],
     mapping: paged(Category, "categories"),
     return_type: {:ok, Paging.t()}
+
+  get "/v1/browse/categories/:id",
+    as: :get_category,
+    query: [:country, :locale],
+    mapping: single(Category),
+    return_type: {:ok, Category.t()}
 end
