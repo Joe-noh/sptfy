@@ -26,4 +26,10 @@ defmodule Sptfy.Browse do
     query: [:country, :locale],
     mapping: single(Category),
     return_type: {:ok, Category.t()}
+
+  get "/v1/browse/categories/:id/playlists",
+    as: :get_category_playlists,
+    query: [:country, :limit, :offset],
+    mapping: paged(SimplifiedPlaylist, "playlists"),
+    return_type: {:ok, Paging.t()}
 end

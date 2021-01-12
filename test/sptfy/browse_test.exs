@@ -75,6 +75,25 @@ defmodule Sptfy.BrowseTest do
     end
   end
 
+  describe "get_category_playlists/2" do
+    test "returns a Category struct" do
+      json = %{"playlists" => paging_playlists_json()}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/browse/categories/abc/playlists", _ -> TestHelpers.response(json) end do
+        assert {:ok, %Paging{items: playlists}} = Browse.get_category_playlists("token", id: "abc")
+        assert Enum.all?(playlists, fn playlist -> %SimplifiedPlaylist{} = playlist end)
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/browse/categories/abc/playlists", _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Browse.get_category_playlists("token", id: "abc")
+      end
+    end
+  end
+
   defp paging_albums_json do
     %{
       "href" => "https://api.spotify.com/v1/browse/new-releases?offset=0&limit=50",

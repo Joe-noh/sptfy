@@ -27,4 +27,9 @@ defmodule IntegrationTest.BrowseTest do
   test "get_category/2", %{token: token, category_id: category_id} do
     assert {:ok, %Category{}} = Browse.get_category(token, id: category_id)
   end
+
+  test "get_category_playlists/2", %{token: token, category_id: category_id} do
+    assert {:ok, %Paging{items: playlists}} = Browse.get_category_playlists(token, id: category_id)
+    assert Enum.all?(playlists, fn playlist -> %SimplifiedPlaylist{} = playlist end)
+  end
 end
