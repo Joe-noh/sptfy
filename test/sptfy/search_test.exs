@@ -103,16 +103,6 @@ defmodule Sptfy.SearchTest do
   end
 
   defp paging_json(key) do
-    paging = %{
-      "href" => "https://api.spotify.com/v1/search?offset=0&limit=20",
-      "items" => [%{}],
-      "limit" => 20,
-      "next" => "https://api.spotify.com/v1/search?offset=20&limit=20",
-      "offset" => 0,
-      "previous" => nil,
-      "total" => 20
-    }
-
-    %{key => paging}
+    %{key => Fixtures.paging(%{})}
   end
 end
