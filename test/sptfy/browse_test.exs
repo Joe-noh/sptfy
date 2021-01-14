@@ -4,7 +4,7 @@ defmodule Sptfy.BrowseTest do
   import Mock
 
   alias Sptfy.Browse
-  alias Sptfy.Object.{Category, Paging, SimplifiedAlbum, SimplifiedPlaylist}
+  alias Sptfy.Object.{Category, Paging, Recommendation, SimplifiedAlbum, SimplifiedPlaylist}
 
   describe "get_new_releases/2" do
     test "returns a Paging struct" do
@@ -90,6 +90,22 @@ defmodule Sptfy.BrowseTest do
 
       with_mock Sptfy.Client.HTTP, get: fn _, "/v1/browse/categories/abc/playlists", _ -> TestHelpers.response(json) end do
         assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Browse.get_category_playlists("token", id: "abc")
+      end
+    end
+  end
+
+  describe "get_recommendations/2" do
+    test "returns a Recommendation struct" do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/recommendations", _ -> TestHelpers.response(recommendation_json()) end do
+        assert {:ok, %Recommendation{}} = Browse.get_recommendations("token", seed_artists: ["abc"])
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/recommendations", _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Browse.get_recommendations("token", seed_artists: ["abc"])
       end
     end
   end
@@ -278,6 +294,24 @@ defmodule Sptfy.BrowseTest do
       "offset" => 0,
       "previous" => nil,
       "total" => 49
+    }
+  end
+
+  defp recommendation_json do
+    %{
+      "seeds" => [seed_json()],
+      "tracks" => [track_json()]
+    }
+  end
+
+  defp seed_json do
+    %{
+      "afterFilteringSize" => 250,
+      "afterRelinkingSize" => 250,
+      "href" => "https://api.spotify.com/v1/artists/ARTIST_ID",
+      "id" => "ARTIST_ID",
+      "initialPoolSize" => 250,
+      "type" => "ARTIST"
     }
   end
 end

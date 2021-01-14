@@ -2,10 +2,10 @@ defmodule IntegrationTest.BrowseTest do
   use ExUnit.Case
 
   alias Sptfy.Browse
-  alias Sptfy.Object.{Category, Paging, SimplifiedAlbum, SimplifiedPlaylist}
+  alias Sptfy.Object.{Category, Paging, Recommendation, SimplifiedAlbum, SimplifiedPlaylist}
 
   setup_all do
-    %{token: System.fetch_env!("SPOTIFY_TOKEN"), category_id: "party"}
+    %{token: System.fetch_env!("SPOTIFY_TOKEN"), category_id: "party", artist_id: "1g1nVvle9qO9AWIUWYvPAP"}
   end
 
   test "get_new_releases/2", %{token: token} do
@@ -31,5 +31,9 @@ defmodule IntegrationTest.BrowseTest do
   test "get_category_playlists/2", %{token: token, category_id: category_id} do
     assert {:ok, %Paging{items: playlists}} = Browse.get_category_playlists(token, id: category_id)
     assert Enum.all?(playlists, fn playlist -> %SimplifiedPlaylist{} = playlist end)
+  end
+
+  test "get_recommendations/2", %{token: token, artist_id: artist_id} do
+    assert {:ok, %Recommendation{}} = Browse.get_recommendations(token, seed_artists: [artist_id])
   end
 end
