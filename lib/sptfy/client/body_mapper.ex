@@ -52,9 +52,9 @@ defmodule Sptfy.Client.BodyMapper do
     %__MODULE__{fun: fun, key: nil}
   end
 
-  @spec as_is :: t()
-  def as_is do
-    %__MODULE__{fun: fn fields -> {:ok, fields} end}
+  @spec as_is(key :: String.t() | nil) :: t()
+  def as_is(key \\ nil) do
+    %__MODULE__{fun: fn fields -> {:ok, fields} end, key: key}
   end
 
   @spec ok :: t()

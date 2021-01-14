@@ -110,6 +110,24 @@ defmodule Sptfy.BrowseTest do
     end
   end
 
+  describe "get_genres/2" do
+    test "returns a list of genre names" do
+      json = %{"genres" => ["rock"]}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/recommendations/available-genre-seeds", _ -> TestHelpers.response(json) end do
+        assert {:ok, ["rock"]} == Browse.get_genres("token")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/recommendations/available-genre-seeds", _ -> TestHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Browse.get_genres("token")
+      end
+    end
+  end
+
   defp paging_albums_json do
     %{
       "href" => "https://api.spotify.com/v1/browse/new-releases?offset=0&limit=50",

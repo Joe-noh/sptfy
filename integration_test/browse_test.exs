@@ -36,4 +36,9 @@ defmodule IntegrationTest.BrowseTest do
   test "get_recommendations/2", %{token: token, artist_id: artist_id} do
     assert {:ok, %Recommendation{}} = Browse.get_recommendations(token, seed_artists: [artist_id])
   end
+
+  test "get_genres/2", %{token: token} do
+    assert {:ok, genres} = Browse.get_genres(token)
+    assert Enum.all?(genres, &is_binary/1)
+  end
 end

@@ -86,4 +86,10 @@ defmodule Sptfy.Browse do
     ]a,
     mapping: single(Recommendation),
     return_type: {:ok, Recommendation.t()}
+
+  get "/v1/recommendations/available-genre-seeds",
+    as: :get_genres,
+    query: [],
+    mapping: as_is("genres"),
+    return_type: {:ok, [String.t()]}
 end
