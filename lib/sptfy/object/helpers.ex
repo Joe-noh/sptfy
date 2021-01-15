@@ -25,4 +25,9 @@ defmodule Sptfy.Object.Helpers do
     |> Regex.replace(str, fn c -> "_" <> String.downcase(c) end)
     |> String.to_atom()
   end
+
+  def parse_timestamp(str) do
+    {:ok, datetime, _} = DateTime.from_iso8601(str)
+    datetime
+  end
 end

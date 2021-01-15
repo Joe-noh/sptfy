@@ -12,6 +12,7 @@ defmodule Sptfy.Object.SavedTrack do
     fields =
       fields
       |> Helpers.atomize_keys()
+      |> Map.update(:added_at, nil, &Helpers.parse_timestamp/1)
       |> Map.update(:track, nil, &FullTrack.new/1)
 
     struct(__MODULE__, fields)
