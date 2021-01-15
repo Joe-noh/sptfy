@@ -14,6 +14,7 @@ defmodule Sptfy.Object.PlaylistTrack do
     fields =
       fields
       |> Helpers.atomize_keys()
+      |> Map.update(:added_at, nil, &Helpers.parse_timestamp/1)
       |> Map.update(:added_by, nil, &PublicUser.new/1)
       |> Map.update(:track, nil, &build_track/1)
 

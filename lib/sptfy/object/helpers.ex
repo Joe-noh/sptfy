@@ -11,7 +11,7 @@ defmodule Sptfy.Object.Helpers do
     do_atomize_keys(map, &String.to_atom/1)
   end
 
-  def do_atomize_keys(map, fun) do
+  defp do_atomize_keys(map, fun) do
     map
     |> Enum.map(fn
       {k, v} when is_binary(k) -> {fun.(k), v}
@@ -24,5 +24,12 @@ defmodule Sptfy.Object.Helpers do
     ~r/[A-Z]/
     |> Regex.replace(str, fn c -> "_" <> String.downcase(c) end)
     |> String.to_atom()
+  end
+
+  def parse_timestamp(str) do
+    case DateTime.from_iso8601(str) do
+      {:ok, datetime, _offset} -> datetime
+      _error -> nil
+    end
   end
 end
