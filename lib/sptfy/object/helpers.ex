@@ -27,7 +27,9 @@ defmodule Sptfy.Object.Helpers do
   end
 
   def parse_timestamp(str) do
-    {:ok, datetime, _} = DateTime.from_iso8601(str)
-    datetime
+    case DateTime.from_iso8601(str) do
+      {:ok, datetime, _offset} -> datetime
+      _error -> nil
+    end
   end
 end
