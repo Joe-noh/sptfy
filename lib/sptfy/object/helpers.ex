@@ -11,7 +11,7 @@ defmodule Sptfy.Object.Helpers do
     do_atomize_keys(map, &String.to_atom/1)
   end
 
-  def do_atomize_keys(map, fun) do
+  defp do_atomize_keys(map, fun) do
     map
     |> Enum.map(fn
       {k, v} when is_binary(k) -> {fun.(k), v}
