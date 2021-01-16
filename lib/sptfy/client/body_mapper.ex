@@ -52,6 +52,11 @@ defmodule Sptfy.Client.BodyMapper do
     %__MODULE__{fun: fun, key: nil}
   end
 
+  @spec cursor_paged(module :: module()) :: t()
+  def cursor_paged(module) do
+    %__MODULE__{fun: fn fields -> {:ok, Sptfy.Object.CursorPaging.new(fields, module)} end}
+  end
+
   @spec as_is(key :: String.t() | nil) :: t()
   def as_is(key \\ nil) do
     %__MODULE__{fun: fn fields -> {:ok, fields} end, key: key}
