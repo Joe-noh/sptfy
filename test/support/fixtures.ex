@@ -111,6 +111,53 @@ defmodule Fixtures do
     }
   end
 
+  def context do
+    %{
+      "external_urls" => %{
+        "spotify" => "https://open.spotify.com/album/ALBUM_ID"
+      },
+      "href" => "https://api.spotify.com/v1/albums/ALBUM_ID",
+      "type" => "album",
+      "uri" => "spotify:album:ALBUM_ID"
+    }
+  end
+
+  def cursor_paging(json) do
+    %{
+      "cursors" => %{
+        "after" => "1610827152572",
+        "before" => "1610806663614"
+      },
+      "href" => "https://api.spotify.com/v1/...",
+      "items" => [json],
+      "limit" => 20,
+      "next" => "https://api.spotify.com/v1/...?before=1610806663614"
+    }
+  end
+
+  def currently_playing do
+    %{
+      "context" => context(),
+      "currently_playing_type" => "track",
+      "is_playing" => true,
+      "item" => full_track(),
+      "progress_ms" => 50_000,
+      "timestamp" => 1_610_826_308_089
+    }
+  end
+
+  def device do
+    %{
+      "id" => "DEVICE_ID",
+      "is_active" => true,
+      "is_private_session" => false,
+      "is_restricted" => false,
+      "name" => "Device Name",
+      "type" => "Computer",
+      "volume_percent" => 31
+    }
+  end
+
   def full_episode do
     %{
       "audio_preview_url" => "https://p.scdn.co/mp3-preview/...",
@@ -180,6 +227,28 @@ defmodule Fixtures do
       "id" => "USER_ID",
       "type" => "user",
       "uri" => "spotify:user:USER_ID"
+    }
+  end
+
+  def playback do
+    %{
+      "context" => context(),
+      "currently_playing_type" => "track",
+      "device" => device(),
+      "is_playing" => true,
+      "item" => full_track(),
+      "progress_ms" => 20_000,
+      "repeat_state" => "off",
+      "shuffle_state" => false,
+      "timestamp" => 1_610_825_556_057
+    }
+  end
+
+  def play_history do
+    %{
+      "context" => context(),
+      "played_at" => "2021-01-16T18:58:56.306Z",
+      "track" => simplified_track()
     }
   end
 
