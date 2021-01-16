@@ -2,7 +2,7 @@ defmodule Sptfy.Client.BodyMapperTest do
   use ExUnit.Case, async: true
 
   alias Sptfy.Client.BodyMapper
-  alias Sptfy.Object.{Paging, SimplifiedArtist}
+  alias Sptfy.Object.{CursorPaging, Paging, SimplifiedArtist}
 
   describe "single/1" do
     test "maps a json object to a struct" do
@@ -43,6 +43,16 @@ defmodule Sptfy.Client.BodyMapperTest do
       assert BodyMapper.map(%{"items" => []}, mapping) == {:ok, %Paging{items: []}}
       assert BodyMapper.map(%{"items" => [%{id: 10}]}, mapping) == {:ok, %Paging{items: [%SimplifiedArtist{id: 10}]}}
       assert BodyMapper.map(%{"items" => [%{"id" => 10}]}, mapping) == {:ok, %Paging{items: [%SimplifiedArtist{id: 10}]}}
+    end
+  end
+
+  describe "cursor_paged/2" do
+    test "maps a json object to structs wrapped by CursorPaging" do
+      mapping = BodyMapper.cursor_paged(SimplifiedArtist)
+
+      assert BodyMapper.map(%{"items" => []}, mapping) == {:ok, %CursorPaging{items: []}}
+      assert BodyMapper.map(%{"items" => [%{id: 10}]}, mapping) == {:ok, %CursorPaging{items: [%SimplifiedArtist{id: 10}]}}
+      assert BodyMapper.map(%{"items" => [%{"id" => 10}]}, mapping) == {:ok, %CursorPaging{items: [%SimplifiedArtist{id: 10}]}}
     end
   end
 

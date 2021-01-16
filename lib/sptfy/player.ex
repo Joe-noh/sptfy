@@ -87,7 +87,7 @@ defmodule Sptfy.Player do
   get "/v1/me/player/recently-played",
     as: :get_recently_played,
     query: [:limit, :before, :after],
-    mapping: paged(PlayHistory, "items"),
+    mapping: cursor_paged(PlayHistory),
     return_type: {:ok, Paging.t()}
 
   post "/v1/me/player/queue",
