@@ -1,7 +1,7 @@
 defmodule Sptfy.Player do
   use Sptfy.Client
 
-  alias Sptfy.Object.{CurrentlyPlaying, Device, Paging, Playback, PlayHistory}
+  alias Sptfy.Object.{CurrentlyPlaying, Device, Playback, PlayHistory}
 
   get "/v1/me/player",
     as: :get_playback,
