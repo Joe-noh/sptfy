@@ -12,10 +12,7 @@ defmodule Sptfy.Client do
     placeholders = Sptfy.Client.Placeholder.extract(path)
 
     quote location: :keep do
-      @doc """
-      GET #{unquote(path)}
-      """
-
+      @doc Sptfy.Client.Document.build("GET", unquote(path), unquote(placeholders) ++ unquote(query))
       @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
       def unquote(fun)(token, params \\ %{})
 
@@ -40,10 +37,7 @@ defmodule Sptfy.Client do
     placeholders = Sptfy.Client.Placeholder.extract(path)
 
     quote location: :keep do
-      @doc """
-      POST #{unquote(path)}
-      """
-
+      @doc Sptfy.Client.Document.build("POST", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
       @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
       def unquote(fun)(token, params \\ %{})
 
@@ -69,10 +63,7 @@ defmodule Sptfy.Client do
     placeholders = Sptfy.Client.Placeholder.extract(path)
 
     quote location: :keep do
-      @doc """
-      PUT #{unquote(path)}
-      """
-
+      @doc Sptfy.Client.Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
       @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
       def unquote(fun)(token, params \\ %{})
 
@@ -98,10 +89,7 @@ defmodule Sptfy.Client do
     placeholders = Sptfy.Client.Placeholder.extract(path)
 
     quote location: :keep do
-      @doc """
-      PUT #{unquote(path)}
-      """
-
+      @doc Sptfy.Client.Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query))
       @spec unquote(fun)(token :: String.t(), body :: binary(), params :: Sptfy.Client.params()) :: unquote(return_type)
       def unquote(fun)(token, body, params \\ %{})
 
@@ -126,10 +114,7 @@ defmodule Sptfy.Client do
     placeholders = Sptfy.Client.Placeholder.extract(path)
 
     quote location: :keep do
-      @doc """
-      DELETE #{unquote(path)}
-      """
-
+      @doc Sptfy.Client.Document.build("DELETE", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
       @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
       def unquote(fun)(token, params \\ %{})
 
