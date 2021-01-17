@@ -1,4 +1,6 @@
 defmodule Sptfy.Client do
+  @moduledoc false
+
   @type params :: Map.t() | Keyword.t()
 
   defmacro __using__(_) do

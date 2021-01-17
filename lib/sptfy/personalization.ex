@@ -1,4 +1,8 @@
 defmodule Sptfy.Personalization do
+  @moduledoc """
+  https://developer.spotify.com/documentation/web-api/reference-beta/#category-personalization
+  """
+
   use Sptfy.Client
 
   alias Sptfy.Object.{FullArtist, FullTrack, Paging}

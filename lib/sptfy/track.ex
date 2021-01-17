@@ -1,4 +1,8 @@
 defmodule Sptfy.Track do
+  @moduledoc """
+  https://developer.spotify.com/documentation/web-api/reference-beta/#category-tracks
+  """
+
   use Sptfy.Client
 
   alias Sptfy.Object.{AudioFeature, FullTrack}

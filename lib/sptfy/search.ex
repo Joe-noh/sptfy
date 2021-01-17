@@ -1,4 +1,8 @@
 defmodule Sptfy.Search do
+  @moduledoc """
+  https://developer.spotify.com/documentation/web-api/reference-beta/#category-search
+  """
+
   use Sptfy.Client
 
   alias Sptfy.Object.{FullArtist, FullTrack, Paging, SimplifiedAlbum, SimplifiedEpisode, SimplifiedPlaylist, SimplifiedShow}
