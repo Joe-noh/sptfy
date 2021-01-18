@@ -10,9 +10,11 @@ defmodule Sptfy.Client do
     end
   end
 
-  defmacro get(path, as: fun, query: query, mapping: mapping, return_type: _return_type) do
+  defmacro get(path, opts) do
+    [as: fun, query: query, mapping: mapping] = Keyword.take(opts, [:as, :query, :mapping])
+
     placeholders = Sptfy.Client.Placeholder.extract(path)
-    type_ast = Sptfy.Client.ReturnType.ast(mapping)
+    type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
       @doc Sptfy.Client.Document.build("GET", unquote(path), unquote(placeholders) ++ unquote(query))
@@ -36,9 +38,11 @@ defmodule Sptfy.Client do
     end
   end
 
-  defmacro post(path, as: fun, query: query, body: body, mapping: mapping, return_type: _return_type) do
+  defmacro post(path, opts) do
+    [as: fun, query: query, body: body, mapping: mapping] = Keyword.take(opts, [:as, :query, :body, :mapping])
+
     placeholders = Sptfy.Client.Placeholder.extract(path)
-    type_ast = Sptfy.Client.ReturnType.ast(mapping)
+    type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
       @doc Sptfy.Client.Document.build("POST", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
@@ -63,9 +67,11 @@ defmodule Sptfy.Client do
     end
   end
 
-  defmacro put(path, as: fun, query: query, body: body, mapping: mapping, return_type: _return_type) do
+  defmacro put(path, opts) do
+    [as: fun, query: query, body: body, mapping: mapping] = Keyword.take(opts, [:as, :query, :body, :mapping])
+
     placeholders = Sptfy.Client.Placeholder.extract(path)
-    type_ast = Sptfy.Client.ReturnType.ast(mapping)
+    type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
       @doc Sptfy.Client.Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
@@ -90,9 +96,11 @@ defmodule Sptfy.Client do
     end
   end
 
-  defmacro put_jpeg(path, as: fun, query: query, mapping: mapping, return_type: _return_type) do
+  defmacro put_jpeg(path, opts) do
+    [as: fun, query: query, mapping: mapping] = Keyword.take(opts, [:as, :query, :mapping])
+
     placeholders = Sptfy.Client.Placeholder.extract(path)
-    type_ast = Sptfy.Client.ReturnType.ast(mapping)
+    type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
       @doc Sptfy.Client.Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query))
@@ -116,9 +124,11 @@ defmodule Sptfy.Client do
     end
   end
 
-  defmacro delete(path, as: fun, query: query, body: body, mapping: mapping, return_type: _return_type) do
+  defmacro delete(path, opts) do
+    [as: fun, query: query, body: body, mapping: mapping] = Keyword.take(opts, [:as, :query, :body, :mapping])
+
     placeholders = Sptfy.Client.Placeholder.extract(path)
-    type_ast = Sptfy.Client.ReturnType.ast(mapping)
+    type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
       @doc Sptfy.Client.Document.build("DELETE", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))

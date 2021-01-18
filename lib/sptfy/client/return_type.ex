@@ -2,7 +2,7 @@ defmodule Sptfy.Client.ReturnType do
   @moduledoc false
 
   @doc false
-  @spec ast(tuple()) :: tuple()
+  @spec ast(tuple()) :: tuple() | :ok | nil
   def ast({:single, _meta, [module | _]}) do
     ok(t(module))
   end

@@ -10,12 +10,10 @@ defmodule Sptfy.Profile do
   get "/v1/me",
     as: :get_my_profile,
     query: [],
-    mapping: single(PrivateUser),
-    return_type: {:ok, PrivateUser.t()}
+    mapping: single(PrivateUser)
 
   get "/v1/users/:id",
     as: :get_profile,
     query: [],
-    mapping: single(PublicUser),
-    return_type: {:ok, PublicUser.t()}
-end
+    mapping: single(PublicUser)
+  end
