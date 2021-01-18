@@ -10,12 +10,13 @@ defmodule Sptfy.Client do
     end
   end
 
-  defmacro get(path, as: fun, query: query, mapping: mapping, return_type: return_type) do
+  defmacro get(path, as: fun, query: query, mapping: mapping, return_type: _return_type) do
     placeholders = Sptfy.Client.Placeholder.extract(path)
+    type_ast = Sptfy.Client.ReturnType.ast(mapping)
 
     quote location: :keep do
       @doc Sptfy.Client.Document.build("GET", unquote(path), unquote(placeholders) ++ unquote(query))
-      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
+      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
       def unquote(fun)(token, params) when is_list(params) do
@@ -35,12 +36,13 @@ defmodule Sptfy.Client do
     end
   end
 
-  defmacro post(path, as: fun, query: query, body: body, mapping: mapping, return_type: return_type) do
+  defmacro post(path, as: fun, query: query, body: body, mapping: mapping, return_type: _return_type) do
     placeholders = Sptfy.Client.Placeholder.extract(path)
+    type_ast = Sptfy.Client.ReturnType.ast(mapping)
 
     quote location: :keep do
       @doc Sptfy.Client.Document.build("POST", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
-      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
+      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
       def unquote(fun)(token, params) when is_list(params) do
@@ -61,12 +63,13 @@ defmodule Sptfy.Client do
     end
   end
 
-  defmacro put(path, as: fun, query: query, body: body, mapping: mapping, return_type: return_type) do
+  defmacro put(path, as: fun, query: query, body: body, mapping: mapping, return_type: _return_type) do
     placeholders = Sptfy.Client.Placeholder.extract(path)
+    type_ast = Sptfy.Client.ReturnType.ast(mapping)
 
     quote location: :keep do
       @doc Sptfy.Client.Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
-      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
+      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
       def unquote(fun)(token, params) when is_list(params) do
@@ -87,12 +90,13 @@ defmodule Sptfy.Client do
     end
   end
 
-  defmacro put_jpeg(path, as: fun, query: query, mapping: mapping, return_type: return_type) do
+  defmacro put_jpeg(path, as: fun, query: query, mapping: mapping, return_type: _return_type) do
     placeholders = Sptfy.Client.Placeholder.extract(path)
+    type_ast = Sptfy.Client.ReturnType.ast(mapping)
 
     quote location: :keep do
       @doc Sptfy.Client.Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query))
-      @spec unquote(fun)(token :: String.t(), body :: binary(), params :: Sptfy.Client.params()) :: unquote(return_type)
+      @spec unquote(fun)(token :: String.t(), body :: binary(), params :: Sptfy.Client.params()) :: unquote(type_ast)
       def unquote(fun)(token, body, params \\ %{})
 
       def unquote(fun)(token, body, params) when is_list(params) do
@@ -112,12 +116,13 @@ defmodule Sptfy.Client do
     end
   end
 
-  defmacro delete(path, as: fun, query: query, body: body, mapping: mapping, return_type: return_type) do
+  defmacro delete(path, as: fun, query: query, body: body, mapping: mapping, return_type: _return_type) do
     placeholders = Sptfy.Client.Placeholder.extract(path)
+    type_ast = Sptfy.Client.ReturnType.ast(mapping)
 
     quote location: :keep do
       @doc Sptfy.Client.Document.build("DELETE", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
-      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(return_type)
+      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
       def unquote(fun)(token, params) when is_list(params) do
