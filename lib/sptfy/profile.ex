@@ -16,4 +16,4 @@ defmodule Sptfy.Profile do
     as: :get_profile,
     query: [],
     mapping: single(PublicUser)
-  end
+end
