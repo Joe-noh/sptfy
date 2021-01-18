@@ -5,21 +5,19 @@ defmodule Sptfy.Follow do
 
   use Sptfy.Client
 
-  alias Sptfy.Object.{FullArtist, Paging}
+  alias Sptfy.Object.FullArtist
 
   put "/v1/playlists/:id/followers",
     as: :follow_playlist,
     query: [],
     body: [:public],
-    mapping: ok(),
-    return_type: :ok
+    mapping: ok()
 
   delete "/v1/playlists/:id/followers",
     as: :unfollow_playlist,
     query: [],
     body: [],
-    mapping: ok(),
-    return_type: :ok
+    mapping: ok()
 
   get "/v1/playlists/:id/followers/contains",
     as: :check_playlist_following_state,
@@ -30,36 +28,31 @@ defmodule Sptfy.Follow do
   get "/v1/me/following",
     as: :get_my_following_artists,
     query: [:after, :limit, {:type, "artist"}],
-    mapping: paged(FullArtist, "artists"),
-    return_type: {:ok, Paging.t()}
+    mapping: paged(FullArtist, "artists")
 
   put "/v1/me/following",
     as: :follow_users,
     query: [type: "user"],
     body: [:ids],
-    mapping: ok(),
-    return_type: :ok
+    mapping: ok()
 
   put "/v1/me/following",
     as: :follow_artists,
     query: [type: "artist"],
     body: [:ids],
-    mapping: ok(),
-    return_type: :ok
+    mapping: ok()
 
   delete "/v1/me/following",
     as: :unfollow_users,
     query: [type: "user"],
     body: [:ids],
-    mapping: ok(),
-    return_type: :ok
+    mapping: ok()
 
   delete "/v1/me/following",
     as: :unfollow_artists,
     query: [type: "artist"],
     body: [:ids],
-    mapping: ok(),
-    return_type: :ok
+    mapping: ok()
 
   get "/v1/me/following/contains",
     as: :check_my_user_following_state,

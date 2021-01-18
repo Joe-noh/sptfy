@@ -5,37 +5,32 @@ defmodule Sptfy.Browse do
 
   use Sptfy.Client
 
-  alias Sptfy.Object.{Category, Paging, Recommendation, SimplifiedAlbum, SimplifiedPlaylist}
+  alias Sptfy.Object.{Category, Recommendation, SimplifiedAlbum, SimplifiedPlaylist}
 
   get "/v1/browse/new-releases",
     as: :get_new_releases,
     query: [:country, :limit, :offset],
-    mapping: paged(SimplifiedAlbum, "albums"),
-    return_type: {:ok, Paging.t()}
+    mapping: paged(SimplifiedAlbum, "albums")
 
   get "/v1/browse/featured-playlists",
     as: :get_featured_playlists,
     query: [:country, :locale, :timestamp, :limit, :offset],
-    mapping: paged_with_message(SimplifiedPlaylist, "playlists"),
-    return_type: {:ok, Paging.t(), String.t()}
+    mapping: paged_with_message(SimplifiedPlaylist, "playlists")
 
   get "/v1/browse/categories",
     as: :get_categories,
     query: [:country, :locale, :timestamp, :limit, :offset],
-    mapping: paged(Category, "categories"),
-    return_type: {:ok, Paging.t()}
+    mapping: paged(Category, "categories")
 
   get "/v1/browse/categories/:id",
     as: :get_category,
     query: [:country, :locale],
-    mapping: single(Category),
-    return_type: {:ok, Category.t()}
+    mapping: single(Category)
 
   get "/v1/browse/categories/:id/playlists",
     as: :get_category_playlists,
     query: [:country, :limit, :offset],
-    mapping: paged(SimplifiedPlaylist, "playlists"),
-    return_type: {:ok, Paging.t()}
+    mapping: paged(SimplifiedPlaylist, "playlists")
 
   get "/v1/recommendations",
     as: :get_recommendations,
@@ -88,8 +83,7 @@ defmodule Sptfy.Browse do
       max_valence
       target_valence
     ]a,
-    mapping: single(Recommendation),
-    return_type: {:ok, Recommendation.t()}
+    mapping: single(Recommendation)
 
   get "/v1/recommendations/available-genre-seeds",
     as: :get_genres,
