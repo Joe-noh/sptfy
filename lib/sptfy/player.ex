@@ -1,4 +1,8 @@
 defmodule Sptfy.Player do
+  @moduledoc """
+  https://developer.spotify.com/documentation/web-api/reference-beta/#category-player
+  """
+
   use Sptfy.Client
 
   alias Sptfy.Object.{CurrentlyPlaying, Device, Playback, PlayHistory}

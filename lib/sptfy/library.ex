@@ -1,4 +1,8 @@
 defmodule Sptfy.Library do
+  @moduledoc """
+  https://developer.spotify.com/documentation/web-api/reference-beta/#category-library
+  """
+
   use Sptfy.Client
 
   alias Sptfy.Object.{Paging, SavedAlbum, SavedShow, SavedTrack}

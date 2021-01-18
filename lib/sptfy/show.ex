@@ -1,4 +1,8 @@
 defmodule Sptfy.Show do
+  @moduledoc """
+  https://developer.spotify.com/documentation/web-api/reference-beta/#category-shows
+  """
+
   use Sptfy.Client
 
   alias Sptfy.Object.{FullShow, Paging, SimplifiedEpisode, SimplifiedShow}

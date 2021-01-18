@@ -1,4 +1,8 @@
 defmodule Sptfy.Episode do
+  @moduledoc """
+  https://developer.spotify.com/documentation/web-api/reference-beta/#category-episodes
+  """
+
   use Sptfy.Client
 
   alias Sptfy.Object.FullEpisode

@@ -1,4 +1,8 @@
 defmodule Sptfy.Follow do
+  @moduledoc """
+  https://developer.spotify.com/documentation/web-api/reference-beta/#category-follow
+  """
+
   use Sptfy.Client
 
   alias Sptfy.Object.{FullArtist, Paging}

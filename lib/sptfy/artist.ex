@@ -1,4 +1,8 @@
 defmodule Sptfy.Artist do
+  @moduledoc """
+  https://developer.spotify.com/documentation/web-api/reference-beta/#category-artists
+  """
+
   use Sptfy.Client
 
   alias Sptfy.Object.{FullArtist, FullTrack, SimplifiedAlbum}

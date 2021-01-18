@@ -1,4 +1,6 @@
 defmodule Sptfy.Object do
+  @moduledoc false
+
   @callback new(fields :: map()) :: map()
 
   defmacro __using__(_) do

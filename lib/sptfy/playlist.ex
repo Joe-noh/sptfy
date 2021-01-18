@@ -1,4 +1,8 @@
 defmodule Sptfy.Playlist do
+  @moduledoc """
+  https://developer.spotify.com/documentation/web-api/reference-beta/#category-playlists
+  """
+
   use Sptfy.Client
 
   alias Sptfy.Object.{FullPlaylist, Image, Paging, PlaylistTrack, SimplifiedPlaylist}

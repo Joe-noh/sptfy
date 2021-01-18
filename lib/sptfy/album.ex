@@ -1,4 +1,8 @@
 defmodule Sptfy.Album do
+  @moduledoc """
+  https://developer.spotify.com/documentation/web-api/reference-beta/#category-albums
+  """
+
   use Sptfy.Client
 
   alias Sptfy.Object.{FullAlbum, Paging, SimplifiedTrack}
