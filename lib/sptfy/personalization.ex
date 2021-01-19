@@ -10,10 +10,10 @@ defmodule Sptfy.Personalization do
   get "/v1/me/top/artists",
     as: :get_top_artists,
     query: [:time_range, :limit, :offset],
-    mapping: paged(FullArtist)
+    mapping: {:paging, module: FullArtist}
 
   get "/v1/me/top/tracks",
     as: :get_top_tracks,
     query: [:time_range, :limit, :offset],
-    mapping: paged(FullTrack)
+    mapping: {:paging, module: FullTrack}
 end

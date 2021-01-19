@@ -1,69 +1,76 @@
 defmodule Sptfy.Client.BodyMapper do
   @moduledoc false
 
-  @type t :: %__MODULE__{}
+  @type mapped_result :: :ok | {:ok, map()} | {:ok, [map()]} | {:ok, map(), String.t()}
+  @type mapping :: single_mapping() | list_mapping() | paging_mapping() | as_is_mapping() | :ok
+  @typep single_mapping :: {:single, module: module()} | {:single, module: module(), key: String.t()}
+  @typep list_mapping :: {:list, module: module()} | {:list, module: module(), key: String.t()}
+  @typep paging_mapping ::
+           {:paging, module: module()}
+           | {:paging, module: module(), key: String.t()}
+           | {:paging_with_message, module: module(), key: String.t()}
+           | {:cursor_paging, module: module()}
+  @typep as_is_mapping :: :as_is | {:as_is, key: String.t()}
 
-  defstruct ~w[
-    fun
-    key
-  ]a
-
-  @spec map(json :: map() | list(map()), mapping :: t()) :: :ok | {:ok, map()} | {:ok, [map()]} | {:ok, map(), String.t()}
-  def map(json, %__MODULE__{fun: fun, key: nil}) do
-    fun.(json)
+  @spec map(json :: map() | list(map()), mapping :: mapping()) :: mapped_result()
+  def map(json, {:single, module: module}) do
+    {:ok, new_struct(module, json)}
   end
 
-  def map(json, %__MODULE__{fun: fun, key: key}) do
-    Map.get(json, key) |> fun.()
+  def map(json, {:list, module: module}) do
+    structs = json |> Enum.map(fn fields -> new_struct(module, fields) end)
+
+    {:ok, structs}
   end
 
-  @spec single(module :: module()) :: t()
-  def single(module) do
-    %__MODULE__{fun: fn fields -> {:ok, module.new(fields)} end}
+  def map(json, {:list, module: module, key: key}) do
+    structs = json |> Map.get(key) |> Enum.map(fn fields -> new_struct(module, fields) end)
+
+    {:ok, structs}
   end
 
-  defp do_single(module) do
-    fn
-      nil -> nil
-      fields -> module.new(fields)
-    end
+  def map(json, {:paging, module: module}) do
+    paging = json |> Sptfy.Object.Paging.new(module)
+
+    {:ok, paging}
   end
 
-  @spec list_of(module :: module(), key :: String.t() | nil) :: t()
-  def list_of(module, key \\ nil) do
-    single_fun = do_single(module)
-    %__MODULE__{fun: fn list -> {:ok, Enum.map(list, single_fun)} end, key: key}
+  def map(json, {:paging, module: module, key: key}) do
+    paging = json |> Map.get(key) |> Sptfy.Object.Paging.new(module)
+
+    {:ok, paging}
   end
 
-  @spec paged(module :: module(), key :: String.t() | nil) :: t()
-  def paged(module, key \\ nil) do
-    %__MODULE__{fun: fn fields -> {:ok, Sptfy.Object.Paging.new(fields, module)} end, key: key}
+  def map(json, {:paging_with_message, module: module, key: key}) do
+    %{"message" => message, ^key => fields} = json
+    paging = Sptfy.Object.Paging.new(fields, module)
+
+    {:ok, paging, message}
   end
 
-  @spec paged_with_message(module :: module(), key :: String.t() | nil) :: t()
-  def paged_with_message(module, key \\ nil) do
-    fun = fn fields ->
-      %{"message" => message, ^key => pagign_fields} = fields
-      paging = Sptfy.Object.Paging.new(pagign_fields, module)
+  def map(json, {:cursor_paging, module: module}) do
+    paging = json |> Sptfy.Object.CursorPaging.new(module)
 
-      {:ok, paging, message}
-    end
-
-    %__MODULE__{fun: fun, key: nil}
+    {:ok, paging}
   end
 
-  @spec cursor_paged(module :: module()) :: t()
-  def cursor_paged(module) do
-    %__MODULE__{fun: fn fields -> {:ok, Sptfy.Object.CursorPaging.new(fields, module)} end}
+  def map(json, :as_is) do
+    {:ok, json}
   end
 
-  @spec as_is(key :: String.t() | nil) :: t()
-  def as_is(key \\ nil) do
-    %__MODULE__{fun: fn fields -> {:ok, fields} end, key: key}
+  def map(json, {:as_is, key: key}) do
+    {:ok, Map.get(json, key)}
   end
 
-  @spec ok :: t()
-  def ok do
-    %__MODULE__{fun: fn _ -> :ok end}
+  def map(_json, :ok) do
+    :ok
+  end
+
+  defp new_struct(_module, nil) do
+    nil
+  end
+
+  defp new_struct(module, fields) do
+    module.new(fields)
   end
 end

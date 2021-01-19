@@ -10,30 +10,30 @@ defmodule Sptfy.Search do
   get "/v1/search",
     as: :search_album,
     query: [:q, :market, :limit, :offset, :include_external, {:type, "album"}],
-    mapping: paged(SimplifiedAlbum, "albums")
+    mapping: {:paging, module: SimplifiedAlbum, key: "albums"}
 
   get "/v1/search",
     as: :search_artist,
     query: [:q, :market, :limit, :offset, :include_external, {:type, "artist"}],
-    mapping: paged(FullArtist, "artists")
+    mapping: {:paging, module: FullArtist, key: "artists"}
 
   get "/v1/search",
     as: :search_episode,
     query: [:q, :market, :limit, :offset, :include_external, {:type, "episode"}],
-    mapping: paged(SimplifiedEpisode, "episodes")
+    mapping: {:paging, module: SimplifiedEpisode, key: "episodes"}
 
   get "/v1/search",
     as: :search_playlist,
     query: [:q, :market, :limit, :offset, :include_external, {:type, "playlist"}],
-    mapping: paged(SimplifiedPlaylist, "playlists")
+    mapping: {:paging, module: SimplifiedPlaylist, key: "playlists"}
 
   get "/v1/search",
     as: :search_show,
     query: [:q, :market, :limit, :offset, :include_external, {:type, "show"}],
-    mapping: paged(SimplifiedShow, "shows")
+    mapping: {:paging, module: SimplifiedShow, key: "shows"}
 
   get "/v1/search",
     as: :search_track,
     query: [:q, :market, :limit, :offset, :include_external, {:type, "track"}],
-    mapping: paged(FullTrack, "tracks")
+    mapping: {:paging, module: FullTrack, key: "tracks"}
 end

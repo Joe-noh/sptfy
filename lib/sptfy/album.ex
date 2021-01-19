@@ -10,15 +10,15 @@ defmodule Sptfy.Album do
   get "/v1/albums",
     as: :get_albums,
     query: [:ids, :market],
-    mapping: list_of(FullAlbum, "albums")
+    mapping: {:list, module: FullAlbum, key: "albums"}
 
   get "/v1/albums/:id",
     as: :get_album,
     query: [:market],
-    mapping: single(FullAlbum)
+    mapping: {:single, module: FullAlbum}
 
   get "/v1/albums/:id/tracks",
     as: :get_album_tracks,
     query: [:market, :limit, :offset],
-    mapping: paged(SimplifiedTrack)
+    mapping: {:paging, module: SimplifiedTrack}
 end

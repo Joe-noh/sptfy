@@ -4,9 +4,9 @@ defmodule Sptfy.Client.BodyMapperTest do
   alias Sptfy.Client.BodyMapper
   alias Sptfy.Object.{CursorPaging, Paging, SimplifiedArtist}
 
-  describe "single/1" do
+  describe "map/2 with :single tuple" do
     test "maps a json object to a struct" do
-      mapping = BodyMapper.single(SimplifiedArtist)
+      mapping = {:single, module: SimplifiedArtist}
 
       assert BodyMapper.map(%{}, mapping) == {:ok, %SimplifiedArtist{}}
       assert BodyMapper.map(%{id: 10}, mapping) == {:ok, %SimplifiedArtist{id: 10}}
@@ -14,31 +14,39 @@ defmodule Sptfy.Client.BodyMapperTest do
     end
   end
 
-  describe "list_of/2" do
+  describe "map/2 with :list tuple" do
     test "maps a json array to list of structs" do
-      mapping = BodyMapper.list_of(SimplifiedArtist, "key")
+      mapping = {:list, module: SimplifiedArtist, key: "key"}
 
       assert BodyMapper.map(%{"key" => [%{}]}, mapping) == {:ok, [%SimplifiedArtist{}]}
       assert BodyMapper.map(%{"key" => [%{id: 10}]}, mapping) == {:ok, [%SimplifiedArtist{id: 10}]}
       assert BodyMapper.map(%{"key" => [%{"id" => 10}]}, mapping) == {:ok, [%SimplifiedArtist{id: 10}]}
     end
 
-    test "handle list when key is nil" do
-      mapping = BodyMapper.list_of(SimplifiedArtist)
+    test "handle list without key" do
+      mapping = {:list, module: SimplifiedArtist}
 
       assert BodyMapper.map([nil, %{id: 10}, nil], mapping) == {:ok, [nil, %SimplifiedArtist{id: 10}, nil]}
     end
 
     test "maps nil into nil" do
-      mapping = BodyMapper.list_of(SimplifiedArtist, "key")
+      mapping = {:list, module: SimplifiedArtist, key: "key"}
 
       assert BodyMapper.map(%{"key" => [nil, %{id: 10}, nil]}, mapping) == {:ok, [nil, %SimplifiedArtist{id: 10}, nil]}
     end
   end
 
-  describe "paged/2" do
+  describe "map/2 with :paging tuple" do
     test "maps a json object to structs wrapped by Paging" do
-      mapping = BodyMapper.paged(SimplifiedArtist)
+      mapping = {:paging, module: SimplifiedArtist, key: "key"}
+
+      assert BodyMapper.map(%{"key" => %{"items" => []}}, mapping) == {:ok, %Paging{items: []}}
+      assert BodyMapper.map(%{"key" => %{"items" => [%{id: 10}]}}, mapping) == {:ok, %Paging{items: [%SimplifiedArtist{id: 10}]}}
+      assert BodyMapper.map(%{"key" => %{"items" => [%{"id" => 10}]}}, mapping) == {:ok, %Paging{items: [%SimplifiedArtist{id: 10}]}}
+    end
+
+    test "handle without key" do
+      mapping = {:paging, module: SimplifiedArtist}
 
       assert BodyMapper.map(%{"items" => []}, mapping) == {:ok, %Paging{items: []}}
       assert BodyMapper.map(%{"items" => [%{id: 10}]}, mapping) == {:ok, %Paging{items: [%SimplifiedArtist{id: 10}]}}
@@ -46,9 +54,9 @@ defmodule Sptfy.Client.BodyMapperTest do
     end
   end
 
-  describe "cursor_paged/2" do
+  describe "map/2 with :cursor_paging tuple" do
     test "maps a json object to structs wrapped by CursorPaging" do
-      mapping = BodyMapper.cursor_paged(SimplifiedArtist)
+      mapping = {:cursor_paging, module: SimplifiedArtist}
 
       assert BodyMapper.map(%{"items" => []}, mapping) == {:ok, %CursorPaging{items: []}}
       assert BodyMapper.map(%{"items" => [%{id: 10}]}, mapping) == {:ok, %CursorPaging{items: [%SimplifiedArtist{id: 10}]}}
@@ -56,13 +64,25 @@ defmodule Sptfy.Client.BodyMapperTest do
     end
   end
 
-  describe "as_is/0" do
+  describe "map/2 with :as_is tuple" do
     test "returns given map" do
-      mapping = BodyMapper.as_is()
+      mapping = {:as_is, key: "key"}
 
-      assert BodyMapper.map(%{}, mapping) == {:ok, %{}}
-      assert BodyMapper.map(%{id: 10}, mapping) == {:ok, %{id: 10}}
-      assert BodyMapper.map(%{"id" => 10}, mapping) == {:ok, %{"id" => 10}}
+      assert BodyMapper.map(%{"key" => [true]}, mapping) == {:ok, [true]}
+    end
+
+    test "handle without key" do
+      mapping = :as_is
+
+      assert BodyMapper.map([true], mapping) == {:ok, [true]}
+    end
+  end
+
+  describe "map/2 with :ok" do
+    test "returns :ok" do
+      mapping = :ok
+
+      assert BodyMapper.map(%{}, mapping) == :ok
     end
   end
 end

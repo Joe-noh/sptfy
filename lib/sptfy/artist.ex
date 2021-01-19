@@ -10,25 +10,25 @@ defmodule Sptfy.Artist do
   get "/v1/artists",
     as: :get_artists,
     query: [:ids],
-    mapping: list_of(FullArtist, "artists")
+    mapping: {:list, module: FullArtist, key: "artists"}
 
   get "/v1/artists/:id",
     as: :get_artist,
     query: [],
-    mapping: single(FullArtist)
+    mapping: {:single, module: FullArtist}
 
   get "/v1/artists/:id/top-tracks",
     as: :get_top_tracks,
     query: [:market],
-    mapping: list_of(FullTrack, "tracks")
+    mapping: {:list, module: FullTrack, key: "tracks"}
 
   get "/v1/artists/:id/related-artists",
     as: :get_related_artists,
     query: [],
-    mapping: list_of(FullArtist, "artists")
+    mapping: {:list, module: FullArtist, key: "artists"}
 
   get "/v1/artists/:id/albums",
     as: :get_albums,
     query: [:include_groups, :market, :limit, :offset],
-    mapping: paged(SimplifiedAlbum)
+    mapping: {:paging, module: SimplifiedAlbum}
 end
