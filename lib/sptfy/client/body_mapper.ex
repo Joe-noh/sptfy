@@ -6,10 +6,10 @@ defmodule Sptfy.Client.BodyMapper do
   @typep single_mapping :: {:single, module: module()} | {:single, module: module(), key: String.t()}
   @typep list_mapping :: {:list, module: module()} | {:list, module: module(), key: String.t()}
   @typep paging_mapping ::
-          {:paging, module: module()}
-          | {:paging, module: module(), key: String.t()}
-          | {:paging_with_message, module: module(), key: String.t()}
-          | {:cursor_paging, module: module()}
+           {:paging, module: module()}
+           | {:paging, module: module(), key: String.t()}
+           | {:paging_with_message, module: module(), key: String.t()}
+           | {:cursor_paging, module: module()}
   @typep as_is_mapping :: :as_is | {:as_is, key: String.t()}
 
   @spec map(json :: map() | list(map()), mapping :: mapping()) :: mapped_result()
