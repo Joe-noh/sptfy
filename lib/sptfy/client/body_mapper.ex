@@ -1,14 +1,18 @@
 defmodule Sptfy.Client.BodyMapper do
   @moduledoc false
 
-  @type t :: %__MODULE__{}
+  @type mapped_result :: :ok | {:ok, map()} | {:ok, [map()]} | {:ok, map(), String.t()}
+  @type mapping :: single_mapping() | list_mapping() | paging_mapping() | as_is_mapping() | :ok
+  @typep single_mapping :: {:single, module: module()} | {:single, module: module(), key: String.t()}
+  @typep list_mapping :: {:list, module: module()} | {:list, module: module(), key: String.t()}
+  @typep paging_mapping ::
+          {:paging, module: module()}
+          | {:paging, module: module(), key: String.t()}
+          | {:paging_with_message, module: module(), key: String.t()}
+          | {:cursor_paging, module: module()}
+  @typep as_is_mapping :: :as_is | {:as_is, key: String.t()}
 
-  defstruct ~w[
-    fun
-    key
-  ]a
-
-  @spec map(json :: map() | list(map()), mapping :: t()) :: :ok | {:ok, map()} | {:ok, [map()]} | {:ok, map(), String.t()}
+  @spec map(json :: map() | list(map()), mapping :: mapping()) :: mapped_result()
   def map(json, {:single, module: module}) do
     {:ok, new_struct(module, json)}
   end
