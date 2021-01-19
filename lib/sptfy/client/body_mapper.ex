@@ -10,17 +10,17 @@ defmodule Sptfy.Client.BodyMapper do
 
   @spec map(json :: map() | list(map()), mapping :: t()) :: :ok | {:ok, map()} | {:ok, [map()]} | {:ok, map(), String.t()}
   def map(json, {:single, module: module}) do
-    {:ok, module.new(json)}
+    {:ok, new_struct(module, json)}
   end
 
   def map(json, {:list, module: module}) do
-    structs = json |> Enum.map(&module.new/1)
+    structs = json |> Enum.map(fn fields -> new_struct(module, fields) end)
 
     {:ok, structs}
   end
 
   def map(json, {:list, module: module, key: key}) do
-    structs = json |> Map.get(key) |> Enum.map(&module.new/1)
+    structs = json |> Map.get(key) |> Enum.map(fn fields -> new_struct(module, fields) end)
 
     {:ok, structs}
   end
@@ -60,5 +60,13 @@ defmodule Sptfy.Client.BodyMapper do
 
   def map(_json, :ok) do
     :ok
+  end
+
+  defp new_struct(_module, nil) do
+    nil
+  end
+
+  defp new_struct(module, fields) do
+    module.new(fields)
   end
 end

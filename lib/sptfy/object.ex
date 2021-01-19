@@ -11,7 +11,6 @@ defmodule Sptfy.Object do
       alias Sptfy.Object.Helpers
 
       @doc false
-      def new(nil), do: nil
       def new(fields), do: struct(__MODULE__, Helpers.atomize_keys(fields))
 
       defoverridable new: 1
