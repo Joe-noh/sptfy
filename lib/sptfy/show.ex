@@ -10,7 +10,7 @@ defmodule Sptfy.Show do
   get "/v1/shows",
     as: :get_shows,
     query: [:ids, :market],
-    mapping: list_of(SimplifiedShow, "shows")
+    mapping: {:list, module: SimplifiedShow, key: "shows"}
 
   get "/v1/shows/:id",
     as: :get_show,
@@ -20,5 +20,5 @@ defmodule Sptfy.Show do
   get "/v1/shows/:id/episodes",
     as: :get_episodes,
     query: [:market, :limit, :offset],
-    mapping: paged(SimplifiedEpisode)
+    mapping: {:paging, module: SimplifiedEpisode}
 end

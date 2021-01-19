@@ -10,69 +10,69 @@ defmodule Sptfy.Library do
   get "/v1/me/albums",
     as: :get_saved_albums,
     query: [:limit, :offset, :market],
-    mapping: paged(SavedAlbum)
+    mapping: {:paging, module: SavedAlbum}
 
   put "/v1/me/albums",
     as: :save_albums,
     query: [],
     body: [:ids],
-    mapping: ok()
+    mapping: :ok
 
   delete "/v1/me/albums",
     as: :remove_from_saved_albums,
     query: [],
     body: [:ids],
-    mapping: ok()
+    mapping: :ok
 
   get "/v1/me/albums/contains",
     as: :check_albums_saved_state,
     query: [:ids],
-    mapping: as_is(),
+    mapping: :as_is,
     return_type: {:ok, [boolean()]}
 
   get "/v1/me/tracks",
     as: :get_saved_tracks,
     query: [:limit, :offset, :market],
-    mapping: paged(SavedTrack)
+    mapping: {:paging, module: SavedTrack}
 
   put "/v1/me/tracks",
     as: :save_tracks,
     query: [],
     body: [:ids],
-    mapping: ok()
+    mapping: :ok
 
   delete "/v1/me/tracks",
     as: :remove_from_saved_tracks,
     query: [],
     body: [:ids],
-    mapping: ok()
+    mapping: :ok
 
   get "/v1/me/tracks/contains",
     as: :check_tracks_saved_state,
     query: [:ids],
-    mapping: as_is(),
+    mapping: :as_is,
     return_type: {:ok, [boolean()]}
 
   get "/v1/me/shows",
     as: :get_saved_shows,
     query: [:limit, :offset],
-    mapping: paged(SavedShow)
+    mapping: {:paging, module: SavedShow}
 
   put "/v1/me/shows",
     as: :save_shows,
     query: [],
     body: [:ids],
-    mapping: ok()
+    mapping: :ok
 
   delete "/v1/me/shows",
     as: :remove_from_saved_shows,
     query: [],
     body: [:ids],
-    mapping: ok()
+    mapping: :ok
 
   get "/v1/me/shows/contains",
     as: :check_shows_saved_state,
     query: [:ids],
-    mapping: as_is(),
+    mapping: :as_is,
     return_type: {:ok, [boolean()]}
 end

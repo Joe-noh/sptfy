@@ -15,7 +15,17 @@ defmodule Sptfy.Client.ReturnType do
     ok([t(module)])
   end
 
+  def ast({:list, opts}) do
+    module = Keyword.get(opts, :module)
+
+    ok([t(module)])
+  end
+
   def ast({:paged, _meta, _args}) do
+    ok(t(Sptfy.Object.Paging))
+  end
+
+  def ast({:paging, _opts}) do
     ok(t(Sptfy.Object.Paging))
   end
 
@@ -23,7 +33,15 @@ defmodule Sptfy.Client.ReturnType do
     {:{}, [], [:ok, t(Sptfy.Object.Paging), t(String)]}
   end
 
+  def ast({:paging_with_message, _opts}) do
+    {:{}, [], [:ok, t(Sptfy.Object.Paging), t(String)]}
+  end
+
   def ast({:cursor_paged, _meta, _args}) do
+    ok(t(Sptfy.Object.CursorPaging))
+  end
+
+  def ast({:cursor_paging, _opts}) do
     ok(t(Sptfy.Object.CursorPaging))
   end
 
@@ -31,7 +49,15 @@ defmodule Sptfy.Client.ReturnType do
     nil
   end
 
-  def ast({:ok, _meta, _args}) do
+  def ast(:as_is) do
+    nil
+  end
+
+  def ast({:as_is, _opts}) do
+    nil
+  end
+
+  def ast(:ok) do
     :ok
   end
 

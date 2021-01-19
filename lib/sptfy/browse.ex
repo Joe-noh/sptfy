@@ -10,17 +10,17 @@ defmodule Sptfy.Browse do
   get "/v1/browse/new-releases",
     as: :get_new_releases,
     query: [:country, :limit, :offset],
-    mapping: paged(SimplifiedAlbum, "albums")
+    mapping: {:paging, module: SimplifiedAlbum, key: "albums"}
 
   get "/v1/browse/featured-playlists",
     as: :get_featured_playlists,
     query: [:country, :locale, :timestamp, :limit, :offset],
-    mapping: paged_with_message(SimplifiedPlaylist, "playlists")
+    mapping: {:paging_with_message, module: SimplifiedPlaylist, key: "playlists"}
 
   get "/v1/browse/categories",
     as: :get_categories,
     query: [:country, :locale, :timestamp, :limit, :offset],
-    mapping: paged(Category, "categories")
+    mapping: {:paging, module: Category, key: "categories"}
 
   get "/v1/browse/categories/:id",
     as: :get_category,
@@ -30,7 +30,7 @@ defmodule Sptfy.Browse do
   get "/v1/browse/categories/:id/playlists",
     as: :get_category_playlists,
     query: [:country, :limit, :offset],
-    mapping: paged(SimplifiedPlaylist, "playlists")
+    mapping: {:paging, module: SimplifiedPlaylist, key: "playlists"}
 
   get "/v1/recommendations",
     as: :get_recommendations,
@@ -88,6 +88,6 @@ defmodule Sptfy.Browse do
   get "/v1/recommendations/available-genre-seeds",
     as: :get_genres,
     query: [],
-    mapping: as_is("genres"),
+    mapping: {:as_is, key: "genres"},
     return_type: {:ok, [String.t()]}
 end
