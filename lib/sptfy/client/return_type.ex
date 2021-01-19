@@ -2,7 +2,7 @@ defmodule Sptfy.Client.ReturnType do
   @moduledoc false
 
   @doc false
-  @spec ast(mapping :: Sptfy.Client.BodyMapper.mappgin()) :: tuple() | :ok | nil
+  @spec ast(mapping :: Sptfy.Client.BodyMapper.mapping()) :: tuple() | :ok | nil
   def ast({:single, module: module}) do
     ok(t(module))
   end
