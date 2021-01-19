@@ -15,5 +15,5 @@ defmodule Sptfy.Episode do
   get "/v1/episodes/:id",
     as: :get_episode,
     query: [:market],
-    mapping: single(FullEpisode)
+    mapping: {:single, module: FullEpisode}
 end

@@ -21,12 +21,12 @@ defmodule Sptfy.Playlist do
     as: :create_user_playlist,
     query: [],
     body: [:name, :public, :collaborative, :description],
-    mapping: single(FullPlaylist)
+    mapping: {:single, module: FullPlaylist}
 
   get "/v1/playlists/:id",
     as: :get_playlist,
     query: [:market, :fields, :additional_types],
-    mapping: single(FullPlaylist)
+    mapping: {:single, module: FullPlaylist}
 
   put "/v1/playlists/:id",
     as: :update_playlist_details,

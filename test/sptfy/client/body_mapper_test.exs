@@ -4,9 +4,9 @@ defmodule Sptfy.Client.BodyMapperTest do
   alias Sptfy.Client.BodyMapper
   alias Sptfy.Object.{CursorPaging, Paging, SimplifiedArtist}
 
-  describe "single/1" do
+  describe "map/2 with :single tuple" do
     test "maps a json object to a struct" do
-      mapping = BodyMapper.single(SimplifiedArtist)
+      mapping = {:single, module: SimplifiedArtist}
 
       assert BodyMapper.map(%{}, mapping) == {:ok, %SimplifiedArtist{}}
       assert BodyMapper.map(%{id: 10}, mapping) == {:ok, %SimplifiedArtist{id: 10}}

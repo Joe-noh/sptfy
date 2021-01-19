@@ -15,7 +15,7 @@ defmodule Sptfy.Show do
   get "/v1/shows/:id",
     as: :get_show,
     query: [:market],
-    mapping: single(FullShow)
+    mapping: {:single, module: FullShow}
 
   get "/v1/shows/:id/episodes",
     as: :get_episodes,

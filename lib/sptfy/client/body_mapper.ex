@@ -17,9 +17,8 @@ defmodule Sptfy.Client.BodyMapper do
     Map.get(json, key) |> fun.()
   end
 
-  @spec single(module :: module()) :: t()
-  def single(module) do
-    %__MODULE__{fun: fn fields -> {:ok, module.new(fields)} end}
+  def map(json, {:single, module: module}) do
+    {:ok, module.new(json)}
   end
 
   defp do_single(module) do

@@ -25,7 +25,7 @@ defmodule Sptfy.Browse do
   get "/v1/browse/categories/:id",
     as: :get_category,
     query: [:country, :locale],
-    mapping: single(Category)
+    mapping: {:single, module: Category}
 
   get "/v1/browse/categories/:id/playlists",
     as: :get_category_playlists,
@@ -83,7 +83,7 @@ defmodule Sptfy.Browse do
       max_valence
       target_valence
     ]a,
-    mapping: single(Recommendation)
+    mapping: {:single, module: Recommendation}
 
   get "/v1/recommendations/available-genre-seeds",
     as: :get_genres,

@@ -7,6 +7,10 @@ defmodule Sptfy.Client.ReturnType do
     ok(t(module))
   end
 
+  def ast({:single, module: module}) do
+    ok(t(module))
+  end
+
   def ast({:list_of, _meta, [module | _]}) do
     ok([t(module)])
   end

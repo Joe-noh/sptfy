@@ -15,7 +15,7 @@ defmodule Sptfy.Track do
   get "/v1/tracks/:id",
     as: :get_track,
     query: [:market],
-    mapping: single(FullTrack)
+    mapping: {:single, module: FullTrack}
 
   get "/v1/audio-features",
     as: :get_tracks_audio_features,
@@ -25,7 +25,7 @@ defmodule Sptfy.Track do
   get "/v1/audio-features/:id",
     as: :get_track_audio_features,
     query: [],
-    mapping: single(AudioFeature)
+    mapping: {:single, module: AudioFeature}
 
   get "/v1/audio-analysis/:id",
     as: :get_audio_analysis,

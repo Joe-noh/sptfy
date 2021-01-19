@@ -10,7 +10,7 @@ defmodule Sptfy.Player do
   get "/v1/me/player",
     as: :get_playback,
     query: [:market, :additional_types],
-    mapping: single(Playback)
+    mapping: {:single, module: Playback}
 
   put "/v1/me/player",
     as: :transfer_playback,
@@ -26,7 +26,7 @@ defmodule Sptfy.Player do
   get "/v1/me/player/currently-playing",
     as: :get_currently_playing,
     query: [:market, :additional_types],
-    mapping: single(CurrentlyPlaying)
+    mapping: {:single, module: CurrentlyPlaying}
 
   put "/v1/me/player/play",
     as: :play,

@@ -15,7 +15,7 @@ defmodule Sptfy.Album do
   get "/v1/albums/:id",
     as: :get_album,
     query: [:market],
-    mapping: single(FullAlbum)
+    mapping: {:single, module: FullAlbum}
 
   get "/v1/albums/:id/tracks",
     as: :get_album_tracks,

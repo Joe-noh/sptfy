@@ -15,7 +15,7 @@ defmodule Sptfy.Artist do
   get "/v1/artists/:id",
     as: :get_artist,
     query: [],
-    mapping: single(FullArtist)
+    mapping: {:single, module: FullArtist}
 
   get "/v1/artists/:id/top-tracks",
     as: :get_top_tracks,
