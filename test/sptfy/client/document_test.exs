@@ -9,7 +9,7 @@ defmodule Sptfy.Client.DocumentTest do
     end
 
     test "includes parameters' explanation" do
-      doc = Document.build("GET", "/v1/path", [:id, :name])
+      doc = Document.build("GET", "/v1/path", [{:id, required: true}, :name])
 
       assert doc |> String.contains?("## Parameters")
       assert doc |> String.contains?("- `id`\n")
@@ -17,7 +17,7 @@ defmodule Sptfy.Client.DocumentTest do
     end
 
     test "does not mention fixed value parameter" do
-      doc = Document.build("GET", "/v1/path", [:id, {:type, "fixed"}])
+      doc = Document.build("GET", "/v1/path", [:id, {:type, fixed: "fixed"}])
 
       assert doc |> String.contains?("## Parameters")
       assert doc |> String.contains?("- `id`\n")
