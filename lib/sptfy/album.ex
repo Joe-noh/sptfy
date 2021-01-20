@@ -9,7 +9,7 @@ defmodule Sptfy.Album do
 
   get "/v1/albums",
     as: :get_albums,
-    query: [:ids, :market],
+    query: [{:ids, required: true}, :market],
     mapping: {:list, module: FullAlbum, key: "albums"}
 
   get "/v1/albums/:id",

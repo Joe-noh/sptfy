@@ -9,7 +9,7 @@ defmodule Sptfy.Track do
 
   get "/v1/tracks",
     as: :get_tracks,
-    query: [:ids, :market],
+    query: [{:ids, required: true}, :market],
     mapping: {:list, module: FullTrack, key: "tracks"}
 
   get "/v1/tracks/:id",
@@ -19,7 +19,7 @@ defmodule Sptfy.Track do
 
   get "/v1/audio-features",
     as: :get_tracks_audio_features,
-    query: [:ids],
+    query: [{:ids, required: true}],
     mapping: {:list, module: AudioFeature, key: "audio_features"}
 
   get "/v1/audio-features/:id",

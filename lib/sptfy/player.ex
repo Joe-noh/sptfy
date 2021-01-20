@@ -15,7 +15,7 @@ defmodule Sptfy.Player do
   put "/v1/me/player",
     as: :transfer_playback,
     query: [],
-    body: [:device_ids, :play],
+    body: [{:device_ids, required: true}, :play],
     mapping: :ok
 
   get "/v1/me/player/devices",
@@ -54,25 +54,25 @@ defmodule Sptfy.Player do
 
   put "/v1/me/player/seek",
     as: :seek,
-    query: [:position_ms, :device_id],
+    query: [{:position_ms, required: true}, :device_id],
     body: [],
     mapping: :ok
 
   put "/v1/me/player/repeat",
     as: :set_repeat,
-    query: [:state, :device_id],
+    query: [{:state, required: true}, :device_id],
     body: [],
     mapping: :ok
 
   put "/v1/me/player/volume",
     as: :set_volume,
-    query: [:volume_percent, :device_id],
+    query: [{:volume_percent, required: true}, :device_id],
     body: [],
     mapping: :ok
 
   put "/v1/me/player/shuffle",
     as: :set_shuffle,
-    query: [:state, :device_id],
+    query: [{:state, required: true}, :device_id],
     body: [],
     mapping: :ok
 
@@ -83,7 +83,7 @@ defmodule Sptfy.Player do
 
   post "/v1/me/player/queue",
     as: :enqueue,
-    query: [:uri, :device_id],
+    query: [{:uri, required: true}, :device_id],
     body: [],
     mapping: :ok
 end

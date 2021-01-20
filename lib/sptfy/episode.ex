@@ -9,7 +9,7 @@ defmodule Sptfy.Episode do
 
   get "/v1/episodes",
     as: :get_episodes,
-    query: [:ids, :market],
+    query: [{:ids, required: true}, :market],
     mapping: {:list, module: FullEpisode, key: "episodes"}
 
   get "/v1/episodes/:id",

@@ -21,7 +21,7 @@ defmodule Sptfy.Follow do
 
   get "/v1/playlists/:id/followers/contains",
     as: :check_playlist_following_state,
-    query: [:ids],
+    query: [{:ids, required: true}],
     mapping: :as_is,
     return_type: {:ok, [boolean()]}
 
@@ -33,36 +33,36 @@ defmodule Sptfy.Follow do
   put "/v1/me/following",
     as: :follow_users,
     query: [{:type, fixed: "user"}],
-    body: [:ids],
+    body: [{:ids, required: true}],
     mapping: :ok
 
   put "/v1/me/following",
     as: :follow_artists,
     query: [{:type, fixed: "artist"}],
-    body: [:ids],
+    body: [{:ids, required: true}],
     mapping: :ok
 
   delete "/v1/me/following",
     as: :unfollow_users,
     query: [{:type, fixed: "user"}],
-    body: [:ids],
+    body: [{:ids, required: true}],
     mapping: :ok
 
   delete "/v1/me/following",
     as: :unfollow_artists,
     query: [{:type, fixed: "artist"}],
-    body: [:ids],
+    body: [{:ids, required: true}],
     mapping: :ok
 
   get "/v1/me/following/contains",
     as: :check_my_user_following_state,
-    query: [:ids, {:type, fixed: "user"}],
+    query: [{:ids, required: true}, {:type, fixed: "user"}],
     mapping: :as_is,
     return_type: {:ok, [boolean()]}
 
   get "/v1/me/following/contains",
     as: :check_my_artist_following_state,
-    query: [:ids, {:type, fixed: "artist"}],
+    query: [{:ids, required: true}, {:type, fixed: "artist"}],
     mapping: :as_is,
     return_type: {:ok, [boolean()]}
 end

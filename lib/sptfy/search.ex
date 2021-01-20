@@ -9,31 +9,31 @@ defmodule Sptfy.Search do
 
   get "/v1/search",
     as: :search_album,
-    query: [:q, :market, :limit, :offset, :include_external, {:type, fixed: "album"}],
+    query: [{:q, required: true}, :market, :limit, :offset, :include_external, {:type, fixed: "album"}],
     mapping: {:paging, module: SimplifiedAlbum, key: "albums"}
 
   get "/v1/search",
     as: :search_artist,
-    query: [:q, :market, :limit, :offset, :include_external, {:type, fixed: "artist"}],
+    query: [{:q, required: true}, :market, :limit, :offset, :include_external, {:type, fixed: "artist"}],
     mapping: {:paging, module: FullArtist, key: "artists"}
 
   get "/v1/search",
     as: :search_episode,
-    query: [:q, :market, :limit, :offset, :include_external, {:type, fixed: "episode"}],
+    query: [{:q, required: true}, :market, :limit, :offset, :include_external, {:type, fixed: "episode"}],
     mapping: {:paging, module: SimplifiedEpisode, key: "episodes"}
 
   get "/v1/search",
     as: :search_playlist,
-    query: [:q, :market, :limit, :offset, :include_external, {:type, fixed: "playlist"}],
+    query: [{:q, required: true}, :market, :limit, :offset, :include_external, {:type, fixed: "playlist"}],
     mapping: {:paging, module: SimplifiedPlaylist, key: "playlists"}
 
   get "/v1/search",
     as: :search_show,
-    query: [:q, :market, :limit, :offset, :include_external, {:type, fixed: "show"}],
+    query: [{:q, required: true}, :market, :limit, :offset, :include_external, {:type, fixed: "show"}],
     mapping: {:paging, module: SimplifiedShow, key: "shows"}
 
   get "/v1/search",
     as: :search_track,
-    query: [:q, :market, :limit, :offset, :include_external, {:type, fixed: "track"}],
+    query: [{:q, required: true}, :market, :limit, :offset, :include_external, {:type, fixed: "track"}],
     mapping: {:paging, module: FullTrack, key: "tracks"}
 end

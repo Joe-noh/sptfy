@@ -15,18 +15,18 @@ defmodule Sptfy.Library do
   put "/v1/me/albums",
     as: :save_albums,
     query: [],
-    body: [:ids],
+    body: [{:ids, required: true}],
     mapping: :ok
 
   delete "/v1/me/albums",
     as: :remove_from_saved_albums,
     query: [],
-    body: [:ids],
+    body: [{:ids, required: true}],
     mapping: :ok
 
   get "/v1/me/albums/contains",
     as: :check_albums_saved_state,
-    query: [:ids],
+    query: [{:ids, required: true}],
     mapping: :as_is,
     return_type: {:ok, [boolean()]}
 
@@ -38,18 +38,18 @@ defmodule Sptfy.Library do
   put "/v1/me/tracks",
     as: :save_tracks,
     query: [],
-    body: [:ids],
+    body: [{:ids, required: true}],
     mapping: :ok
 
   delete "/v1/me/tracks",
     as: :remove_from_saved_tracks,
     query: [],
-    body: [:ids],
+    body: [{:ids, required: true}],
     mapping: :ok
 
   get "/v1/me/tracks/contains",
     as: :check_tracks_saved_state,
-    query: [:ids],
+    query: [{:ids, required: true}],
     mapping: :as_is,
     return_type: {:ok, [boolean()]}
 
@@ -61,18 +61,18 @@ defmodule Sptfy.Library do
   put "/v1/me/shows",
     as: :save_shows,
     query: [],
-    body: [:ids],
+    body: [{:ids, required: true}],
     mapping: :ok
 
   delete "/v1/me/shows",
     as: :remove_from_saved_shows,
     query: [],
-    body: [:ids],
+    body: [{:ids, required: true}],
     mapping: :ok
 
   get "/v1/me/shows/contains",
     as: :check_shows_saved_state,
-    query: [:ids],
+    query: [{:ids, required: true}],
     mapping: :as_is,
     return_type: {:ok, [boolean()]}
 end

@@ -20,7 +20,7 @@ defmodule Sptfy.Playlist do
   post "/v1/users/:id/playlists",
     as: :create_user_playlist,
     query: [],
-    body: [:name, :public, :collaborative, :description],
+    body: [{:name, required: true}, :public, :collaborative, :description],
     mapping: {:single, module: FullPlaylist}
 
   get "/v1/playlists/:id",
@@ -70,6 +70,6 @@ defmodule Sptfy.Playlist do
   delete "/v1/playlists/:id/tracks",
     as: :remove_tracks,
     query: [],
-    body: [:tracks],
+    body: [{:tracks, required: true}],
     mapping: :ok
 end
