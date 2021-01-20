@@ -14,6 +14,7 @@ defmodule Sptfy.Client do
     [as: fun, query: query, mapping: mapping] = Keyword.take(opts, [:as, :query, :mapping])
 
     placeholders = Sptfy.Client.Placeholder.extract(path)
+    placeholder_keys = Keyword.keys(placeholders)
     type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
@@ -27,7 +28,7 @@ defmodule Sptfy.Client do
 
       def unquote(fun)(token, params) when is_map(params) do
         query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
-        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
+        path_params = Sptfy.Client.Parameter.prepare(params, (unquote(placeholder_keys)))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
         case Sptfy.Client.HTTP.get(token, filled_path, query_params) do
@@ -42,6 +43,7 @@ defmodule Sptfy.Client do
     [as: fun, query: query, body: body, mapping: mapping] = Keyword.take(opts, [:as, :query, :body, :mapping])
 
     placeholders = Sptfy.Client.Placeholder.extract(path)
+    placeholder_keys = Keyword.keys(placeholders)
     type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
@@ -56,7 +58,7 @@ defmodule Sptfy.Client do
       def unquote(fun)(token, params) when is_map(params) do
         query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
         body_params = Sptfy.Client.Parameter.prepare(params, unquote(body))
-        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
+        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholder_keys))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
         case Sptfy.Client.HTTP.post(token, filled_path, query_params, body_params) do
@@ -71,6 +73,7 @@ defmodule Sptfy.Client do
     [as: fun, query: query, body: body, mapping: mapping] = Keyword.take(opts, [:as, :query, :body, :mapping])
 
     placeholders = Sptfy.Client.Placeholder.extract(path)
+    placeholder_keys = Keyword.keys(placeholders)
     type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
@@ -85,7 +88,7 @@ defmodule Sptfy.Client do
       def unquote(fun)(token, params) when is_map(params) do
         query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
         body_params = Sptfy.Client.Parameter.prepare(params, unquote(body))
-        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
+        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholder_keys))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
         case Sptfy.Client.HTTP.put(token, filled_path, query_params, body_params) do
@@ -100,6 +103,7 @@ defmodule Sptfy.Client do
     [as: fun, query: query, mapping: mapping] = Keyword.take(opts, [:as, :query, :mapping])
 
     placeholders = Sptfy.Client.Placeholder.extract(path)
+    placeholder_keys = Keyword.keys(placeholders)
     type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
@@ -113,7 +117,7 @@ defmodule Sptfy.Client do
 
       def unquote(fun)(token, body, params) when is_map(params) do
         query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
-        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
+        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholder_keys))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
         case Sptfy.Client.HTTP.put_jpeg(token, filled_path, query_params, body) do
@@ -128,6 +132,7 @@ defmodule Sptfy.Client do
     [as: fun, query: query, body: body, mapping: mapping] = Keyword.take(opts, [:as, :query, :body, :mapping])
 
     placeholders = Sptfy.Client.Placeholder.extract(path)
+    placeholder_keys = Keyword.keys(placeholders)
     type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
@@ -142,7 +147,7 @@ defmodule Sptfy.Client do
       def unquote(fun)(token, params) when is_map(params) do
         query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
         body_params = Sptfy.Client.Parameter.prepare(params, unquote(body))
-        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
+        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholder_keys))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
         case Sptfy.Client.HTTP.delete(token, filled_path, query_params, body_params) do

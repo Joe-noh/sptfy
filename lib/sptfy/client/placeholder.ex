@@ -6,7 +6,7 @@ defmodule Sptfy.Client.Placeholder do
   def extract(str) do
     Regex.scan(~r/:(\w+)/, str)
     |> Enum.map(fn [_whole, name] -> name end)
-    |> Enum.map(&String.to_atom/1)
+    |> Enum.map(fn name -> {String.to_atom(name), required: true} end)
   end
 
   @doc false

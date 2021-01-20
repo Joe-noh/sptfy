@@ -5,8 +5,8 @@ defmodule Sptfy.Client.PlaceholderTest do
 
   describe "extract/1" do
     test "extract placeholder names from string" do
-      assert Placeholder.extract("/users/:id") == ~w[id]a
-      assert Placeholder.extract("/users/:id/posts/:post_id") == ~w[id post_id]a
+      assert Placeholder.extract("/users/:id") == [{:id, required: true}]
+      assert Placeholder.extract("/users/:id/posts/:post_id") == [{:id, required: true}, {:post_id, required: true}]
     end
   end
 
