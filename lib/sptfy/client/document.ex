@@ -25,10 +25,10 @@ defmodule Sptfy.Client.Document do
   end
 
   defp parameter_doc_line({key, opts}) do
-    if Keyword.has_key?(opts, :fixed) do
-      nil
-    else
-      "- `#{key}`"
+    cond do
+      Keyword.has_key?(opts, :fixed) -> nil
+      Keyword.has_key?(opts, :required) -> "- `#{key}`: required"
+      true -> "- `#{key}`"
     end
   end
 
