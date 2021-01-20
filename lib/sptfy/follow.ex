@@ -27,42 +27,42 @@ defmodule Sptfy.Follow do
 
   get "/v1/me/following",
     as: :get_my_following_artists,
-    query: [:after, :limit, {:type, "artist"}],
+    query: [:after, :limit, {:type, fixed: "artist"}],
     mapping: {:paging, module: FullArtist, key: "artists"}
 
   put "/v1/me/following",
     as: :follow_users,
-    query: [type: "user"],
+    query: [{:type, fixed: "user"}],
     body: [:ids],
     mapping: :ok
 
   put "/v1/me/following",
     as: :follow_artists,
-    query: [type: "artist"],
+    query: [{:type, fixed: "artist"}],
     body: [:ids],
     mapping: :ok
 
   delete "/v1/me/following",
     as: :unfollow_users,
-    query: [type: "user"],
+    query: [{:type, fixed: "user"}],
     body: [:ids],
     mapping: :ok
 
   delete "/v1/me/following",
     as: :unfollow_artists,
-    query: [type: "artist"],
+    query: [{:type, fixed: "artist"}],
     body: [:ids],
     mapping: :ok
 
   get "/v1/me/following/contains",
     as: :check_my_user_following_state,
-    query: [:ids, {:type, "user"}],
+    query: [:ids, {:type, fixed: "user"}],
     mapping: :as_is,
     return_type: {:ok, [boolean()]}
 
   get "/v1/me/following/contains",
     as: :check_my_artist_following_state,
-    query: [:ids, {:type, "artist"}],
+    query: [:ids, {:type, fixed: "artist"}],
     mapping: :as_is,
     return_type: {:ok, [boolean()]}
 end

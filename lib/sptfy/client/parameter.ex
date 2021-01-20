@@ -13,13 +13,15 @@ defmodule Sptfy.Client.Parameter do
 
   defp parse(schema) do
     Enum.reduce(schema, {[], %{}}, fn
-      {key, value}, {keys, fixed} ->
-        fixed = Map.put(fixed, key, value)
-        {keys, fixed}
+      {key, opts}, {keys, fixed_values_map} ->
+        case Keyword.get(opts, :fixed) do
+          nil -> {keys, fixed_values_map}
+          value -> {keys, Map.put(fixed_values_map, key, value)}
+        end
 
-      key, {keys, fixed} ->
+      key, {keys, fixed_values_map} ->
         keys = [key | keys]
-        {keys, fixed}
+        {keys, fixed_values_map}
     end)
   end
 end

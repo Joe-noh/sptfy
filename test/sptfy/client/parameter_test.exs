@@ -5,7 +5,7 @@ defmodule Sptfy.Client.ParameterTest do
 
   describe "prepare/2" do
     setup do
-      %{schema: [:limit, :offset, {:type, "user"}]}
+      %{schema: [:limit, :offset, {:type, fixed: "user"}]}
     end
 
     test "exclude unpermitted keys", %{schema: schema} do
