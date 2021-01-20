@@ -24,6 +24,15 @@ defmodule Sptfy.Client.Document do
     |> Enum.join("\n")
   end
 
-  defp parameter_doc_line({_key, _value}), do: nil
-  defp parameter_doc_line(key), do: "- `#{key}`"
+  defp parameter_doc_line({key, opts}) do
+    cond do
+      Keyword.has_key?(opts, :fixed) -> nil
+      Keyword.has_key?(opts, :required) -> "- `#{key}`: required"
+      true -> "- `#{key}`"
+    end
+  end
+
+  defp parameter_doc_line(key) do
+    "- `#{key}`"
+  end
 end

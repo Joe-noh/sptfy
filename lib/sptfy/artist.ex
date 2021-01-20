@@ -9,7 +9,7 @@ defmodule Sptfy.Artist do
 
   get "/v1/artists",
     as: :get_artists,
-    query: [:ids],
+    query: [{:ids, required: true}],
     mapping: {:list, module: FullArtist, key: "artists"}
 
   get "/v1/artists/:id",
@@ -19,7 +19,7 @@ defmodule Sptfy.Artist do
 
   get "/v1/artists/:id/top-tracks",
     as: :get_top_tracks,
-    query: [:market],
+    query: [{:market, required: true}],
     mapping: {:list, module: FullTrack, key: "tracks"}
 
   get "/v1/artists/:id/related-artists",

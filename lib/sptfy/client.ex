@@ -3,6 +3,8 @@ defmodule Sptfy.Client do
 
   @type params :: Map.t() | Keyword.t()
 
+  alias Sptfy.Client.{Document, HTTP, Parameter, Placeholder, ResponseHandler, ReturnType}
+
   defmacro __using__(_) do
     quote location: :keep do
       import Sptfy.Client
@@ -13,11 +15,12 @@ defmodule Sptfy.Client do
   defmacro get(path, opts) do
     [as: fun, query: query, mapping: mapping] = Keyword.take(opts, [:as, :query, :mapping])
 
-    placeholders = Sptfy.Client.Placeholder.extract(path)
-    type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
+    placeholders = Placeholder.extract(path)
+    placeholder_keys = Keyword.keys(placeholders)
+    type_ast = ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
-      @doc Sptfy.Client.Document.build("GET", unquote(path), unquote(placeholders) ++ unquote(query))
+      @doc Document.build("GET", unquote(path), unquote(placeholders) ++ unquote(query))
       @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
@@ -26,12 +29,14 @@ defmodule Sptfy.Client do
       end
 
       def unquote(fun)(token, params) when is_map(params) do
-        query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
-        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
-        filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
+        query_params = Parameter.prepare(params, unquote(query))
+        path_params = Parameter.prepare(params, unquote(placeholder_keys))
+        filled_path = Placeholder.fill(unquote(path), path_params)
 
-        case Sptfy.Client.HTTP.get(token, filled_path, query_params) do
-          {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
+        Parameter.check_required!(params, unquote(placeholders) ++ unquote(query))
+
+        case HTTP.get(token, filled_path, query_params) do
+          {:ok, response} -> ResponseHandler.handle(response, unquote(mapping))
           error -> error
         end
       end
@@ -41,11 +46,12 @@ defmodule Sptfy.Client do
   defmacro post(path, opts) do
     [as: fun, query: query, body: body, mapping: mapping] = Keyword.take(opts, [:as, :query, :body, :mapping])
 
-    placeholders = Sptfy.Client.Placeholder.extract(path)
-    type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
+    placeholders = Placeholder.extract(path)
+    placeholder_keys = Keyword.keys(placeholders)
+    type_ast = ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
-      @doc Sptfy.Client.Document.build("POST", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
+      @doc Document.build("POST", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
       @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
@@ -54,13 +60,15 @@ defmodule Sptfy.Client do
       end
 
       def unquote(fun)(token, params) when is_map(params) do
-        query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
-        body_params = Sptfy.Client.Parameter.prepare(params, unquote(body))
-        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
-        filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
+        query_params = Parameter.prepare(params, unquote(query))
+        body_params = Parameter.prepare(params, unquote(body))
+        path_params = Parameter.prepare(params, unquote(placeholder_keys))
+        filled_path = Placeholder.fill(unquote(path), path_params)
 
-        case Sptfy.Client.HTTP.post(token, filled_path, query_params, body_params) do
-          {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
+        Parameter.check_required!(params, unquote(placeholders) ++ unquote(query) ++ unquote(body))
+
+        case HTTP.post(token, filled_path, query_params, body_params) do
+          {:ok, response} -> ResponseHandler.handle(response, unquote(mapping))
           error -> error
         end
       end
@@ -70,11 +78,12 @@ defmodule Sptfy.Client do
   defmacro put(path, opts) do
     [as: fun, query: query, body: body, mapping: mapping] = Keyword.take(opts, [:as, :query, :body, :mapping])
 
-    placeholders = Sptfy.Client.Placeholder.extract(path)
-    type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
+    placeholders = Placeholder.extract(path)
+    placeholder_keys = Keyword.keys(placeholders)
+    type_ast = ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
-      @doc Sptfy.Client.Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
+      @doc Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
       @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
@@ -83,13 +92,15 @@ defmodule Sptfy.Client do
       end
 
       def unquote(fun)(token, params) when is_map(params) do
-        query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
-        body_params = Sptfy.Client.Parameter.prepare(params, unquote(body))
-        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
-        filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
+        query_params = Parameter.prepare(params, unquote(query))
+        body_params = Parameter.prepare(params, unquote(body))
+        path_params = Parameter.prepare(params, unquote(placeholder_keys))
+        filled_path = Placeholder.fill(unquote(path), path_params)
 
-        case Sptfy.Client.HTTP.put(token, filled_path, query_params, body_params) do
-          {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
+        Parameter.check_required!(params, unquote(placeholders) ++ unquote(query) ++ unquote(body))
+
+        case HTTP.put(token, filled_path, query_params, body_params) do
+          {:ok, response} -> ResponseHandler.handle(response, unquote(mapping))
           error -> error
         end
       end
@@ -99,11 +110,12 @@ defmodule Sptfy.Client do
   defmacro put_jpeg(path, opts) do
     [as: fun, query: query, mapping: mapping] = Keyword.take(opts, [:as, :query, :mapping])
 
-    placeholders = Sptfy.Client.Placeholder.extract(path)
-    type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
+    placeholders = Placeholder.extract(path)
+    placeholder_keys = Keyword.keys(placeholders)
+    type_ast = ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
-      @doc Sptfy.Client.Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query))
+      @doc Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query))
       @spec unquote(fun)(token :: String.t(), body :: binary(), params :: Sptfy.Client.params()) :: unquote(type_ast)
       def unquote(fun)(token, body, params \\ %{})
 
@@ -112,12 +124,14 @@ defmodule Sptfy.Client do
       end
 
       def unquote(fun)(token, body, params) when is_map(params) do
-        query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
-        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
-        filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
+        query_params = Parameter.prepare(params, unquote(query))
+        path_params = Parameter.prepare(params, unquote(placeholder_keys))
+        filled_path = Placeholder.fill(unquote(path), path_params)
 
-        case Sptfy.Client.HTTP.put_jpeg(token, filled_path, query_params, body) do
-          {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
+        Parameter.check_required!(params, unquote(placeholders) ++ unquote(query))
+
+        case HTTP.put_jpeg(token, filled_path, query_params, body) do
+          {:ok, response} -> ResponseHandler.handle(response, unquote(mapping))
           error -> error
         end
       end
@@ -127,11 +141,12 @@ defmodule Sptfy.Client do
   defmacro delete(path, opts) do
     [as: fun, query: query, body: body, mapping: mapping] = Keyword.take(opts, [:as, :query, :body, :mapping])
 
-    placeholders = Sptfy.Client.Placeholder.extract(path)
-    type_ast = Sptfy.Client.ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
+    placeholders = Placeholder.extract(path)
+    placeholder_keys = Keyword.keys(placeholders)
+    type_ast = ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
 
     quote location: :keep do
-      @doc Sptfy.Client.Document.build("DELETE", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
+      @doc Document.build("DELETE", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
       @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
@@ -140,13 +155,15 @@ defmodule Sptfy.Client do
       end
 
       def unquote(fun)(token, params) when is_map(params) do
-        query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
-        body_params = Sptfy.Client.Parameter.prepare(params, unquote(body))
-        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholders))
-        filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
+        query_params = Parameter.prepare(params, unquote(query))
+        body_params = Parameter.prepare(params, unquote(body))
+        path_params = Parameter.prepare(params, unquote(placeholder_keys))
+        filled_path = Placeholder.fill(unquote(path), path_params)
 
-        case Sptfy.Client.HTTP.delete(token, filled_path, query_params, body_params) do
-          {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
+        Parameter.check_required!(params, unquote(placeholders) ++ unquote(query) ++ unquote(body))
+
+        case HTTP.delete(token, filled_path, query_params, body_params) do
+          {:ok, response} -> ResponseHandler.handle(response, unquote(mapping))
           error -> error
         end
       end

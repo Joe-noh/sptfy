@@ -9,7 +9,7 @@ defmodule Sptfy.Show do
 
   get "/v1/shows",
     as: :get_shows,
-    query: [:ids, :market],
+    query: [{:ids, required: true}, :market],
     mapping: {:list, module: SimplifiedShow, key: "shows"}
 
   get "/v1/shows/:id",

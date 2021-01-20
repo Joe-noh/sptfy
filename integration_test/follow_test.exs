@@ -60,4 +60,3 @@ defmodule IntegrationTest.FollowTest do
     assert {:ok, [false]} = Follow.check_my_artist_following_state(token, ids: [artist_id])
   end
 end
-
