@@ -28,8 +28,10 @@ defmodule Sptfy.Client do
 
       def unquote(fun)(token, params) when is_map(params) do
         query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
-        path_params = Sptfy.Client.Parameter.prepare(params, (unquote(placeholder_keys)))
+        path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholder_keys))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
+
+        Sptfy.Client.Parameter.check_required!(params, unquote(placeholders) ++ unquote(query))
 
         case Sptfy.Client.HTTP.get(token, filled_path, query_params) do
           {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
@@ -61,6 +63,8 @@ defmodule Sptfy.Client do
         path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholder_keys))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
+        Sptfy.Client.Parameter.check_required!(params, unquote(placeholders) ++ unquote(query) ++ unquote(body))
+
         case Sptfy.Client.HTTP.post(token, filled_path, query_params, body_params) do
           {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
           error -> error
@@ -91,6 +95,8 @@ defmodule Sptfy.Client do
         path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholder_keys))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
 
+        Sptfy.Client.Parameter.check_required!(params, unquote(placeholders) ++ unquote(query) ++ unquote(body))
+
         case Sptfy.Client.HTTP.put(token, filled_path, query_params, body_params) do
           {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
           error -> error
@@ -119,6 +125,8 @@ defmodule Sptfy.Client do
         query_params = Sptfy.Client.Parameter.prepare(params, unquote(query))
         path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholder_keys))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
+
+        Sptfy.Client.Parameter.check_required!(params, unquote(placeholders) ++ unquote(query))
 
         case Sptfy.Client.HTTP.put_jpeg(token, filled_path, query_params, body) do
           {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
@@ -149,6 +157,8 @@ defmodule Sptfy.Client do
         body_params = Sptfy.Client.Parameter.prepare(params, unquote(body))
         path_params = Sptfy.Client.Parameter.prepare(params, unquote(placeholder_keys))
         filled_path = Sptfy.Client.Placeholder.fill(unquote(path), path_params)
+
+        Sptfy.Client.Parameter.check_required!(params, unquote(placeholders) ++ unquote(query) ++ unquote(body))
 
         case Sptfy.Client.HTTP.delete(token, filled_path, query_params, body_params) do
           {:ok, response} -> Sptfy.Client.ResponseHandler.handle(response, unquote(mapping))
