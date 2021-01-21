@@ -9,7 +9,7 @@ defmodule Sptfy.MixProject do
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       deps: deps()
-    ]
+    ] ++ docs()
   end
 
   def application do
@@ -24,10 +24,28 @@ defmodule Sptfy.MixProject do
 
   defp deps do
     [
+      {:ex_doc, "~> 0.23", only: :dev, runtime: false},
       {:finch, "~> 0.5"},
       {:jason, "~> 1.2"},
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false},
       {:mock, "~> 0.3", only: :test}
+    ]
+  end
+
+  defp docs do
+    [
+      name: "Sptfy",
+      source_url: "https://github.com/Joe-noh/sptfy",
+      docs: [
+        main: "Sptfy",
+        authors: ["Joe-noh"],
+        formatters: ["html"],
+        groups_for_modules: [
+          OAuth: Sptfy.OAuth,
+          "API Modules": ~r/^Sptfy.[^.]+$/,
+          Objects: ~r/^Sptfy\.Object\..+$/
+        ]
+      ]
     ]
   end
 end
