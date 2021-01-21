@@ -3,13 +3,13 @@ defmodule Sptfy.Client.Document do
 
   def build(method, path, []) do
     """
-    #{method} #{path}
+    #{method} `#{path}`
     """
   end
 
   def build(method, path, params) do
     """
-    #{method} #{path}
+    #{method} `#{path}`
 
     ## Parameters
 
