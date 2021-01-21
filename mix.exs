@@ -3,13 +3,18 @@ defmodule Sptfy.MixProject do
 
   def project do
     [
+      name: "Sptfy",
+      description: "Spotify API client library.",
       app: :sptfy,
       version: "0.1.0",
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
-      deps: deps()
-    ] ++ docs()
+      deps: deps(),
+      docs: docs(),
+      package: package(),
+      source_url: "https://github.com/Joe-noh/sptfy"
+    ]
   end
 
   def application do
@@ -34,18 +39,23 @@ defmodule Sptfy.MixProject do
 
   defp docs do
     [
-      name: "Sptfy",
-      source_url: "https://github.com/Joe-noh/sptfy",
-      docs: [
-        main: "Sptfy",
-        authors: ["Joe-noh"],
-        formatters: ["html"],
-        groups_for_modules: [
-          OAuth: Sptfy.OAuth,
-          "API Modules": ~r/^Sptfy.[^.]+$/,
-          Objects: ~r/^Sptfy\.Object\..+$/
-        ]
+      main: "Sptfy",
+      authors: ["Joe-noh"],
+      formatters: ["html"],
+      groups_for_modules: [
+        OAuth: Sptfy.OAuth,
+        "API Modules": ~r/^Sptfy.[^.]+$/,
+        Objects: ~r/^Sptfy\.Object\..+$/
       ]
+    ]
+  end
+
+  defp package do
+    [
+      name: "sptfy",
+      files: ~w[lib .formatter.exs mix.exs README* LICENSE*],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/Joe-noh/sptfy"}
     ]
   end
 end
