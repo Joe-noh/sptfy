@@ -5,7 +5,7 @@ defmodule Sptfy.Client.DocumentTest do
 
   describe "build/3" do
     test "includes HTTP method and path" do
-      assert Document.build("GET", "/v1/path", []) |> String.contains?("GET /v1/path")
+      assert Document.build("GET", "/v1/path", []) |> String.contains?("GET `/v1/path`")
     end
 
     test "includes parameters' explanation" do
