@@ -1,8 +1,6 @@
 defmodule Sptfy.Client do
   @moduledoc false
 
-  @type params :: Map.t() | Keyword.t()
-
   alias Sptfy.Client.{Document, HTTP, Parameter, Placeholder, ResponseHandler, ReturnType}
 
   defmacro __using__(_) do
@@ -21,7 +19,7 @@ defmodule Sptfy.Client do
 
     quote location: :keep do
       @doc Document.build("GET", unquote(path), unquote(placeholders) ++ unquote(query))
-      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
+      @spec unquote(fun)(token :: String.t(), params :: map() | Keyword.t()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
       def unquote(fun)(token, params) when is_list(params) do
@@ -52,7 +50,7 @@ defmodule Sptfy.Client do
 
     quote location: :keep do
       @doc Document.build("POST", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
-      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
+      @spec unquote(fun)(token :: String.t(), params :: map() | Keyword.t()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
       def unquote(fun)(token, params) when is_list(params) do
@@ -84,7 +82,7 @@ defmodule Sptfy.Client do
 
     quote location: :keep do
       @doc Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
-      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
+      @spec unquote(fun)(token :: String.t(), params :: map() | Keyword.t()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
       def unquote(fun)(token, params) when is_list(params) do
@@ -116,7 +114,7 @@ defmodule Sptfy.Client do
 
     quote location: :keep do
       @doc Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query))
-      @spec unquote(fun)(token :: String.t(), body :: binary(), params :: Sptfy.Client.params()) :: unquote(type_ast)
+      @spec unquote(fun)(token :: String.t(), body :: binary(), params :: map() | Keyword.t()) :: unquote(type_ast)
       def unquote(fun)(token, body, params \\ %{})
 
       def unquote(fun)(token, body, params) when is_list(params) do
@@ -147,7 +145,7 @@ defmodule Sptfy.Client do
 
     quote location: :keep do
       @doc Document.build("DELETE", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
-      @spec unquote(fun)(token :: String.t(), params :: Sptfy.Client.params()) :: unquote(type_ast)
+      @spec unquote(fun)(token :: String.t(), params :: map() | Keyword.t()) :: unquote(type_ast)
       def unquote(fun)(token, params \\ %{})
 
       def unquote(fun)(token, params) when is_list(params) do

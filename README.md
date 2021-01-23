@@ -1,23 +1,20 @@
 # Sptfy
 
-**TODO: Add description**
+Spotify API client library.
 
 ## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `sptfy` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
   [
-    {:sptfy, "~> 0.1.0"}
+    {:sptfy, "~> ..."}
   ]
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/sptfy](https://hexdocs.pm/sptfy).
+## Usage
+
+See [the documentation](https://hexdocs.pm/sptfy).
 
 ## Development
 
