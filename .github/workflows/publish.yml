@@ -17,6 +17,7 @@ jobs:
         key: ${{ runner.os }}-sptfy-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
         restore-keys: |
           ${{ runner.os }}-sptfy-
+    - run: mix deps.get
     - run: mix hex.publish --yes --dry-run
       env:
         HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
