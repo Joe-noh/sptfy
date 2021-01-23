@@ -1,0 +1,22 @@
+name: Publish
+on:
+  push:
+    tags: ['v*']
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: erlef/setup-elixir@v1
+      with:
+        otp-version: '23.1.1'
+        elixir-version: '1.11.2'
+    - uses: actions/cache@v1
+      with:
+        path: deps
+        key: ${{ runner.os }}-sptfy-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+        restore-keys: |
+          ${{ runner.os }}-sptfy-
+    - run: mix hex.publish --yes --dry-run
+      env:
+        HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
