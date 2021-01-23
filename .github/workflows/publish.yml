@@ -18,6 +18,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-sptfy-
     - run: mix deps.get
-    - run: mix hex.publish --yes --dry-run
+    - run: mix hex.publish --yes
       env:
         HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
