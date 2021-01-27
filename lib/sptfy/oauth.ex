@@ -5,10 +5,10 @@ defmodule Sptfy.OAuth do
   https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
   """
 
-  @type response :: {:ok, Finch.Response.t()} | {:error, OAuthError.t()} | {:error, Mint.Types.error()}
-
   alias Sptfy.Object.OAuthResponse
   alias Sptfy.Object.OAuthError
+
+  @type response :: {:ok, OAuthResponse.t()} | {:error, OAuthError.t()} | {:error, Mint.Types.error()}
 
   @doc """
   Returns a URL to request an authorization code.
@@ -19,8 +19,14 @@ defmodule Sptfy.OAuth do
       iex> Sptfy.OAuth.url("CLIENT_ID", "https://example.com/callback", %{scope: ["streaming"]})
       ...> "https://accounts.spotify.com/authorize?client_id=CLIENT_ID&redirect_uri=https%3A%2F%2Fexample.com%2Fcallback&response_type=code&scope=streaming"
   """
-  @spec url(client_id :: String.t(), redirect_uri :: String.t(), params :: map()) :: String.t()
-  def url(client_id, redirect_uri, params \\ %{}) do
+  @spec url(client_id :: String.t(), redirect_uri :: String.t(), params :: map() | Keyword.t()) :: String.t()
+  def url(client_id, redirect_uri, params \\ %{})
+
+  def url(client_id, redirect_uri, params) when is_list(params) do
+    url(client_id, redirect_uri, Enum.into(params, %{}))
+  end
+
+  def url(client_id, redirect_uri, params) when is_map(params) do
     scope = Map.get(params, :scope, []) |> Enum.join(",")
 
     endpoint = "https://accounts.spotify.com/authorize"
