@@ -114,21 +114,21 @@ defmodule Sptfy.Client do
 
     quote location: :keep do
       @doc Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query))
-      @spec unquote(fun)(token :: String.t(), body :: binary(), params :: map() | Keyword.t()) :: unquote(type_ast)
-      def unquote(fun)(token, body, params \\ %{})
+      @spec unquote(fun)(token :: String.t(), base64_body :: String.t(), params :: map() | Keyword.t()) :: unquote(type_ast)
+      def unquote(fun)(token, base64_body, params \\ %{})
 
-      def unquote(fun)(token, body, params) when is_list(params) do
-        unquote(fun)(token, body, Enum.into(params, %{}))
+      def unquote(fun)(token, base64_body, params) when is_list(params) do
+        unquote(fun)(token, base64_body, Enum.into(params, %{}))
       end
 
-      def unquote(fun)(token, body, params) when is_map(params) do
+      def unquote(fun)(token, base64_body, params) when is_map(params) do
         query_params = Parameter.prepare(params, unquote(query))
         path_params = Parameter.prepare(params, unquote(placeholder_keys))
         filled_path = Placeholder.fill(unquote(path), path_params)
 
         Parameter.check_required!(params, unquote(placeholders) ++ unquote(query))
 
-        case HTTP.put_jpeg(token, filled_path, query_params, body) do
+        case HTTP.put_jpeg(token, filled_path, query_params, base64_body) do
           {:ok, response} -> ResponseHandler.handle(response, unquote(mapping))
           error -> error
         end
