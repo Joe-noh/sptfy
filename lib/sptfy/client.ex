@@ -114,7 +114,7 @@ defmodule Sptfy.Client do
 
     quote location: :keep do
       @doc Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query))
-      @spec unquote(fun)(token :: String.t(), body :: binary(), params :: map() | Keyword.t()) :: unquote(type_ast)
+      @spec unquote(fun)(token :: String.t(), body :: String.t(), params :: map() | Keyword.t()) :: unquote(type_ast)
       def unquote(fun)(token, body, params \\ %{})
 
       def unquote(fun)(token, body, params) when is_list(params) do

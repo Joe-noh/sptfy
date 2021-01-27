@@ -27,7 +27,7 @@ defmodule Sptfy.Client.HTTP do
     Finch.build(:put, url, headers, body) |> Finch.request(Sptfy.Finch)
   end
 
-  @spec put_jpeg(token :: String.t(), path :: String.t(), query :: map(), body :: binary()) :: {:ok, Finch.Response.t()} | {:error, Mint.Types.error()}
+  @spec put_jpeg(token :: String.t(), path :: String.t(), query :: map(), body :: String.t()) :: {:ok, Finch.Response.t()} | {:error, Mint.Types.error()}
   def put_jpeg(token, path, query, body) do
     url = url(path, query)
     headers = jpeg_headers(token)
