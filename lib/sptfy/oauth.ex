@@ -5,10 +5,10 @@ defmodule Sptfy.OAuth do
   https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
   """
 
-  @type response :: {:ok, Finch.Response.t()} | {:error, OAuthError.t()} | {:error, Mint.Types.error()}
-
   alias Sptfy.Object.OAuthResponse
   alias Sptfy.Object.OAuthError
+
+  @type response :: {:ok, OAuthResponse.t()} | {:error, OAuthError.t()} | {:error, Mint.Types.error()}
 
   @doc """
   Returns a URL to request an authorization code.
