@@ -23,7 +23,7 @@ defmodule Sptfy.Client.Parameter do
     Enum.reduce(schema, {[], %{}}, fn
       {key, opts}, {keys, fixed_values_map} ->
         case Keyword.get(opts, :fixed) do
-          nil -> {keys, fixed_values_map}
+          nil -> {[key | keys], fixed_values_map}
           value -> {keys, Map.put(fixed_values_map, key, value)}
         end
 
