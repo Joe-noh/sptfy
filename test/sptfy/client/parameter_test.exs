@@ -5,11 +5,11 @@ defmodule Sptfy.Client.ParameterTest do
 
   describe "prepare/2" do
     setup do
-      %{schema: [:limit, :offset, {:type, fixed: "user"}]}
+      %{schema: [{:id, required: true}, :limit, :offset, {:type, fixed: "user"}]}
     end
 
     test "exclude unpermitted keys", %{schema: schema} do
-      assert Parameter.prepare(%{limit: 10, abc: 1}, schema) == %{limit: 10, type: "user"}
+      assert Parameter.prepare(%{id: "abc", limit: 10, abc: 1}, schema) == %{id: "abc", limit: 10, type: "user"}
     end
 
     test "cannot overwrite fixed value", %{schema: schema} do
