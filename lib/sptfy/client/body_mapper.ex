@@ -1,6 +1,8 @@
 defmodule Sptfy.Client.BodyMapper do
   @moduledoc false
 
+  alias Sptfy.Object.{CursorPaging, Paging}
+
   @type mapped_result :: :ok | {:ok, map()} | {:ok, [map()]} | {:ok, map(), String.t()}
   @type mapping :: single_mapping() | list_mapping() | paging_mapping() | as_is_mapping() | :ok
   @typep single_mapping :: {:single, module: module()} | {:single, module: module(), key: String.t()}
@@ -30,26 +32,26 @@ defmodule Sptfy.Client.BodyMapper do
   end
 
   def map(json, {:paging, module: module}) do
-    paging = json |> Sptfy.Object.Paging.new(module)
+    paging = json |> Paging.new(module)
 
     {:ok, paging}
   end
 
   def map(json, {:paging, module: module, key: key}) do
-    paging = json |> Map.get(key) |> Sptfy.Object.Paging.new(module)
+    paging = json |> Map.get(key) |> Paging.new(module)
 
     {:ok, paging}
   end
 
   def map(json, {:paging_with_message, module: module, key: key}) do
     %{"message" => message, ^key => fields} = json
-    paging = Sptfy.Object.Paging.new(fields, module)
+    paging = Paging.new(fields, module)
 
     {:ok, paging, message}
   end
 
   def map(json, {:cursor_paging, module: module}) do
-    paging = json |> Sptfy.Object.CursorPaging.new(module)
+    paging = json |> CursorPaging.new(module)
 
     {:ok, paging}
   end
