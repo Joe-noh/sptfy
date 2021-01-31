@@ -5,8 +5,7 @@ defmodule Sptfy.OAuth do
   https://developer.spotify.com/documentation/general/guides/authorization-guide/#authorization-code-flow
   """
 
-  alias Sptfy.Object.OAuthResponse
-  alias Sptfy.Object.OAuthError
+  alias Sptfy.Object.{OAuthError, OAuthResponse}
 
   @type response :: {:ok, OAuthResponse.t()} | {:error, OAuthError.t()} | {:error, Mint.Types.error()}
 

@@ -1,7 +1,7 @@
 defmodule Sptfy.Object.FullTrack do
   use Sptfy.Object
 
-  alias Sptfy.Object.{SimplifiedArtist, SimplifiedAlbum, TrackLink, TrackRestriction}
+  alias Sptfy.Object.{SimplifiedAlbum, SimplifiedArtist, TrackLink, TrackRestriction}
 
   defstruct ~w[
     album
