@@ -17,4 +17,5 @@ jobs:
           ${{ runner.os }}-sptfy-
     - run: mix deps.get
     - run: mix format --check-formatted
+    - run: mix credo
     - run: mix test

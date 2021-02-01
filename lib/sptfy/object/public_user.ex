@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.PublicUser do
+  @moduledoc """
+  Module for public user profile struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{Followers, Image}

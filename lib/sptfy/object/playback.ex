@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.Playback do
+  @moduledoc """
+  Module for playback state struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{Context, Device, FullEpisode, FullTrack}

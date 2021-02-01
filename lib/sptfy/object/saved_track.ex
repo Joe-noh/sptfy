@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.SavedTrack do
+  @moduledoc """
+  Module for saved track struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.FullTrack

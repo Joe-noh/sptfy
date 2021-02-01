@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.RecommendationSeed do
+  @moduledoc """
+  Module for recommendation seed struct.
+  """
+
   use Sptfy.Object
 
   defstruct ~w[

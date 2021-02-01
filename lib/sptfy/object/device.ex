@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.Device do
+  @moduledoc """
+  Module for device struct.
+  """
+
   use Sptfy.Object
 
   defstruct ~w[

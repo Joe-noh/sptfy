@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.SavedShow do
+  @moduledoc """
+  Module for saved show struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.SimplifiedShow

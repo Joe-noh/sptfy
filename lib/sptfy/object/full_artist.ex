@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.FullArtist do
+  @moduledoc """
+  Module for artist (full) struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{Followers, Image}

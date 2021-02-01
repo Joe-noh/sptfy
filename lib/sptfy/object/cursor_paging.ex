@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.CursorPaging do
+  @moduledoc """
+  Module for cursor based paging struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.Cursors

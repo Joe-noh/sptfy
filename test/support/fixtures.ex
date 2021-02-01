@@ -1,4 +1,8 @@
 defmodule Fixtures do
+  @moduledoc """
+  Fixtures for response JSON from Spotify API.
+  """
+
   def full_album do
     %{
       "album_type" => "compilation",

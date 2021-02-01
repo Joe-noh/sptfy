@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.Paging do
+  @moduledoc """
+  Module for paging struct.
+  """
+
   use Sptfy.Object
 
   defstruct ~w[

@@ -16,12 +16,12 @@ defmodule Sptfy.Client.ResponseHandler do
 
   defp handle_json(json, mapping) when is_map(json) do
     case Map.get(json, "error") do
-      nil -> Sptfy.Client.BodyMapper.map(json, mapping)
-      error -> {:error, Sptfy.Object.Error.new(error)}
+      nil -> BodyMapper.map(json, mapping)
+      error -> {:error, Error.new(error)}
     end
   end
 
   defp handle_json(json, mapping) when is_list(json) do
-    Sptfy.Client.BodyMapper.map(json, mapping)
+    BodyMapper.map(json, mapping)
   end
 end

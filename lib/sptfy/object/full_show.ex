@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.FullShow do
+  @moduledoc """
+  Module for show (full) struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{Copyright, Image, Paging, SimplifiedEpisode}

@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.AudioFeature do
+  @moduledoc """
+  Module for audio feature struct.
+  """
+
   use Sptfy.Object
 
   defstruct ~w[

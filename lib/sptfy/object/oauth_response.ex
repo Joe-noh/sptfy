@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.OAuthResponse do
+  @moduledoc """
+  Module for OAuth response struct.
+  """
+
   use Sptfy.Object
 
   defstruct ~w[

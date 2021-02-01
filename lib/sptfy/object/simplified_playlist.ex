@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.SimplifiedPlaylist do
+  @moduledoc """
+  Module for playlist (simplified) struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{Image, Paging, PlaylistTrack, PublicUser}

@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.SimplifiedShow do
+  @moduledoc """
+  Module for show (simplified) struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{Copyright, Image}

@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.CurrentlyPlaying do
+  @moduledoc """
+  Module for currently playing struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{Context, FullEpisode, FullTrack}

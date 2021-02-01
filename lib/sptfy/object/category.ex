@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.Category do
+  @moduledoc """
+  Module for category struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.Image
