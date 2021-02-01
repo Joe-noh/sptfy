@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.PlaylistTrack do
+  @moduledoc """
+  Module for playlist item struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{FullEpisode, FullTrack, PublicUser}

@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.SimplifiedArtist do
+  @moduledoc """
+  Module for artist (simplified) struct.
+  """
+
   use Sptfy.Object
 
   defstruct ~w[

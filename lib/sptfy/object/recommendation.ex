@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.Recommendation do
+  @moduledoc """
+  Module for recommendation struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{RecommendationSeed, SimplifiedTrack}

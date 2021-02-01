@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.SavedAlbum do
+  @moduledoc """
+  Module for saved album struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.FullAlbum

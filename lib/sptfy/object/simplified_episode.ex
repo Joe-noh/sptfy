@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.SimplifiedEpisode do
+  @moduledoc """
+  Module for episode (simplified) struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{Image, ResumePoint}

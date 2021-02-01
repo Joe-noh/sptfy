@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.PlayHistory do
+  @moduledoc """
+  Module for recently played history struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{Context, SimplifiedTrack}

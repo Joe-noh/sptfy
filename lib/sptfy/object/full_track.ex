@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.FullTrack do
+  @moduledoc """
+  Module for track (full) struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{SimplifiedAlbum, SimplifiedArtist, TrackLink, TrackRestriction}

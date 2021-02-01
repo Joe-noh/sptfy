@@ -1,4 +1,8 @@
 defmodule Sptfy.Object.SimplifiedAlbum do
+  @moduledoc """
+  Module for album (simplified) struct.
+  """
+
   use Sptfy.Object
 
   alias Sptfy.Object.{AlbumRestriction, Image, SimplifiedArtist}
