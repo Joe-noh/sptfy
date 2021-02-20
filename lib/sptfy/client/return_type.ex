@@ -37,6 +37,8 @@ defmodule Sptfy.Client.ReturnType do
     :ok
   end
 
+  @doc false
+  @spec or_error(ast :: tuple()) :: tuple()
   def or_error(ast) do
     {:|, [], [ast, {:|, [], [error: t(Sptfy.Object.Error), error: t(Mint.Types, :error)]}]}
   end
