@@ -37,8 +37,12 @@ defmodule Sptfy.Client.ReturnType do
     :ok
   end
 
-  defp t(module) do
-    {{:., [], [module, :t]}, [], []}
+  def or_error(ast) do
+    {:|, [], [ast, {:|, [], [error: t(Sptfy.Object.Error), error: t(Mint.Types, :error)]}]}
+  end
+
+  defp t(module, name \\ :t) do
+    {{:., [], [module, name]}, [], []}
   end
 
   defp ok(ast) do
