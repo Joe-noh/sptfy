@@ -15,7 +15,7 @@ defmodule Sptfy.Client do
 
     placeholders = Placeholder.extract(path)
     placeholder_keys = Keyword.keys(placeholders)
-    type_ast = ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
+    type_ast = (ReturnType.ast(mapping) || Keyword.get(opts, :return_type)) |> ReturnType.or_error()
 
     quote location: :keep do
       @doc Document.build("GET", unquote(path), unquote(placeholders) ++ unquote(query))
@@ -46,7 +46,7 @@ defmodule Sptfy.Client do
 
     placeholders = Placeholder.extract(path)
     placeholder_keys = Keyword.keys(placeholders)
-    type_ast = ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
+    type_ast = (ReturnType.ast(mapping) || Keyword.get(opts, :return_type)) |> ReturnType.or_error()
 
     quote location: :keep do
       @doc Document.build("POST", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
@@ -78,7 +78,7 @@ defmodule Sptfy.Client do
 
     placeholders = Placeholder.extract(path)
     placeholder_keys = Keyword.keys(placeholders)
-    type_ast = ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
+    type_ast = (ReturnType.ast(mapping) || Keyword.get(opts, :return_type)) |> ReturnType.or_error()
 
     quote location: :keep do
       @doc Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
@@ -110,7 +110,7 @@ defmodule Sptfy.Client do
 
     placeholders = Placeholder.extract(path)
     placeholder_keys = Keyword.keys(placeholders)
-    type_ast = ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
+    type_ast = (ReturnType.ast(mapping) || Keyword.get(opts, :return_type)) |> ReturnType.or_error()
 
     quote location: :keep do
       @doc Document.build("PUT", unquote(path), unquote(placeholders) ++ unquote(query))
@@ -141,7 +141,7 @@ defmodule Sptfy.Client do
 
     placeholders = Placeholder.extract(path)
     placeholder_keys = Keyword.keys(placeholders)
-    type_ast = ReturnType.ast(mapping) || Keyword.get(opts, :return_type)
+    type_ast = (ReturnType.ast(mapping) || Keyword.get(opts, :return_type)) |> ReturnType.or_error()
 
     quote location: :keep do
       @doc Document.build("DELETE", unquote(path), unquote(placeholders) ++ unquote(query) ++ unquote(body))
