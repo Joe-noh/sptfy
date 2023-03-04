@@ -4,7 +4,7 @@ defmodule Sptfy.PlayerTest do
   import Mock
 
   alias Sptfy.Player
-  alias Sptfy.Object.{CurrentlyPlaying, CursorPaging, Device, Playback, PlayHistory}
+  alias Sptfy.Object.{CurrentlyPlaying, CursorPaging, Device, Playback, PlayHistory, UserQueue}
 
   describe "get_playback/2" do
     test "returns a Playback struct" do
@@ -231,6 +231,30 @@ defmodule Sptfy.PlayerTest do
 
       with_mock Sptfy.Client.HTTP, post: fn _, "/v1/me/player/queue", _, _ -> MockHelpers.response(json) end do
         assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Player.enqueue("token", uri: "uri")
+      end
+    end
+  end
+
+  describe "get_user_queue/1" do
+    test "returns a UserQueue struct" do
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/me/player/queue", _ -> MockHelpers.response(Fixtures.user_queue()) end do
+        assert {:ok, %UserQueue{}} = Player.get_user_queue("token")
+      end
+    end
+
+    test "returns nil and empty list when playback inactive" do
+      json = %{"currently_playing" => nil, "queue" => []}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/me/player/queue", _ -> MockHelpers.response(json) end do
+        assert {:ok, %UserQueue{currently_playing: nil, queue: []}} = Player.get_user_queue("token")
+      end
+    end
+
+    test "returns Error struct on error" do
+      json = %{"error" => %{"message" => "Oops", "status" => 401}}
+
+      with_mock Sptfy.Client.HTTP, get: fn _, "/v1/me/player/queue", _ -> MockHelpers.response(json) end do
+        assert {:error, %Sptfy.Object.Error{message: "Oops", status: 401}} = Player.get_user_queue("token")
       end
     end
   end

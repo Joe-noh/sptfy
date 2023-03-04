@@ -513,4 +513,11 @@ defmodule Fixtures do
       "total" => 3
     }
   end
+
+  def user_queue do
+    %{
+      "currently_playing" => full_track(),
+      "queue" => [full_track()]
+    }
+  end
 end

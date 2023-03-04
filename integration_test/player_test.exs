@@ -2,7 +2,7 @@ defmodule IntegrationTest.PlayerTest do
   use ExUnit.Case
 
   alias Sptfy.Player
-  alias Sptfy.Object.{CurrentlyPlaying, CursorPaging, Device, Playback, PlayHistory}
+  alias Sptfy.Object.{CurrentlyPlaying, CursorPaging, Device, FullTrack, Playback, PlayHistory, UserQueue}
 
   setup_all do
     %{token: System.fetch_env!("SPOTIFY_TOKEN")}
@@ -77,5 +77,11 @@ defmodule IntegrationTest.PlayerTest do
   @tag skip: "has side effect"
   test "enqueue/2", %{token: token} do
     assert :ok == Player.enqueue(token, uri: "spotify:track:1t18idTmPA3sWLxYUWwesw")
+  end
+
+  test "get_user_queue/1", %{token: token} do
+    assert {:ok, %UserQueue{currently_playing: currently_playing, queue: queue}} = Player.get_user_queue(token)
+    assert %FullTrack{} = currently_playing
+    assert Enum.all?(queue, fn item -> %FullTrack{} = item end)
   end
 end

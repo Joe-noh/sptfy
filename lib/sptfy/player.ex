@@ -5,7 +5,7 @@ defmodule Sptfy.Player do
 
   use Sptfy.Client
 
-  alias Sptfy.Object.{CurrentlyPlaying, Device, Playback, PlayHistory}
+  alias Sptfy.Object.{CurrentlyPlaying, Device, Playback, PlayHistory, UserQueue}
 
   get "/v1/me/player",
     as: :get_playback,
@@ -80,6 +80,11 @@ defmodule Sptfy.Player do
     as: :get_recently_played,
     query: [:limit, :before, :after],
     mapping: {:cursor_paging, module: PlayHistory}
+
+  get "/v1/me/player/queue",
+    as: :get_user_queue,
+    query: [],
+    mapping: {:single, module: UserQueue}
 
   post "/v1/me/player/queue",
     as: :enqueue,
