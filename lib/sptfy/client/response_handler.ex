@@ -6,7 +6,7 @@ defmodule Sptfy.Client.ResponseHandler do
 
   @type handled_response :: BodyMapper.mapped_result() | {:error, Error.t()}
 
-  @spec handle(response :: %Finch.Response{}, mapping :: BodyMapper.mapping()) :: handled_response()
+  @spec handle(response :: Finch.Response.t(), mapping :: BodyMapper.mapping()) :: handled_response()
   def handle(%Finch.Response{body: body}, mapping) do
     case Jason.decode(body) do
       {:ok, json} -> handle_json(json, mapping)
