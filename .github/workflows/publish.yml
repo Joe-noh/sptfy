@@ -6,18 +6,18 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - uses: erlef/setup-elixir@v1
-      with:
-        otp-version: '23.1.1'
-        elixir-version: '1.11.2'
-    - uses: actions/cache@v1
-      with:
-        path: deps
-        key: ${{ runner.os }}-sptfy-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
-        restore-keys: |
-          ${{ runner.os }}-sptfy-
-    - run: mix deps.get
-    - run: mix hex.publish --yes
-      env:
-        HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
+      - uses: actions/checkout@v2
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: '24'
+          elixir-version: '1.14'
+      - uses: actions/cache@v1
+        with:
+          path: deps
+          key: ${{ runner.os }}-sptfy-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          restore-keys: |
+            ${{ runner.os }}-sptfy-
+      - run: mix deps.get
+      - run: mix hex.publish --yes
+        env:
+          HEX_API_KEY: ${{ secrets.HEX_API_KEY }}
